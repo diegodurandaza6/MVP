@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>MVPTalent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/maintenance/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/maintenance/css/solid.css">
+    <link rel="stylesheet" href="~/maintenance/css/regular.min.css">
+    <link rel="stylesheet" href="~/maintenance/css/brands.min.css">
+    <link rel="stylesheet" href="~/maintenance/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/maintenance/css/style.css">
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+</head>
+<body>
+    <section class="construction-section">
+        <div class="container">
+            <div class="banner-content">
+                <h1>OUR WEBSITE IS UNDER MAINTENANCE</h1>
+                <p>
+                    our website is offline for routine maintenance or upgrades.
+                </p>
+                <figure class="logo-mvp-fig text-center">
+                    <p><span style="text-shadow: 0 2px 4px rgb(0 0 0 / 50%); color: #60c160; font-weight: 600;">MVP</span>Talent</p>
+                </figure>
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h3>Log In</h3>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="input-group form-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input id="email" name="email" type="text" class="form-control" maxlength="30" placeholder="Please enter email">
+                                </div>
+                                <div class="input-group form-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    <input id="password" name="password" type="password" maxlength="20" class="form-control" placeholder="password">
+                                </div>
+                                <div class="row align-items-center remember">
+                                    <input type="checkbox">Remember Me
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" value="Login" onclick="check()" class="btn float-right login_btn">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/maintenance/js/bootstrap.min.js"></script>
+    <script src="~/MvpTelent_js/toster/jquery.toaster.js"></script>
+</body>
+</html>
+<script>
+    $("#password").keypress(function (e) {
+        if (e.which === 13) { // enter key
+            check();
+        }
+    });
+</script>
+<script>
+    function check() {
+        if ($("#email").val().trim() == "") {
+            toastr.info("Please enter email."); return false;
+        }
+        if ($("#password").val().trim() == "") {
+            toastr.info("Please enter password."); return false;
+        }
+        model = { Email: $("#email").val(), Password: $("#password").val(), };
+        $.post("/Home/maintenance", model, function (data) {
+            if (data == 1) {
+                toastr.success("Login successful.");
+                url = "/Home/Index";
+                window.location.href = url;
+            } else { toastr.error("Please enter valid email or password."); }
+        });
+    }
+</script>

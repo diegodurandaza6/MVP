@@ -1,0 +1,142 @@
+﻿@model Web.Model.Admin.CampaignModel
+@{
+    ViewBag.Title = "addcampaign";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link href="~/Scripts/multipleselect/example-styles.css" rel="stylesheet" />
+
+
+<style>
+    body {
+        padding: 0;
+    }
+
+    .container {
+        margin: 150px auto;
+        max-width: 960px;
+    }
+</style>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#">Job</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <!-- DataTales Example -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left right_icon">
+                        Post A Job
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="CampaignForm_page" name="CampaignForm_page">
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Job Title</label>
+                                                @Html.DropDownListFor(m => m.campaigntypeid, new SelectList(Model.CampaigntypeCollection, "Id", "Name"), "Select Type", new { @class = "form-control", @Id = "campaigntypeid", @Name = "campaigntypeid" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Select Tag</label>
+                                                <select id="tag" name="tag" multiple class="form-control">
+                                                    <option value="1">df</option>
+                                                    <option value="2">fdfd</option>
+                                                    <option value="3">dfgfdg</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Campaign Name</label>
+                                                <input type="text" maxlength="50" value="@Model.Name" id="Name" name="Name" autocomplete="off" placeholder="Enter name" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Email Subject</label>
+                                                <input type="text" maxlength="100" value="@Model.Subject" id="Subject" name="Subject" autocomplete="off" placeholder="Enter email subject" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Email Content</label>
+                                                <textarea class="form-control" rows="2" id="emailbody" name="emailbody" placeholder="Description">@Model.emailbody</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <label>Campaign Status</label>
+                                                @Html.DropDownListFor(m => m.CStatusId, new SelectList(Model.CampaignstatusCollection, "Id", "Name"), "Select Status", new { @class = "form-control", @Id = "CStatusId", @Name = "CStatusId" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="button" name="login" id="login" class="btn btn-primary" onclick="AddUpdateCampaign(@Model.Id)" value="Save">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Areas/Admin/Admin/Campaign.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<script src="~/Scripts/multipleselect/jquery.multi-select.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#tag').multiSelect();
+        $('#modal-example').multiSelect({
+            'modalHTML': '<div class="multi-select-modal">'
+        });
+    });
+</script>

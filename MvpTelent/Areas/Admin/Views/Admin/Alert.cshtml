@@ -1,0 +1,149 @@
+﻿@model Web.Model.Admin.Alertmodel
+@{
+    ViewBag.Title = "Alert";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Alert</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="email" name="email" value="@Model.Email" placeholder="Please enter email" maxlength="45">
+                            </div>
+                            <div class="col-md-3">
+                                <select name="AlertId" id="AlertId" class="form-control">
+                                    <option value="0">select</option>
+                                    <option value="1"> Job Alert </option>
+                                    <option value="2"> Candidate Alert</option>
+                                </select>
+
+
+
+                                @if (Model.AlertId == 0)
+                                {
+                                    <script>
+                                        document.getElementById("AlertId").value = "0";
+                                    </script>
+                                }
+                                else if (Model.AlertId == 1)
+                                {
+                                    <script>
+                                        document.getElementById("AlertId").value = "1";
+                                    </script>
+                                }
+                                else
+                                {
+                                    <script>
+                                        document.getElementById("AlertId").value = "2";
+                                    </script>
+                                }
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getSearchalertjob()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetSearchjobalert()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Alert List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Job Title </th>
+                                    <th>Location </th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Created Date</th>
+                                    <th>Last Sent Date</th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.alertjobcollection != null)
+                                {
+                                    foreach (var item in Model.alertjobcollection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo++;}@RowNo</td>
+                                            <td>@item.JobTitle</td>
+                                            <td>@item.location </td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Createddate</td>
+                                            <td>@item.lastsentdate</td>
+                                            <td class="table-action text-center"> 
+                                                @if (item.StatusId == 1)
+                                                {
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Inactive" onclick="alertunactiveJobbyId(@item.Id,1)">
+                                                        <i class="fas fa-fw fa-lock"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Active" onclick="alertunactiveJobbyId(@item.Id,2)">
+                                                        <i class="fas fa-fw fa-lock-open"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.alertjobcollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td class="text-left" colspan="8">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function () {
+     document.getElementById("AlertId").value = @Model.AlertId;
+                                });
+</script>
+<script src="~/Areas/Admin/Admin/Alert.js"></script>
+<script>
+    var element = document.getElementById("Alert");
+    element.classList.add("active");
+</script>

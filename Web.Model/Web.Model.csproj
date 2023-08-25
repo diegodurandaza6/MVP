@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E4B3D04F-120C-4AB8-ADBA-B0A242543449}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web.Model</RootNamespace>
+    <AssemblyName>Web.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\MvpTelent\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Web.SolrJobsClient">
+      <HintPath>..\Web.SolrJobs\bin\Debug\Web.SolrJobsClient.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\Alertmodel.cs" />
+    <Compile Include="Admin\CampaignModel.cs" />
+    <Compile Include="Admin\Dashboardmodel.cs" />
+    <Compile Include="Admin\EmailTempleteListModel.cs" />
+    <Compile Include="Admin\RoleListModel.cs" />
+    <Compile Include="Admin\RoleViewModel.cs" />
+    <Compile Include="Admin\Tagsmodel.cs" />
+    <Compile Include="Admin\UserManagmentmodel.cs" />
+    <Compile Include="Candidate\CandidateListModel.cs" />
+    <Compile Include="Candidate\CandidateModel.cs" />
+    <Compile Include="Admin\EnquiresViewModel.cs" />
+    <Compile Include="Admin\ProfileViewModel.cs" />
+    <Compile Include="Candidate\PlanModel.cs" />
+    <Compile Include="Client\jobalertviewmodel.cs" />
+    <Compile Include="Client\JobsModel.cs" />
+    <Compile Include="Common\Blog.cs" />
+    <Compile Include="Common\CandidateConversationEditModel.cs" />
+    <Compile Include="Common\Candidateconversationmodel.cs" />
+    <Compile Include="Common\LocationDropdown.cs" />
+    <Compile Include="Common\MainMenu.cs" />
+    <Compile Include="Common\ZipCodeVIewModel.cs" />
+    <Compile Include="Group\GroupListModel.cs" />
+    <Compile Include="Group\GroupViewModel.cs" />
+    <Compile Include="Client\ClientMessageModel.cs" />
+    <Compile Include="Client\ClientModel.cs" />
+    <Compile Include="Common\ContactUs.cs" />
+    <Compile Include="Common\DropDownViewModel.cs" />
+    <Compile Include="Common\LoginModel.cs" />
+    <Compile Include="Encrypt\EncryptDecrypt.cs" />
+    <Compile Include="Paypal\Configuration.cs" />
+    <Compile Include="Paypal\PaymentViewModel.cs" />
+    <Compile Include="Paypal\PlansViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Web.SolrClient\Web.SolrClient.csproj">
+      <Project>{b81991fe-b70a-4ab9-a190-847578e39a49}</Project>
+      <Name>Web.SolrClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.SolrMyCandidate\Web.SolrMyCandidate.csproj">
+      <Project>{1f4cbe22-d852-4d49-97fd-ef69d10ad064}</Project>
+      <Name>Web.SolrMyCandidate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

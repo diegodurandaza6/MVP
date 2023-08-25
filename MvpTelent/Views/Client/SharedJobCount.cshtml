@@ -1,0 +1,98 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Shared Job Count";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<div class="col-lg-9 col-sm-12">
+    <div class="tab-pane" id="v-pills-changepassword" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <section class="dashboard_table _section">
+            <!-- DataTales Example -->
+            <div class="card-header d-flex justify-content-between">
+                <h4 class="text-left right_icon">
+                    Shared Job Count
+                </h4>
+            </div>
+            <section class="table_search">
+                <form class="form-inline">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-4 _selectdropdown"> </div>
+                            <div class="col-lg-4 _selectdropdown">  </div>
+                            <div class="col-lg-2 _form_section">
+                                <button type="button" class="update_section" style="width:100%;" onclick="getApplicantList()">Search</button>
+                            </div>
+                            <div class="col-lg-2 _form_section">
+                                <button type="button" class="btn btn-fade w-100 border-0" onclick="Reset()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <section class="dashboard_table">
+                <div class="container-fluid">
+                    <div class="card mb-4">
+                        <div class="applicant-header d-flex justify-content-between">
+                            <h4 class="text-left">Applicant List</h4>
+                        </div>
+                        <div class="card-body _applicantlist">
+                            <div class="table-responsive">
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                                        <table class="table table-striped">
+                                            <thead class="thead-dark">
+                                                <tr style="cursor:pointer">
+                                                    <th>
+                                                        S.No
+                                                    </th>
+                                                    <th>
+                                                        Name
+                                                    </th>
+                                                    <th>
+                                                        Phone
+                                                    </th>
+                                                    <th>
+                                                        Email
+                                                    </th>
+                                                    <th>
+                                                        Job title
+                                                    </th>
+                                                    @*<th> Action</th>*@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{int RowNo = 0;}
+                                                @if (Model.Jobsuploadresumecollection != null)
+                                                {
+                                                    foreach (var item in Model.Jobsuploadresumecollection)
+                                                    {
+                                                        <tr>
+                                                            <td> @{RowNo++;}@RowNo</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.Phone</td>
+                                                            <td>@item.Email</td>
+                                                            <td>
+                                                                @item.jobtitle
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="text-left" colspan="8">
+                                                            <span>No Data found...</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</div>

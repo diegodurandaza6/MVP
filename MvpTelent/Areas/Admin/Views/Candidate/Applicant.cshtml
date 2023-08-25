@@ -1,0 +1,730 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "Applicant";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<div id="Candidatecreate_PopUp" class="modal fade" role="dialog"></div>
+<style>
+    .detail-tabs > li > a {
+        min-width: 130px;
+    }
+
+    .tlt-rc {
+        position: absolute;
+        right: 46px;
+        top: 28px;
+        font-weight: 500;
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Applicants </h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" href="/Admin/Candidate/CandidateList">
+                    Submit Profile
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="_selectdrop">
+                                                    <select class="form-control mb-3" onchange="getjobListbytype(@Model.Id)" name="jobytpeid" id="jobytpeid">
+                                                        <option value="0">Jobs Posted By Admin</option>
+                                                        <option value="1">Jobs Shared By Client</option>
+                                                    </select>
+                                                    <script>
+                                                       document.getElementById("jobytpeid").value = @Model.Id ;
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            @if (Model.tid == 1)
+                                            {
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(m => m.CompanyId, new SelectList(Model.CompanyJobCollection, "Id", "Name"), "Select Company", new { @class = "form-control mb-3", @Id = "CompanyId", @Name = "CompanyId", @onchange = "GetjobByCompanyIdId(this.value)" })
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(m => m.jobStatus, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Select Job Status", new
+                                                {
+                                                    @class = "form-control mb-3",
+                                                    @Id = "jobStatus",
+                                                    @Name = "jobStatus",@*@onchange = "getApplicantList(" + Model.Id + ")"*@})
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                @Html.DropDownListFor(m => m.JobId, new SelectList(Model.JobCollection, "Id", "Name"), "Select Job", new { @class = "form-control mb-3", @Id = "JobId", @Name = "JobId", @onchange = "GetJobOnwerDetailById(this.value)" })
+
+                                                <label id="lblLabel" class="f-w-400" name="lblLabel"> </label>
+                                                <label id="lblName"  class="f-w-400" name="lblName"></label> 
+                                                <label name="lblEmail" class="f-w-400" id="lblEmail"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button type="submit" class="btn btn-primary w-100 border-0 mb-3" onclick="getApplicantList(@Model.Id)">Search</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="submit" class="btn btn-fade w-100 border-0" onclick="Reset()">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> 
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b">
+
+                        <h5 class="card-title mb-0">
+                            Applicants Pipeline
+                        </h5>
+                    </div>
+                    <div class="card-body position-relative">
+
+                        <ul class="nav detail-tabs" role="tablist">
+                            <li>
+                                <a id="tab_1" onclick="ActiveTab(1,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#NewApplicants" role="tab" aria-controls="home" aria-selected="true">
+                                    New Applicants  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 1).Count())))
+                                </a>
+                            </li>
+                            <li>
+                                <a id="tab_2" onclick="ActiveTab(2,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#Reviewed" role="tab" aria-controls="profile" aria-selected="false">
+                                    Reviewed  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 2).Count())))
+                                </a>
+                            </li>
+                            <li>
+                                <a id="tab_3" onclick="ActiveTab(3,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#Interviewing" role="tab" aria-controls="contact"
+                                   aria-selected="false">Interviewing  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 3).Count())))</a>
+                            </li>
+                            <li>
+                                <a id="tab_4" onclick="ActiveTab(4,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#OfferMade" role="tab" aria-controls="offer"
+                                   aria-selected="true">Offer Made  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 4).Count())))</a>
+                            </li>
+                            <li>
+                                <a id="tab_5" onclick="ActiveTab(5,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#Rejected" role="tab" aria-controls="raject"
+                                   aria-selected="true">Rejected  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 5).Count())))</a>
+                            </li>
+                            <li>
+                                <a id="tab_6" onclick="ActiveTab(6,@Model.JobId,@Model.jobStatus)" data-toggle="tab" href="#Hired" role="tab" aria-controls="hire"
+                                   aria-selected="true">Hired  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 6).Count())))</a>
+                            </li>
+                        </ul> 
+                        <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                            <div class="card-body detail-pills" id="myTabContent">
+                                <div class="fade" id="NewApplicants" role="tabpanel" aria-labelledby="home-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo = 0;} 
+                                            @if (Model.CandidateCollection != null)
+                                            { 
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 1))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo++;}@RowNo</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.applicanttypeId == 1)
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+
+
+                                                }
+                                                if (RowNo == 0)
+                                                {
+
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fade" id="Reviewed" role="tabpanel" aria-labelledby="profile-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo2 = 0;}
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 2))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo2++;}@RowNo2</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.GuestId == 0)
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                if (RowNo2 == 0)
+                                                {
+
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fade" id="Interviewing" role="tabpanel" aria-labelledby="contact-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo3 = 0;}
+
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 3))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo3++;}@RowNo3</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.GuestId == 0)
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                if (RowNo3 == 0)
+                                                {
+
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fade" id="OfferMade" role="tabpanel" aria-labelledby="offer-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo4 = 0;}
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 4))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo4++;}@RowNo4</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.GuestId == 0)
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    if (RowNo4 == 0)
+                                                    {
+
+                                                        <tr>
+                                                            <td colspan="6">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fade" id="Rejected" role="tabpanel" aria-labelledby="raject-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo5 = 0;}
+
+
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 5))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo5++;}@RowNo5</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.GuestId == 0)
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                if (RowNo5 == 0)
+                                                {
+
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fade" id="Hired" role="tabpanel" aria-labelledby="hire-tab">
+                                    <table class="table table-striped my-0 table-bordered tr-golden">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-60px">
+                                                    S.No
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Applicant Type
+                                                </th>
+                                                <th class="w-100px text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int RowNo6 = 0;}
+
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+
+                                                foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 6))
+                                                {
+                                                    <tr>
+                                                        <td> @{RowNo6++;}@RowNo6</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Email</td>
+                                                        <td>
+                                                            @if (@item.GuestId == 0)
+                                                            {
+                                                                <span>Registered User</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Guest User</span>
+                                                            }
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(item.JobId))')">
+                                                                <i class="far fa-fw fa-eye"></i>
+                                                            </a>
+                                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Remove from Pipeline" onclick="ApplicantDelete(@item.Id)">
+                                                                <i class="far fa-fw fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                if (RowNo6 == 0)
+                                                {
+
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <span class="no-data-found">
+                                                            No Data found...
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    document.getElementById("jobytpeid").value = @Model.tid;
+    if (@Model.Id== 1) {
+        $("#NewApplicants").addClass(" active  show");
+    }
+    else if (@Model.Id== 2) {
+        $("#Reviewed").addClass(" active  show");
+    }
+    else if (@Model.Id== 3) {
+        $("#Interviewing").addClass(" active  show");
+    }
+     else if (@Model.Id== 4) {
+        $("#OfferMade").addClass(" active  show");
+    }
+     else if (@Model.Id== 5) {
+        $("#Rejected").addClass(" active  show");
+    }
+     else if (@Model.Id== 6) {
+        $("#Hired").addClass(" active  show");
+    }
+    $("#tab_" +@Model.Id).addClass(" active  show");
+</script>
+<script>
+    function ActiveTab(tabId, JobId, JobStatus) {
+
+
+        var jobStatus = $('#jobStatus').val();
+        var JobId = $('#JobId').val();
+        var jobytpeid = $('#jobytpeid').val();
+
+        var CompanyId = $('#CompanyId').val();
+
+
+        var url = "/Admin/Candidate/Applicant?JobId=" + JobId + "&Id=" + tabId + "&jobStatus=" + jobStatus + "&tid=" + jobytpeid + "&CompanyId=" + CompanyId;
+        window.location.href = url;
+
+    }
+    function GetJobOnwerDetailById(Id) {
+        model = {
+            Id: Id
+        }
+        $.get("/Admin/Candidate/GetJobOnwerDetailById", model, function (data) {
+
+            if (data.Email == null)
+            {
+                $('#lblLabel').text('');
+                $('#lblName').text('');
+                $('#lblEmail').text('');
+            }
+            else {
+                $('#lblLabel').text('Job Owner : ');
+                $('#lblName').text(data.Name);
+                $('#lblEmail').text('(' + data.Email + ')');
+            }
+            
+
+        });
+    }
+
+    function GetjobByCompanyIdId(Id) {
+        $("#JobId").empty();
+        $("#JobId").append($("<option />").val("").html("Select Job"));
+        model = {
+            Id: Id
+        }
+        $.get("/Admin/Admin/GetjobByCompanyIdId", model, function (data) {
+
+            $.each(data, function () {
+                $("#JobId").append($("<option />").val(this.Id).html(this.Title));
+            });
+
+        });
+    }
+
+
+</script>
+<script src="~/Areas/Admin/Admin/Applicant.js"></script>
+<script>
+    var element = document.getElementById("Candidates").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Candidates");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Candidates");
+    element.classList.add("show");
+    var element = document.getElementById("Applicants Pipeline+1");
+    element.classList.add("active");
+</script>

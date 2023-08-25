@@ -1,0 +1,69 @@
+﻿@model Web.Model.Admin.RoleListModel
+@{
+    ViewBag.Title = "Role";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#"><span><i class="fa fa-home"></i></span>Dashboard</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#">Role</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h4 class="text-left" style="padding: 4px 0px">Role Info</h4>
+            </div>
+            <div class="card-body">
+                <div class="contact-form">
+                    <form id="profileform">
+                        <div class="form row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" maxlength="30" id="Name" name="Name" placeholder="Please enter role name" value="@Model.Name">
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="form row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="2" id="Description" name="Description" placeholder="Please enter description...">@Model.description</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="form row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.statusId, new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Select Status" }, new SelectListItem { Value = "1", Text = "Active" }, new SelectListItem { Value = "2", Text = "InActive" } }, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="form row" style="margin-top:50px;">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <a onclick="updateprofile(0)" class="user_button" style="float:right; cursor:pointer">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

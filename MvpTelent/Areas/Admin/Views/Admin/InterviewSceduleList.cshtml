@@ -1,0 +1,203 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "InterviewSceduleList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<div id="Interviewdetail_PopUp" class="modal fade" role="dialog"></div>
+
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Interviews</h3>
+                <span>
+                    Interview List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="new-radio">
+                                            <label><input type="radio" id="MyjobId" name="MyjobId" value="0" onclick="myjobclcik(0)" @(Model.Id == 0 ? "checked" : string.Empty)>My Job</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="new-radio">
+
+                                            <label><input type="radio" id="MyjobId" name="MyjobId" value="1" onclick="myjobclcik(1)" @(Model.Id == 1 ? "checked" : string.Empty)>Shared Job</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if (Model.Id == 0)
+                                        {
+                                            <div class="box_sec" id="adminalljobs">
+                                                @Html.DropDownListFor(m => m.JobId, new SelectList(Model.Adminjobcollection, "Id", "Name"), "All My Jobs", new { @class = "form-control w-100", @Id = "myJobId", @Name = "myJobId" })
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row" id="sharedjobs">
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(m => m.CompanyId, new SelectList(Model.sharedjobCompanycollection, "Id", "Name"), "Select Company", new { @class = "form-control w-100", @Id = "CompanyId", @Name = "CompanyId" , @onchange = "getInterviewByTitle()" })
+                                                </div>
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(m => m.JobId, new SelectList(Model.sharedjobcollection, "Id", "Name"), "All Shared Job", new { @class = "form-control w-100", @Id = "SharedJobId", @Name = "SharedJobId" })
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getInterviewByTitle()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetInterviewByTitle()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Interview List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Candidate Name</th>
+                                    <th>Email Subject</th>
+
+                                    <th>Interview Date</th>
+                                    <th>Interviewer Name</th>
+
+
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{int RowNo = 0;}
+                                @if (Model.interviewListCollection != null)
+                                {
+                                    foreach (var item in Model.interviewListCollection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td> <a style="cursor:pointer" title="View Candidate Detail" onclick="candidateDetail('@item.Ids')">@item.CandidateName</a></td>
+                                            <td>@item.Title</td>
+                                            <td>@item.InterviewDate</td>
+                                            <td>@item.ClientName</td>
+
+
+
+
+                                            <td class="table-action">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Reschedule Interview" onclick="InterviewSchedulepopup(@item.Id,@item.ClientId,@item.CandidateId,@item.JobId)">
+                                                    <i class="far fa-fw fa-edit"></i>
+                                                </a>
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="Interviewdetailpopup(@item.Id)">
+                                                    <i class="far fa-fw fa-eye"></i>
+                                                </a>
+
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="InterViewdelete(@item.Id)">
+                                                    <i class="far fa-fw fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.interviewListCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/Areas/Admin/Admin/enquires.js"></script>
+@if (Model.Id == 0)
+{
+    <script>
+        $(document).ready(function () {
+            $("#adminalljobs").show();
+            $("#sharedjobs").hide();
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            $("#adminalljobs").hide();
+            $("#sharedjobs").show();
+        });
+    </script>
+}
+<script>
+
+    function candidateDetail(Id) {
+
+        var url = "/Admin/Candidate/detailedprofile?Ids=" + Id;
+        window.open(url);
+    }
+
+
+    function myjobclcik(Id) {
+        if (Id == 0) {
+            $("#adminalljobs").show();
+            $("#sharedjobs").hide();
+            getInterviewByTitle();
+        }
+        else {
+            $("#adminalljobs").hide();
+            $("#sharedjobs").show();
+            getInterviewByTitle();
+        }
+    }
+</script>
+<script>
+    var element = document.getElementById("Interviews");
+    element.classList.add("active");
+</script>

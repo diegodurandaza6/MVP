@@ -1,0 +1,71 @@
+﻿@model Web.Model.Client.jobalertviewmodel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            @if (Model.alertid == 1)
+            {
+                <h5 class="modal-title" id="exampleModalLabel1">Create a Job Alert</h5>
+            }
+            else
+            {
+                <h5 class="modal-title" id="exampleModalLabel1">Create a Candidate Alert</h5>
+            }
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="formsavejobalertvalidation">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @if (Model.alertid == 1)
+                            {
+                                <label class="form-label">Job Title Or Keyword</label>
+                            }
+                            else
+                            {
+                                <label class="form-label">Job Title </label>
+                            }
+                            <input id="keyword" maxlength="60" autocomplete="off" class="form-control" tabindex="1" value="@Model.JobTitle" placeholder="Please enter Job title or keyword" name="keyword" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input id="Location" maxlength="50" autocomplete="off" class="form-control" tabindex="2" value="@Model.location" placeholder="Please enter city,state or zip" name="Location" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Alert Name</label>
+                            <input id="AlertName" autocomplete="off" class="form-control" tabindex="4" name="AlertName" placeholder="Please enter alert name" maxlength="50" type="text">
+                        </div>
+                        <div class="form-group">
+                            @if (Model.alertid == 1)
+                            {
+                                <label class="form-label">Candidate Name</label>
+                            }
+                            else
+                            {
+                                <label class="form-label">Client Name</label>
+                            }
+                            <input id="Name" autocomplete="off" class="form-control" tabindex="4" name="Name" placeholder="Please enter name" maxlength="50" type="text">
+                        </div>
+                        <div class="form-group">
+                            @if (Model.alertid == 1)
+                            {
+                                <label class="form-label">Candidate Email</label>
+                            }
+                            else
+                            {
+                                <label class="form-label">Client Email</label>
+                            }
+                            <input id="Email" autocomplete="off" class="form-control" tabindex="4" name="Email" placeholder="Please enter email" maxlength="50" type="text">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="companybtn" id="companybtn" class="btn btn-primary button-secondry" onclick="savejobalert(@Model.alertid)" value="Submit">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

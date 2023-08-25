@@ -1,0 +1,450 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "CandidateDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+@*<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<div id="InterviewStatusByid_Popup" class="modal fade" role="dialog"></div>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Candidate Detail
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b">
+
+                        <h5 class="card-title mb-0">
+                            Candidate Detail
+                        </h5>
+                    </div>
+                     
+                    <div class="card-body p-b-0">
+                        <div class="row position-relative">
+                            <div class="dropdown scouting-dropdown">
+                                <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    @if (Model.JobId != 0)
+                                    {
+                                        if (Model.resumeName != "")
+                                        {
+                                            <a class="dropdown-item" href="@Model.Resumefile"><i class="fas fa-fw fa-download"></i> Download CV</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" onclick="resumealertmassege()"><i class="fas fa-fw fa-download"></i> Download CV</a>
+                                        }
+                                    }
+                                    @if (Model.JobId == 0)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@Model.ClientId,@Model.Id,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Schedule interview</a>
+                                    }
+                                <a class="dropdown-item" onclick="interviewStatusPopup(@Model.Id,@Model.InterviewSId,@Model.JobId)"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                </div>
+                            </div>
+
+                            <div class="p-profile mb-3 row-mg w-100 m-0">
+                                <div class="p-profile-body-2 pb-0 pt-0" style="width: 152px;">
+                                    <img src="@Model.FileName" class="p-profile-img p-3">
+                                </div>
+
+
+
+                                <div class="p-profile-body col-md-12 p-l-p-profile pt-0 min-h-135px" style="padding-left: 160px!important;">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 140px;"><i class="far fa-fw fa-user-circle clr-golden"></i> <b>Name</b> :</td>
+                                                <td>
+                                                    @Model.Name @Model.LastName
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-fw fa-map-marker-alt clr-golden"></i> <b>Location</b> :</td>
+                                                <td>
+                                                    @Model.location
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Title</b> :</td>
+                                                <td>
+                                                    @Model.Title
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-fw fa-check clr-golden"></i> <b>Status</b> :</td>
+                                                <td>
+                                                    @Model.InterviewStausName
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <hr class="mb-0">
+                    <div class="card-body p-b-0">
+
+                        <div class="row dash-tile dash-tile-client-detail-1">
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-user-graduate"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">Experience</h5>
+                                                <p class="dash-tile-font-2">@Model.experienceName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-user-graduate"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">Industry</h5>
+                                                <p class="dash-tile-font-2">@Model.IndustryName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-user-graduate"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">Current Salary</h5>
+                                                <p class="dash-tile-font-2">@Model.CurrentSalary</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-building"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Expected Salary
+                                                </h5>
+                                                <p class="dash-tile-font-2">
+                                                    @Model.expectedSalary
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-money-bill-wave"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Education Levels
+                                                </h5>
+                                                <p class="dash-tile-font-2">
+                                                    @Model.educationlevel
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-chart-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Job Type
+                                                </h5>
+                                                <p class="dash-tile-font-2">
+                                                    @Model.jobtypeName
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fas fa-fw fa-rocket"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Zip Code
+                                                </h5>
+                                                <p class="dash-tile-font-2">
+                                                    @Model.Zipcode
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 col-xxl d-flex">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-chart-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Mobile
+                                                </h5>
+                                                <p class="dash-tile-font-2">
+                                                    @Model.Phone
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+                    <hr class="mb-0 mt-0">
+                    <div class="card-body pb-0">
+                        <h4>
+                            Desired Title 1
+                        </h4>
+                        <p>
+                            @Model.DesiredTitle1
+                        </p>
+
+                    </div>
+                    <hr class="mb-0 mt-0">
+                    <div class="card-body pb-0">
+                        <h4>
+                            Desired Title 2
+                        </h4>
+                        <p>
+                            @Model.DesiredTitle1
+                        </p>
+
+                    </div>
+                    <hr class="mb-0 mt-0">
+                    <div class="card-body pb-2">
+                        <h4>
+                            Description
+                        </h4>
+                        <p>
+                            @Model.PorfileDescerption
+                        </p>
+                    </div>
+                    <hr class="mb-0 mt-0">
+                    <div class="card-body pb-2">
+                        <div class="lopping-tile mb-2">
+                            <h3>
+                                Education
+                            </h3>
+                            <ul>
+                                @if (Model.EducationCollection != null)
+                                {
+                                    foreach (var item in Model.EducationCollection)
+                                    {
+                                        <li>
+                                            <div>
+
+                                                <p class="head mr-3">
+                                                    @item.Education
+                                                </p>
+                                                <p>
+                                                    <i class="far fa-fw fa-clock clr-golden"></i> (@item.EducaStartYear @item.EducaEndYear)
+                                                </p>
+                                                <p>
+                                                    <i class="fas fa-fw fa-user-graduate clr-golden"></i> @item.univarsity <span class="text-underline">(@item.visibleName)</span>
+                                                </p>
+                                                <p>@item.description</p>
+                                            </div>
+                                        </li>
+
+                                    }
+                                    if (Model.EducationCollection.Count() == 0)
+                                    {
+                                        <li>
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="lopping-tile mb-2">
+                            <h3>
+                                Work Experience
+                            </h3>
+                            <ul>
+                                @if (Model.workexperiencecollection != null)
+                                {
+                                    foreach (var item in Model.workexperiencecollection)
+                                    {
+                                        <li>
+                                            <div>
+                                                <p class="head mr-3">
+                                                    @item.Company
+                                                </p>
+                                                <p>
+                                                    <i class="far fa-fw fa-clock clr-golden"></i> (@item.Todate @item.Fromdate)
+                                                </p>
+                                                <p>
+                                                    <i class="fas fa-fw fa-user-graduate clr-golden"></i> @item.Title  <span class="text-underline">(@item.visibleName)</span>
+                                                </p>
+                                                <p>@item.description</p>
+                                            </div>
+                                        </li>
+                                    }
+                                    if (Model.workexperiencecollection.Count() == 0)
+                                    {
+                                        <li>
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="lopping-tile mb-2">
+                            <h3>
+                                Professional Skills
+                            </h3>
+                            <ul>
+                                <li>
+                                    <ul class="tags-new no-a">
+                                        @if (Model.SkillCollection != null)
+                                        {
+                                            foreach (var item in Model.SkillCollection)
+                                            {
+                                                <li><span>@item.skill </span></li>
+                                            }
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="lopping-tile mb-2">
+                            <h3>
+                                Scouting Report
+                            </h3>
+                            <ul>
+                                <li>
+                                    <div class="scouting-report">
+                                        @if (Model.portfoliocecollection != null)
+                                        {
+                                            foreach (var item in Model.portfoliocecollection)
+                                            {
+
+                                                <div>
+                                                    <span class="img" style="background-image: url('@item.FileUpload');"></span>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="lopping-tile mb-2">
+                            <h3>
+                                References
+                            </h3>
+                            <ul>
+                                @if (Model.candidaterefrencecollection != null)
+                                {
+                                    foreach (var item in Model.candidaterefrencecollection)
+                                    {
+                                        <li>
+                                            <div>
+                                                <p class="head mr-3">
+                                                    @item.Name
+                                                </p>
+                                                <p><i class="fas fa-fw fa-phone rotate-90 clr-golden"></i> @item.Phone</p>
+                                                <p><i class="fas fa-fw fa-crown clr-golden"></i> @item.Title</p>
+                                                <p><i class="far fa-fw fa-envelope clr-golden"></i> @item.Email</p>
+                                            </div>
+                                        </li>
+                                    }
+                                    if (Model.candidaterefrencecollection.Count() == 0)
+                                    {
+                                        <li>
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/Areas/Admin/Admin/enquires.js"></script>

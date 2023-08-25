@@ -1,0 +1,110 @@
+﻿@model Web.Model.Admin.ProfileViewModel
+@{
+    ViewBag.Title = "profile";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=+@Model.locationKey+&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
+<link href="~/MvpTelent_js/Google Api/Autocomplete_GoogleApi.css" rel="stylesheet" />
+<script src="~/MvpTelent_js/Google Api/Autocomplete_GoogleApi.js"></script>
+<script>
+    let placeSearch;
+    let autocomplete;
+    const componentForm = {
+        postal_code: "short_name",
+    };
+</script>
+<script src="~/MvpTelent_js/autocomplete.js"></script>
+<link href="~/MvpTelent_js/autocomplete.css" rel="stylesheet" />
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>My Profile</h3>
+                <span>
+                    Overview of Latest Month
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card hr-t hr-r hr-b hr-l">
+                    <div class="card-body">
+                        <form id="profileform">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" maxlength="30" id="Name" name="Name" placeholder="Please enter first name" value="@Model.Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" maxlength="30" id="LastName" name="LastName" placeholder="Please enter last name" value="@Model.LastName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="Email" id="Email" value="@Model.Email" readonly="readonly" placeholder="Please enter email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input type="text" class="form-control" name="PhoneNo" id="PhoneNo" maxlength="15" value="@Model.PhoneNo" placeholder="Please enter phone number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <input type="text" class="form-control" name="companyName" id="companyName" maxlength="30" value="@Model.CompanyName" placeholder="Please enter company name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Website</label>
+                                        <input type="text" class="form-control" name="companywebsite" id="companywebsite" maxlength="30" value="@Model.companywebsite" placeholder="Please enter website">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <input id="autocomplete" autocomplete="off" value="@Model.location" class="form-control" placeholder="Enter location" name="autocomplete" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Choose File</label>
+                                        <input title="Upload image" type="file" id="adminfile" name="adminfile" class="form-control portfolio-choose" />
+                                    </div>
+                                    @if (Model.FileName != null)
+                                    {
+                                        <div class="file-name">
+                                            <div>
+                                                @Model.FileName
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" name="SaveBtn" id="SaveBtnID" class="btn btn-primary" onclick="updateprofile(@Model.UserId)" value="Submit">
+                    </div>
+                    <input type="hidden" name="hadminimage" id="hadminimage" value="@Model.FileName" />
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/Areas/Admin/Admin/profile.js"></script> 

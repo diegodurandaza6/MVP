@@ -1,0 +1,208 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "enquireydetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<section>
+    <div class="main_div">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1">
+                    <div class="imags">  <img src="@Model.clientLogo"></div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="betty_sec">
+                        <h3>@Model.ClientName</h3>
+                        <p>@Model.Email</p>
+                        <p>@Model.ClientPhone</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="member_sec">
+                        <h6> <i class="fa fa-clock-o cs3" aria-hidden="true"></i>Member Since,Aug 5, 2015</h6>
+                    </div>
+                </div>
+            </div>
+            <ul class="about_sec">
+                <li><a href="#">About</a></li>
+                <li><a href="#"> Education</a></li>
+                <li><a href="#"> Work Experience</a></li>
+                <li><a href="#"> Portfolio</a></li>
+                <li><a href="#"> Professional Skills</a></li>
+                <li><a href="#"> Video</a></li>
+                <li><a href="#"> Awards</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-12">
+                <div class="details_sec">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_1.png"></div>
+                                <div class="txt1">
+                                    <h6>Candidate Name</h6>
+                                    <p>@Model.CandidateName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_2.png"></div>
+                                <div class="txt1">
+                                    <h6>Phone</h6>
+                                    <p>@Model.CandidatePhone</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_3.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>Title</h6>
+                                    <p>@Model.candidateTitle</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_4.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>Address</h6>
+                                    <p>@Model.candidateaddress</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>FaceBook</h6>
+                                    <p>@Model.candidatefacebook</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>twitter</h6>
+                                    <p>@Model.candidatetwitter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>linkedin</h6>
+                                    <p>@Model.candidatelinkedin</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>twitter</h6>
+                                    <p>@Model.candidatetwitter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>exprience</h6>
+                                    <p>@Model.candidateexp</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>image</h6>
+                                    <p><img src="~/FileUpload/CandidateImage/@Model.CandidateId/@Model.candidateimage" /> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>resume</h6>
+                                    <p>@Model.candidateresume</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>Zipcode</h6>
+                                    <p>@Model.candidatezipcode</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>country</h6>
+                                    <p>@Model.CountryName/p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>state</h6>
+                                    <p>@Model.StateName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12">
+                            <div class="exp_sec">
+                                <div class="icon_sect"><img src="~/Scripts/assets/img/icon_5.png"><i class="icon-rocket4"></i></div>
+                                <div class="txt1">
+                                    <h6>city</h6>
+                                    <p>@Model.CityName</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text2">
+                        <p>@Model.Description</p>
+                    </div>
+                    <div class="text2" id="sendenquireypopupid">
+                        <h2>Chat Messages</h2>
+                        @if (Model.ClienConversationcollection != null)
+                        {
+                            foreach (var item in Model.ClienConversationcollection)
+                            {
+                                <div class="container">
+                                    <img src="@item.clientLogo" alt="Avatar" style="width:50px;height:50px;">
+                                    <p>@item.ClientName</p>
+                                    <p>@item.Description</p>
+                                    <span class="time-right">@item.CreatedDate</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div>
+                    <from id="sendmassegefrom" name="sendmassegefrom" action="" method="POST">
+                        <textarea id="massege" name="massege" rows="3" cols="32"></textarea>
+                    </from>
+                    <input type="button" class="btn btn-primary" onclick="sendconversationsaved(@Model.Id,@Model.ClientId)" value="Save">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Areas/Admin/Admin/enquires.js"></script>

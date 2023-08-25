@@ -1,0 +1,401 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<script type="text/javascript" src="@Model.locationKey"></script>
+<style>
+    .pac-container {
+        background-color: #FFF;
+        z-index: 20;
+        position: fixed;
+        display: inline-block;
+        float: left;
+    }
+
+    .modal {
+        z-index: 20;
+    }
+
+    .modal-backdrop {
+        z-index: 10;
+    }
+</style>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Update Candidate Profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <input type="hidden" id="hEmail" name="hEmail" value="@Model.Email" />
+        <div class="modal-body">
+
+            <form id="clientform" name="form-validation" method="POST">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> First Name</label>
+                            <input id="Name" maxlength="20" class="form-control" value="@Model.Name" placeholder="Please enter name" name="Name" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username">Last Name</label>
+                            <input id="LastName" maxlength="20" class="form-control" value="@Model.LastName" placeholder="Please enter last name" name="LastName" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> Phone Number</label>
+                            <input id="Phone" maxlength="14" placeholder="(XXX) XXX-XXXX" class="form-control" value="@Model.Phone" name="Phone" type="text">
+                        </div>
+                    </div>
+                    @*<div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="validation-username">Preferred E-Mail</label>
+                                <input id="PreferredEMail" maxlength="30" class="form-control" value="@Model.PreferredEMail" placeholder="Please enter preferred email" name="PreferredEMail" type="text">
+                            </div>
+                        </div>*@
+                    <div class="col-lg-6">
+                        <div class="form-group autocomplete-alignment">
+                            <label class="form-label" for="validation-username"> Title</label>
+                            <input id="Title" maxlength="70" class="form-control" style="text-transform: capitalize" value="@Model.Title" placeholder="Please enter title" name="Title" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> Desired Title 1</label>
+                            <input id="DesiredTitle1" maxlength="50" class="form-control" style="text-transform: capitalize"  value="@Model.DesiredTitle1" placeholder="Please enter desired title 1" name="DesiredTitle1" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> Desired Title 2</label>
+                            <input id="DesiredTitle2" maxlength="50" class="form-control" style="text-transform: capitalize"  value="@Model.DesiredTitle2" placeholder="Please enter  desired title 2" name="DesiredTitle2" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Experience In Current Position </label>
+                            @Html.DropDownListFor(m => m.experience, new SelectList(Model.experienceCollection, "Id", "Name"), " Select Experience", new { @class = "form-control", @Id = "experience", @Name = "experience" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Experience In Industry</label>
+                            @Html.DropDownListFor(m => m.Industry, new SelectList(Model.IndustryCollection, "Id", "Name"), "Please Select", new { @class = "form-control", @Id = "Industry", @Name = "Industry" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Current Salary ($)</label>
+                            @Html.DropDownListFor(m => m.CurrentSalaryId, new SelectList(Model.SalaryCollection, "Id", "Name"), "Please Select", new { @class = "form-control", @Id = "CurrentSalaryId", @Name = "CurrentSalaryId" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Expected  Salary ($)</label>
+                            @Html.DropDownListFor(m => m.expectedSalaryId, new SelectList(Model.SalaryCollection, "Id", "Name"), "Please Select", new { @class = "form-control", @Id = "expectedSalaryId", @Name = "expectedSalaryId" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Education Level </label>
+                            @Html.DropDownListFor(m => m.Educationlevels, new SelectList(Model.QualificationCollection, "Id", "Name"), "Please Select", new { @class = "form-control", @Id = "Educationlevels", @Name = "Educationlevels" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> Street Address </label>
+                            <input id="Address1" maxlength="60" autocomplete="off" class="form-control" value="@Model.Address1" placeholder="Please enter street address" name="Address1" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> City/State </label>
+                            <div class="autocomplete">
+                                <input id="autocomplete_search" style="width:100%;" autocomplete="off" value="@Model.location" class="form-control" placeholder="Please enter city/state" name="autocomplete_search" type="text">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> Zip Code </label>
+                            <input id="zipcode" maxlength="15" autocomplete="off" onkeypress="return isNumberKey(event)" class="form-control" value="@Model.Zipcode" placeholder="Please enter zip code" name="zipcode" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Job Type</label>
+                            @Html.DropDownListFor(m => m.JobTypeId, new SelectList(Model.JobTypeCollection, "Id", "Name"), "Select Job Type", new { @class = "form-control", @Id = "JobTypeId", @Name = "JobTypeId" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Relocation </label>
+                            <select Id="Relocation" name="Relocation" class="form-control">
+                                <option value="">Select Relocation</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group" style="margin-top: 35px;">
+                            <label class="form-label" for="validation-password">    </i></label>
+                            <input type="checkbox" id="Featured" @(Model.Featured == 1 ? "checked" : string.Empty) name="Featured" /> Featured Confidential Profile
+                        </div>
+                    </div>
+
+                    @if (Model.Relocation == "Yes")
+                    {
+                        <script>
+                            document.getElementById("Relocation").value = "Yes";
+                        </script>
+                    }
+                    else
+                    {
+                        <script>
+                            document.getElementById("Relocation").value = "No";
+                        </script>
+                    }
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-username"> About Me</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="3" maxlength="2000" cols="29">@Model.description</textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="candidatebttn" id="candidatebttn" class="btn btn-primary" onclick="UpdateCandidate(@Model.Id)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#Phone')
+
+        .keydown(function (e) {
+            var key = e.which || e.charCode || e.keyCode || 0;
+            $phone = $(this);
+
+            // Don't let them remove the starting '('
+            if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+                $phone.val('(');
+                return false;
+            }
+            // Reset if they highlight and type over first char.
+            else if ($phone.val().charAt(0) !== '(') {
+                $phone.val('(' + String.fromCharCode(e.keyCode) + '');
+            }
+
+            // Auto-format- do not expose the mask as the user begins to type
+            if (key !== 8 && key !== 9) {
+                if ($phone.val().length === 4) {
+                    $phone.val($phone.val() + ')');
+                }
+                if ($phone.val().length === 5) {
+                    $phone.val($phone.val() + ' ');
+                }
+                if ($phone.val().length === 9) {
+                    $phone.val($phone.val() + '-');
+                }
+            }
+
+            // Allow numeric (and tab, backspace, delete) keys only
+            return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+        })
+
+        .bind('focus click', function () {
+            $phone = $(this);
+
+            if ($phone.val().length === 0) {
+                $phone.val('(');
+            }
+            else {
+                var val = $phone.val();
+                $phone.val('').val(val); // Ensure cursor remains at the end
+            }
+        })
+
+        .blur(function () {
+            $phone = $(this);
+
+            if ($phone.val() === '(') {
+                $phone.val('');
+            }
+        });
+</script>
+
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        let autocomplete1 = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete1.setComponentRestrictions({ country: ["us"], });
+        google.maps.event.addListener(autocomplete1, 'place_changed', function () {
+            var place = autocomplete1.getPlace();
+            var newPlace = {
+                PlaceId: place.place_id,
+                FullAddress: place.formatted_address,
+                Latitude: place.geometry['location'].lat(),
+                Longitude: place.geometry['location'].lng(),
+            }
+            var lat = newPlace.Latitude;
+            var long = newPlace.Longitude;
+            var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAz8lf6UZeLBkP5w6o3sYFJvJ9ZZ06IJSY";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (msg) {
+                    var results = msg.results;
+                    for (var i = 0; i < results.length; i++) {
+                        for (var j = 0; j < results[i].address_components.length; j++) {
+                            var check = results[i].address_components[j].types;
+                            if (results[i].address_components[j].types == "postal_code") {
+                                var ZipCodeByAddress = results[i].address_components[j].long_name;
+                                $("#zipcode").val(ZipCodeByAddress);
+                            }
+                        }
+                    }
+                },
+                error: function (req, status, error) {
+                    alert('Sorry, an error occurred.');
+                    console.log(req.responseText);
+                }
+            });
+        });
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            enableGoogleAutocomplete();
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+
+
+<script>
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                var pos = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                if (pos > -1) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = arr[i].substr(0, pos);
+                    b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(pos + val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    var strArray = [];
+    $.ajax({
+        type: "Post",
+        url: "/Home/getCandidateTitleList",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.each(data.candidatetagvaluecollection, function () {
+                var tmpStr = "";
+                for (var i = 0; i < this.Name.length; i++) {
+                    if (this.Name.charAt(i) == ',') {
+                        strArray.push(tmpStr);
+                        tmpStr = "";
+                        continue;
+                    }
+                    tmpStr += this.Name.charAt(i);
+                }
+                strArray.push(tmpStr);
+            });
+            autocomplete(document.getElementById("Title"), strArray);
+        },
+        error: function () {
+            alert("There is an error uploading files!");
+        }
+    });
+</script>

@@ -1,0 +1,101 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "clientlist";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#">Company</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="table_search">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline">
+                    <input class="form-control" autocomplete="off" type="text" value="@Model.Name" id="Name" placeholder="Company Name" name="Name" />
+                    <button type="button" class="search_btn" onclick="getClientByStatus()">Search</button>
+                    <button type="button" class="reset_btn" onclick="ResetSearch()">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left">Company List </h4>
+                    <h3 class="text-right">
+                        <button onclick="Createclientpopup(0)" type="button" class="btn btn-link add" data-toggle="modal" data-target="#add">
+                            <span><i class="fa fa-plus" aria-hidden="true"></i></span>Add Company
+                        </button>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        S.No
+                                    </th>
+                                    <th>Name</th>
+                                    <th>WebSite</th>
+                                    <th>Host</th>
+                                    <th>Phone No1</th>
+                                    <th>Phone No2</th>
+                                    <th>Country Name</th>
+                                    <th>State Name</th>
+                                    <th>City Name</th>
+                                    <th>Zip Code</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.GetClientList != null)
+                                {
+                                    foreach (var item in Model.GetClientList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Website</td>
+                                            <td>@item.Host</td>
+                                            <td>@item.Phone1</td>
+                                            <td>@item.Phone2</td>
+                                            <td>@item.CountryName</td>
+                                            <td>@item.StateName</td>
+                                            <td>@item.CityName</td>
+                                            <td>@item.Zip</td>
+                                            <td>
+                                                <button onclick="clientdetail(@item.Id)" title="Details" type="button" class="btn btn-info action_btn"><i class="fa fa-info" aria-hidden="true"></i></button>
+                                                <button type="button" onclick="Createclientpopup(@item.Id)" title="Edit" class="btn btn-primary action_btn"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                                <button onclick="ClientDelete(@item.Id)" title="Delete" type="button" class="btn btn-danger action_btn"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="Clientcreate_PopUp" class="modal fade" role="dialog"></div>
+<script src="~/MvpTelent_js/adminJs/CLIENTS.js"></script>

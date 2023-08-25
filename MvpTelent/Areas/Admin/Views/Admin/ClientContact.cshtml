@@ -1,0 +1,130 @@
+﻿@model Web.Model.Client.ClientModel
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> Company Contact</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body"> 
+            <form id="ClientContactForm">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label">First Name</label>
+                            <input type="text" maxlength="25" onkeyup="checkvalue()" id="UserName" name="UserName" autocomplete="off" tabindex="1" value="@Model.Name" placeholder="Please enter name" class="form-control">
+                            <label id="lblName" class="error-emplty"></label>
+                        </div>
+                        
+                         
+                    </div>
+                     <div class="col-lg-6">
+                         
+                         <div  class="form-group">
+                           <label class="control-label">Last Name</label>
+                            <input type="text" maxlength="15" id="LastName" name="LastName" autocomplete="off" tabindex="2" value="@Model.LastName" placeholder="Please enter last name" class="form-control"  ">
+                        </div>
+                         
+                    </div>
+                </div>
+
+
+                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label"> Email</label>
+                            @if (Model.Id == 0)
+                            {
+                                <input type="text" maxlength="30" id="Email" onkeyup="checkcontactemail()" name="Email" autocomplete="off" tabindex="3" value="@Model.Email" placeholder="Please enter email" class="form-control" onfocusout="MakePhoneRequiredFalse()">
+                            }
+                            else
+                            {
+                                <input type="text" maxlength="30" id="Email" onkeyup="checkcontactemail()" readonly="readonly" name="Email" autocomplete="off" tabindex="3" value="@Model.Email" placeholder="Please enter email" class="form-control" onfocusout="MakePhoneRequiredFalse()">
+                            }
+
+                            <label id="lblemail" class="error-emplty"></label>
+                        </div>
+                         
+                         
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label">Phone Number</label>
+                            <input type="text" maxlength="15" id="phone" onkeyup="checkcontactphone()" name="Phone" autocomplete="off" tabindex="4" value="@Model.Phone1" placeholder="Please enter phone number" class="form-control" onfocusout="MakeEmailRequiredFalse()">
+                        </div>
+                         
+                    </div>
+                      <div style="text-align: center; margin-top: -14px;margin-left:13px"> <label id="lblemailphone" class="error-emplty"></label></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label">Position</label>
+                            <input type="text" maxlength="50" id="Position" name="Position" autocomplete="off" tabindex="5" value="@Model.Position" placeholder="Please enter position" class="form-control">
+                        </div>
+                         
+                         
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label">LinkedIn</label>
+                            <input type="text" maxlength="100" id="Linkdin" name="Linkdin" autocomplete="off" tabindex="6" value="@Model.Linkdin" placeholder="Please enter linkedIn profile url" class="form-control">
+                        </div>
+                         
+                    </div>
+                </div>
+                @if(@Model.Id == 0)
+                {
+                  <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <div class="checkbox-1">
+                                <input type="checkbox" id="LoginAccess" @(Model.LoginAccess == 1 ? "checked" : string.Empty) name="LoginAccess" tabindex="7">
+                                <span>Send Registration  Email</span>
+                            </div>
+                        </div>
+                         
+                         
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          
+                        </div>
+                         
+                    </div>
+                </div>
+                } 
+
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="login" id="login" class="btn btn-primary" style="border:none;" onclick="AddClientContact(@Model.Id,@Model.CompanyId,@Model.UseraccountprofileId)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function checkvalue() {
+        if ($("#UserName").val() == "") {
+            $('#lblName').text('This field is required.');
+    $('#lblName')
+
+        }
+        else {
+            if ($("#UserName").val().trim() == "") {
+                $('#lblName').text('This field is required.');
+    $('#lblName')
+            }
+            else {
+                $('#lblName').text('');
+            }
+        }
+    }
+
+</script>

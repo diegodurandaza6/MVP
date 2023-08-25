@@ -1,0 +1,850 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<link href="~/MvpTelent_js/autocomplete.css" rel="stylesheet" />
+<script src="~/MvpTelent_js/autocomplete.js"></script>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script>
+
+<div id="candidateprofile_popup" class="modal fade" role="dialog"></div>
+<div id="candidateprofilepopup" class="modal fade" role="dialog"></div>
+<div id="Candidatecupdateprofile_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateeducation_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateworkexperience_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateawrds_PopUp" class="modal fade" role="dialog"></div>
+<div id="AddUpdateSkillsPopup" class="modal fade" role="dialog"></div>
+<div id="AddUpdateportfolioPopup" class="modal fade" role="dialog"></div>
+<div id="CandidateVedio" class="modal fade" role="dialog"></div>
+@*<div id="Candidaterefences" class="modal fade" role="dialog"></div>*@
+
+
+<div id="LicensesCertificationspopup" class="modal fade" role="dialog"></div>
+<div id="Candidatedeultimagepopup" class="modal fade" role="dialog"></div>
+<style>
+    .custom-tab-table > .nav > li:last-child {
+        width: 25%;
+    }
+
+    .custom-tab-table > .nav > li {
+        width: 17%;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+ 
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>My Detailed Profile</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="candidateprofile_popup(@Model.Id)">
+                    Edit Profile
+                </a>
+                <a class="btn-new-1" onclick="Candidatedefaultimage(@Model.Id)">
+                    Change Profile Pic
+                </a>
+            </div>
+        </div>
+
+        <div class="row res-msg mb-3">
+            <div class="col-md-4 col-xl-3">
+
+                <div class="conversation-tile-candidate">
+                    <div class="card-header header-golden-bg position-relative">
+                        <img src="@Model.FileName" class="conversation-img">
+                        <h5 class="card-title mb-0 p-l-35">
+                            Basic Information
+                        </h5>
+                    </div>
+                    <div class="card-body bg-white">
+                        <table class="table table-striped my-0 hr-l hr-r hr-b">
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <b>Name</b>: @Model.Name  @Model.LastName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Job Title</b>:
+                                        @if (Model.Title != null)
+                                        {
+                                            <span>@Model.Title</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Email</b>: @Model.Email
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Phone No.</b>:
+                                        @if (Model.Phone != null)
+                                        {
+                                            <span>@Model.Phone</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Street Address</b>:
+                                        @if (Model.Address1 != null)
+                                        {
+                                            <span>@Model.Address1</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>City/State</b>:
+                                        @if (Model.location != null)
+                                        {
+                                            <span>@Model.location</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Zip Code</b>:
+                                        @if (Model.Zipcode != null)
+                                        {
+                                            <span>@Model.Zipcode</span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg" ">
+                        <h5 class="card-title mb-0">My Resume</h5>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <label>
+                            Upload Resume
+                        </label><br />
+                        <input class="portfolio-choose form-control" id="Uploadfiles" type="file" onchange="ResumeUpload(@Model.UserId)" />
+                        <br />
+                        @if (Model.resumeName != "")
+                        {
+                            <a class="active-clr-2 mr-2" href="@Model.Resumefile" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Download Resume">
+                                <i class="fa fa-download acs" aria-hidden="true"></i> Download Resume
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="active-clr-2 mr-2" onclick="resumealertmassege()" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Download Resume">
+                                <i class="fa fa-download acs" aria-hidden="true"></i>  Download Resume
+                            </a>
+                        } <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xl-9">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Key Information</h5>
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body p-b-0">
+                        <div class="row dash-tile dash-tile-client-detail dash-tile-2-in-row">
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-user-graduate"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">Experience In Current Position</h5>
+                                                @if (Model.experienceName != null && Model.experienceName != "")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.experienceName</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-building"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Experience In Industry
+                                                </h5>
+                                                @if (Model.IndustryName != null && Model.IndustryName !="")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.IndustryName</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-dollar-sign"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Current Salary
+                                                </h5>
+                                                @if (Model.CurrentSalary != null && Model.CurrentSalary != "")
+                                                {
+                                                    <p class="dash-tile-font-2"> @Model.CurrentSalary</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-money-bill-wave"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Expected Salary
+                                                </h5>
+                                                @if (Model.expectedSalary != null && Model.expectedSalary != "")
+                                                {
+                                                    <p class="dash-tile-font-2"> @Model.expectedSalary</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-graduation-cap"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Education Level
+                                                </h5>
+                                                @if (Model.educationlevel != null && Model.educationlevel != "")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.educationlevel</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="far fa-fw fa-file-archive"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Job Type
+                                                </h5>
+                                                @if (Model.jobtypeName != null && Model.jobtypeName != "")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.jobtypeName</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-address-card"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Featured Confidential Profile
+                                                </h5>
+
+                                                @if (Model.Featured == 1)
+                                                {
+                                                    <p class="dash-tile-font-2">Yes </p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">No </p>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-map-pin"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Relocation
+                                                </h5>
+                                                @if (Model.Relocation != null)
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.Relocation</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body p-b-0">
+                        <div class="row dash-tile dash-tile-client-detail dash-tile-2-in-row">
+
+                            <div class="desired-title-w">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-crown"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Desired Title 1
+                                                </h5>
+                                                @if (Model.DesiredTitle1 != null && Model.DesiredTitle1 != "")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.DesiredTitle1</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="desired-title-w">
+                                <div class="card flex-fill custom-tile-jobdetail">
+                                    <div class="card-body py-4">
+                                        <div class="media">
+                                            <div class="d-inline-block">
+                                                <div class="stat">
+                                                    <i class="fas fa-fw fa-crown"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="mb-2 dash-tile-font">
+                                                    Desired Title 2
+                                                </h5>
+                                                @if (Model.DesiredTitle2 != null && Model.DesiredTitle2 != "")
+                                                {
+                                                    <p class="dash-tile-font-2">@Model.DesiredTitle2</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dash-tile-font-2">N/A</p>
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg" ">
+                        <h5 class="card-title mb-0">About Me</h5>
+                    </div>
+
+                    <hr class="m-0">
+                    <div class="card-body p-b-0">
+
+                        <div class="row">
+                            <div class="card-body p-t-0">
+                                @if (Model.PorfileDescerption != null)
+                                {
+                                    <p>
+                                        @Model.PorfileDescerption
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="no-data-found">
+                                        No Data Found...
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class=" ">
+            <ul class="nav detail-tabs" role="tablist">
+                <li class="">
+                    <a id="tab_1" onclick="ActiveTab(1)" class="" data-toggle="tab" href="#one" role="tab" aria-controls="nav-home" aria-selected="true">Education</a>
+                </li>
+                <li>
+                    <a id="tab_2" onclick="ActiveTab(2)" class="" data-toggle="tab" href="#two" role="tab" aria-controls="nav-profile" aria-selected="false">Experience</a>
+                </li>
+                <li>
+                    <a id="tab_3" onclick="ActiveTab(3)" class="" data-toggle="tab" href="#three" role="tab" aria-controls="nav-contact" aria-selected="false">Skills</a>
+                </li>
+                <li>
+                    <a id="tab_4" onclick="ActiveTab(4)" class="" data-toggle="tab" href="#four" role="tab" aria-controls="nav-contact" aria-selected="false">Scouting Report</a>
+                </li>
+                <li>
+                    <a id="tab_5" onclick="ActiveTab(5)" class="" data-toggle="tab" href="#five" role="tab" aria-controls="nav-contact" aria-selected="false">Licenses & Certifications</a>
+                </li>
+            </ul>
+            <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                <div class="card-body detail-pills">
+                    <div class="fade " id="one" role="tabpanel">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>
+                                    Education
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="new-btn" onclick="CandidateEducationpopup(0,@Model.UserId)" data-toggle="tooltip" data-placement="top" data-original-title="Add">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="lopping-tile">
+                            <ul>
+
+                                @if (Model.EducationCollection != null)
+                                {
+                                    foreach (var item in Model.EducationCollection)
+                                    {
+                                        <li>
+                                            <div>
+                                                <p class="head mr-3">
+                                                    @item.Education
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="pull-right" onclick="CandidateEducationpopup(@item.educationId,@Model.UserId)">
+                                                        <i class="align-middle" data-feather="edit"></i>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" class="pull-right mr-2" onclick="CandidateEducationDelete(@item.educationId)">
+                                                        <i class="align-middle" data-feather="trash"></i>
+                                                    </a>
+                                                </p>
+                                                <p>
+                                                    <i class="fas fa-fw fa-clock clr-golden"></i>
+                                                    @(item.EducaStartYear == "" ? "N/A" : item.EducaStartYear)    - @(item.EducaEndYear == "" ? "N/A" : item.EducaEndYear)
+
+
+
+                                                </p>
+                                                <p>
+                                                    <i class="fas fa-fw fa-user-graduate clr-golden"></i> @item.univarsity  <span class="text-underline">(@item.visibleName)</span>
+                                                </p>
+                                                <p>
+                                                    @item.description
+                                                </p>
+                                            </div>
+                                        </li>
+
+                                    }
+
+                                }
+                                @if (Model.EducationCollection == null)
+                                {
+                                    <span class="no-data-found">No Data found...</span>
+                                }
+                                @*else
+                                    {
+                                        <span class="no-data-found">No Data found...</span>
+                                    }*@
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="fade" id="two" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>
+                                    Work Experience
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="new-btn" onclick="Candidateworkexperiencepopup(0,@Model.UserId)" data-toggle="tooltip" data-placement="top" data-original-title="Add">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+                        <div class="lopping-tile">
+                            <ul>
+
+
+                                @if (Model.workexperiencecollection != null)
+                                {
+                                    foreach (var item in Model.workexperiencecollection)
+                                    {
+
+
+                                        <li>
+                                            <div>
+                                                <p class="head mr-3">
+                                                    @item.Company
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="pull-right" onclick="Candidateworkexperiencepopup(@item.workId,@Model.UserId)">
+                                                        <i class="align-middle" data-feather="edit"></i>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" class="pull-right mr-2" onclick="CandidateworkexperienceDelete(@item.workId)">
+                                                        <i class="align-middle" data-feather="trash"></i>
+                                                    </a>
+                                                </p>
+                                                <p>
+                                                    <i class="far fa-fw fa-clock clr-golden"></i>   @(item.Todate == "" ? "N/A" : item.Todate)    - @(item.Fromdate == "" ? "N/A" : item.Fromdate)
+                                                    
+                                                </p>
+
+                                                <p>
+                                                    Visibility : (@item.visibleName)
+                                                </p>
+
+
+                                                <p>
+                                                    <i class="fas fa-fw fa-user-graduate clr-golden"></i> @item.Title
+                                                </p>
+                                                <p>   @Html.Raw(item.description)</p>
+                                            </div>
+                                        </li>
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    <span class="no-data-found">No Data found...</span>
+                                }
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="fade" id="three" role="tabpanel">
+
+                        <div class="skills">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div id="skills-form">
+                                        <label>
+                                            Professional Skills
+                                        </label>
+                                        <div id="skillform">
+                                            <table class="w-100">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="position-relative">
+                                                            <input type="text" autocomplete="off" onkeyup="checkskill()" id="skill" name="skill" class="form-control" placeholder="Please enter skill" maxlength="30" />
+                                                        </td>
+                                                        <td style="width: 37px;">
+                                                            <button class="btn btn-primary border-0 p-t-8 p-b-8 round-3px" onclick="SkillAddUpdate(0,@Model.UserId)">Save</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <label class="error" id="errormessage" name="errormessage">
+
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="tags-new mb-2 mt-3">
+                                @if (Model.SkillCollection != null)
+                                {
+                                    foreach (var item in Model.SkillCollection)
+                                    {
+                                        <li>
+                                            <span>
+                                                @item.skill
+                                            </span>
+                                            <span>
+                                                <a onclick="deleteskill(@item.Id)" data-toggle="tooltip" data-placement="top" data-original-title="Remove">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </li>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="no-data-found">No Data found...</span>
+                                }
+
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="fade" id="four" role="tabpanel">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h4>
+                                    Scouting Report
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-right" onclick="Candidateportfoliopopup(0,@Model.UserId)">
+                                <a class="new-btn" data-toggle="tooltip" data-placement="top" data-original-title="Add">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <div class="lopping-tile">
+                                <ul>
+                                    @if (Model.portfoliocecollection != null)
+                                    {
+                                        foreach (var item in Model.portfoliocecollection)
+                                        {
+                                            <li>
+                                                <div>
+                                                    <div class="scouting-icon">
+                                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" class="pull-right" onclick="Candidateportfoliopopup(@item.PortfolioId,@Model.UserId)">
+                                                            <i class="far fa-fw fa-trash-alt"></i>
+                                                        </a>
+                                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="pull-right mr-2" onclick="CandidateportfolioDelete(@item.PortfolioId)">
+                                                            <i class="far fa-fw fa-edit"></i>
+                                                        </a>
+                                                    </div>
+                                                    <p class="scouting-heading">
+                                                        @Html.Raw(item.description)
+
+                                                    </p>
+                                                    <p>
+                                                        <i class="fas fa-fw fa-user-graduate clr-golden"></i>  <span class="text-underline">(@item.visibleName)</span>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @if (Model.portfoliocecollection == null)
+                                    {
+                                        <span class="no-data-found">No Data found...</span>
+                                    }
+                                </ul>
+                            </div>
+                        </div> 
+
+                    </div>
+                    <div class="fade" id="five" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>
+                                    Licenses & Certifications
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="new-btn" onclick="LicensesCertificationspopup(0,@Model.UserId)" data-toggle="tooltip" data-placement="top" data-original-title="Add">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+                        <div class="lopping-tile">
+                            <ul>
+                                @if (Model.LicensesCertifications != null)
+                                {
+                                    foreach (var item in Model.LicensesCertifications)
+                                    {
+                                        <li>
+                                            <div>
+                                                <p class="head mr-3">
+                                                    @item.Education
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="pull-right" onclick="LicensesCertificationspopup(@item.Id,@Model.UserId)">
+                                                        <i class="align-middle" data-feather="edit"></i>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" class="pull-right mr-2" onclick="LicensesCertificationsDelete(@item.Id)">
+                                                        <i class="align-middle" data-feather="trash"></i>
+                                                    </a>
+                                                </p>
+                                                <p>
+                                                    <i class="far fa-fw fa-clock clr-golden"></i>
+
+                                                    @(item.year == "" ? "N/A" : item.year)    - @(item.EndYear == "" ? "N/A" : item.EndYear)
+
+                                                </p>
+                                                <p>
+                                                    <i class="fas fa-fw fa-user-graduate clr-golden"></i> @item.univarsity   <span class="text-underline">(@item.visibleName)</span>
+                                                </p>
+                                                <p>@item.description</p>
+                                            </div>
+                                        </li>
+
+                                    }
+                                }
+                                @if (Model.LicensesCertifications != null)
+                                {
+                                    <span class="no-data-found">No Data found...</span>
+                                }
+                                @*else
+                                    {
+                                        <span class="no-data-found">No Data found...</span>
+                                    }*@
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@*<div>
+        <i onclick="howitwork()"></i>
+    </div>*@
+<div id="HowItworkpopup" class="modal fade" role="dialog"></div>
+
+<script>
+    $('document').ready(function () {
+
+        CandidateSkillAutoComplete(document.getElementById("skill"), '/Home/skillautocomplete', null);
+    });
+</script>
+<script>
+    var element = document.getElementById("myprofile");
+    element.classList.add("active");
+</script>
+
+<script>
+     if (@Model.TabId == 1) {
+         $("#one").addClass(" active  show");
+    }
+     else if (@Model.TabId == 2) {
+         $("#two").addClass(" active  show");
+    }
+    else if (@Model.TabId == 3) {
+         $("#three").addClass(" active  show");
+    }
+    else if (@Model.TabId == 4) {
+         $("#four").addClass(" active  show");
+    }
+    else if (@Model.TabId == 5) {
+         $("#five").addClass(" active  show");
+    }
+    $("#tab_" +@Model.TabId).addClass(" active  show");
+
+
+    function ActiveTab(TabId) {
+        url = "/Candidates/myProfile?TabId=" + TabId;
+        window.location.href = url;
+    }
+</script>

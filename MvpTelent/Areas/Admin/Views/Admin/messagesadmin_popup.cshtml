@@ -1,0 +1,42 @@
+﻿@model Web.Model.Client.ClientModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="#">General Message </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-0">
+            <form id="GeneralMessage">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label"> Client Name</label>
+                                <input class="form-control" style="width:100%;" autocomplete="off" type="text" id="Clientname" placeholder="PLease enter client name" value="@Model.Name" name="Clientname" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label"> Title</label>
+                                <input id="title" maxlength="80" autocomplete="off" class="form-control" placeholder="Please enter title" name="title" type="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label"> Messages</label>
+                                <textarea id="Description" autocomplete="off" maxlength="2000" class="form-control" placeholder="Please enter message" name="Description" type="text" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="InterviewBtn" id="InterviewBtn" class="btn btn-primary" onclick="sendAdmingeneralmessages()" value="Send">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="h_AutoComplete_ClientId" />

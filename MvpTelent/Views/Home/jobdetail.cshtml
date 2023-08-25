@@ -1,0 +1,450 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "MVP Talent Market ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section metatags {
+    <meta property="og:site_name" content="mvp talent market.com" />
+    <meta property="og:title" content="Job Opening: @Model.jobtitle" />
+    <meta property="og:image:type" content="image/JPEG" />
+    <meta property="og:description" content="Job Posted By - @Model.ClientName" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="Job Posted By - @Model.ClientName" />
+    <meta name="twitter:title" content="Job Opening: @Model.jobtitle" />
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<link href="~/Scripts/Social media/jssocials.css" rel="stylesheet" />
+<link href="~/Scripts/Social media/jssocials-theme-flat.css" rel="stylesheet" />
+<script src="~/Scripts/Social media/jssocials.min.js"></script>
+<section class="banner-inner" style="background-image: url('../../New_Content/images/howitworks-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Job Details</h1>
+                <p>
+                    Check out our open position and find your dream job today.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="p-40-0">
+    <div class="container">
+        <div class="row position-relative z-1">
+            <div class="col-lg-9 col-md-12 mb-4 col-sm-12">
+                <div class="jobdetail-main-box">
+                    <div class="jobdetail-main-box-part right">
+                        <h3>
+                            @Model.jobtitle
+                        </h3>
+                    </div>
+                </div>
+                <div class="jobdetail-main-box">
+                    <div class="jobdetail-main-box-part left">
+                        <img src="@Model.FileName" />
+                    </div>
+                    <div class="jobdetail-main-box-part right">
+                        <ul>
+                            <li>
+                                @if (Model.location.Length > 0)
+                                {
+                                    <i class="fas fa-tag "></i><span>Job Location: </span> <span>@Model.location</span>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-tag "></i><span>Job Location: </span> <span>N/A</span>
+                                }
+                                 
+                            </li>
+                            <li>
+                                <i class="fas fa-map-marker-alt "></i>Zip Code :  @Model.zipcode
+                                @if (Model.mile > 0)
+                                {
+                                    <span>(@Model.mile  Miles away from   @Model.zip)</span> 
+                                }
+
+                            </li>
+                            <li>
+                                <i class="fas fa-briefcase "></i><span>Job Type : </span>@Model.JobTypeName
+                            </li>
+                            <li>
+                                <i class="fas fa-dollar-sign mr-1"></i><span>Salary : </span>$ @Model.MinSalary - $ @Model.MaxSalary
+                            </li>
+                            <li>
+                                <i class="far fa-clock "></i><span>Posted Date : </span> @Model.Dayscount
+                            </li>
+                            <li>
+                                @if (Model.JobCategoryName.Length > 0)
+                                {
+                                    <i class="fas fa-tag "></i><span>Category : </span>@Model.JobCategoryName
+                                }
+                                else
+                                {
+                                    <i class="fas fa-tag "></i><span>Category : </span><span>N/A</span>
+                                }
+
+                            </li>
+                            <li>
+                                @if (Model.PositionLevelName.Length > 0)
+                                {
+                                    <i class="fas fa-tag "></i><span>Position Level: </span> @Model.PositionLevelName
+                                }
+                                else
+                                {
+                                    <i class="fas fa-tag "></i><span>Position Level: </span> <span>N/A</span>
+                                }
+
+                            </li>
+                            <li>
+                                @if (Model.SubCategoryName.Length > 0)
+                                {
+                                    <i class="fas fa-tag "></i><span>Sub Category : </span>@Model.SubCategoryName
+                                }
+                                else
+                                {
+                                    <i class="fas fa-tag "></i><span>Sub Category : </span><span>N/A</span>
+                                }
+
+                            </li>
+                            <li>
+                                @if (Model.qualificationName.Length > 0)
+                                {
+                                    <i class="far fa-list-alt "></i><span>Education level : </span> @Model.qualificationName
+                                }
+                                else
+                                {
+                                    <i class="far fa-list-alt "></i><span>Education level : </span><span>N/A</span>
+                                }
+                            </li>
+                            <li>
+                                @if (Model.ClientName.Length > 0)
+                                {
+                                    <i class="far fa-list-alt "></i><span>Company Name : </span> @Model.ClientName
+                                }
+                                else
+                                {
+                                    <i class="far fa-list-alt "></i><span>Company Name : </span><span>N/A</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 mb-4 col-sm-12">
+                <h5 class="new-h3">
+                    Share This Job
+                </h5>
+                <div class="float-left social_media">
+                    <div id="sharePopupJobdetail" class="float-left">
+                    </div>
+                    <div class="float-left">
+                        <div class="jssocials-share jssocials-share-whatsapp" style="margin-left: 7px;">
+                            <a target="_blank" href="https://wa.me/?text=Hello, Please find job description below and Share if you are interested. @Model.PageUrl.Replace("+","_").Replace(":443","") " class="jssocials-share-link">
+                                <i class="fa fa-whatsapp jssocials-share-logo"></i>
+                            </a>
+                            <div class="jssocials-share-count-box jssocials-share-no-count">
+                                <span class="jssocials-share-count"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-9 col-md-12 mb-4 col-sm-12">
+
+
+                <div class="card mb-4 no-shadow w-100">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0 ">Brief Summary</h5>
+                    </div>
+                    @if (Model.sortdescription.Length > 0)
+                    {
+                        <div class="card-body">
+                            <p>@Model.sortdescription</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <span class="no-data-found">
+                                No Data found...
+                            </span>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="card mb-4 no-shadow w-100">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0 ">Job Description</h5>
+                    </div>
+                    @if (Model.JobDescription.Length > 0)
+                    {
+                        <div class="card-body">
+                            <p>@Html.Raw(Model.JobDescription)</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <span class="no-data-found">
+                                No Data found...
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="card mb-4 no-shadow w-100">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Skills</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                @if (Model.SkillCollection != null)
+                                {
+                                    foreach (var item in Model.SkillCollection)
+                                    {
+                                        <span href="javascript:void(0)" class="badge badge-golgen-noicon home-slills"> @item.Name </span>
+                                    }
+                                }
+                                @if (Model.SkillCollection.Count() == 0)
+                                {
+                                    <span class="no-data-found">
+                                        No Data found...
+                                    </span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mb-4 no-shadow w-100">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Tags</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                @if (Model.tagcollection != null)
+                                {
+                                    foreach (var item in Model.tagcollection)
+                                    {
+                                        <span href="javascript:void(0)" class="badge badge-golgen-noicon home-slills"> @item.Name </span>
+                                    }
+                                }
+                                @if (Model.tagcollection.Count() == 0)
+                                {
+
+                                    <span class="no-data-found">
+                                        No Data found...
+                                    </span>
+
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 mb-4 col-sm-12">
+                <div class="dropdown dropdown-nav-1">
+                    <button class="btn button-secondry dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Apply Now
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @if (Session["UsertypeId"] != null)
+                        {
+                            if (Session["UsertypeId"].ToString() == "3")
+                            {
+                                 
+
+                                if (Model.applyedStatus == 0)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" style="cursor:pointer" onclick="JobApply(@Model.Id,@Model.UserId)">Apply</a>
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" style="cursor:pointer">Applied</a>
+                                    </li>
+
+                                }
+
+                                if (Model.requestmoreinfo == 0)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" style="cursor:pointer" onclick="requestmoreinfo(@Model.Id,@Model.UserId)">Request More Info</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" style="cursor:pointer" onclick="requestmoreinfo(@Model.Id,@Model.UserId)">Request More Info</a>
+                                    </li>
+                                } 
+                                if (Model.SavedStatus == 0)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" style="cursor:pointer" onclick="savedJob(@Model.Id,@Model.UserId)">Save Job</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item">Saved</a>
+                                    </li>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="dropdown-item" onclick="JobApply(@Model.Id,@Model.UserId)">Apply</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" onclick="requestmoreinfo(@Model.Id,@Model.UserId)">Request More Info</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" onclick="savedJob(@Model.Id,@Model.UserId)">Save Job</a>
+                            </li>
+                        }
+                        @if (Model.UserId == 0)
+                        {
+                            <li>
+                                <a class="dropdown-item" href="/Home/signUp">Create a Profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" onclick="gestcndidatelogin(@Model.Id)">Apply as Guest</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+                <br />
+                <h6 class="mb-3">
+                    Location
+                </h6>
+                <div id="dvMap" class="z-depth-1-half map-container" style="height: 300px">
+                    @*<iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>*@
+                </div>
+                @if (Model.SimilarJobscollection != null)
+                {
+                    <div class="card-header header-golden-bg mt-3 mb-3">
+                        <h5 class="card-title mb-0">Similar Jobs</h5>
+                    </div>
+                }
+                @if (Model.SimilarJobscollection != null)
+                {
+                    foreach (var item in Model.SimilarJobscollection)
+                    {
+                        <div class="similar-jobs-main">
+                            <div class="star-sec">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="similar-jobs-main-img">
+                                <img src="@item.FilePath" />
+                            </div>
+                            <div class="similar-jobs-main-box">
+                                <h6 style="cursor:pointer;" onclick="RedirectToJob('@EncryptDecrypt.encrypt(Convert.ToString(item.Id))')">@item.jobtitle <i class="fas fa-check-circle"></i></h6>
+                                <p>
+                                    @item.Designation
+                                </p>
+                                <ul>
+                                    <li class="w-100"><i class="fas fa-map-marker-alt clr-golden"></i> @item.location</li>
+                                    <li class="w-100"><i class="fas fa-briefcase clr-golden"></i> @item.Jobtype</li>
+                                    <li class="w-100"><i class="fas fa-wallet clr-golden"></i> $ @item.MinSalary -$ @item.MaxSalary</li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    if (Model.SimilarJobscollection.Count() == 0)
+                    {
+
+                        <span class="no-data-found">No Data found...</span>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<input type="hidden"   name="hzipcode" id="hzipcode" value="@Model.zipcode" />
+
+
+<script>
+        $("#sharePopupJobdetail").jsSocials({
+            url: "@Model.PageUrl",
+            text: "",
+            showCount: true,
+            showLabel: false,
+            shareIn: "popup",
+            shares: [
+                "twitter",
+                "facebook",
+                "linkedin"
+            ]
+        });
+</script>
+<script>
+    function RedirectToJob(Id) {
+        url = "/Home/jobdetail?Ids=" + Id;
+        window.location.href = url;
+
+    }
+
+
+</script>
+<div id="ApplyJos_PopUp" class="modal fade" role="dialog"></div>
+<div id="Gestcandidate_PopUp" class="modal fade" role="dialog"></div>
+<div class="modal fade" id="SendEmailbyjobDetail"></div>
+<script src="~/MvpTelent_js/ApplyJob.js"></script>
+<script src="~/New_Content/js/popper.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAz8lf6UZeLBkP5w6o3sYFJvJ9ZZ06IJSY"></script>
+<script type="text/javascript">
+
+
+    setTimeout(function () { DrawMap(); }, 4500);
+    function DrawMap() {
+        var geocoder = new google.maps.Geocoder();
+        var address = $("#hzipcode").val();
+        debugger
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0].types[0] == 'postal_code') {
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+                    var data = {};
+                    data.title = results[0].formatted_address;
+                    data.lat = latitude;
+                    data.lng = longitude;
+                    var mapOptions = { center: new google.maps.LatLng(latitude, longitude), zoom: 18, mapTypeId: google.maps.MapTypeId.ROADMAP };
+                    var infoWindow = new google.maps.InfoWindow();
+                    var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+                    var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+                    var marker = new google.maps.Marker({ position: myLatlng, map: map, title: data.title });
+                    (function (marker, data) {
+                        google.maps.event.addListener(marker, "click", function (e) {
+                            infoWindow.setContent("<div style = 'width:200px;height:50px'>" + data.title + "</div>");
+                            infoWindow.open(map, marker);
+                        });
+                    })(marker, data);
+                    document.getElementById("dvMap").style.display = "block";
+                } else {
+                    document.getElementById("dvMap").style.display = "none";
+                    /*  alert("Your post code is not correct.\nPlease update your correct postcode.");*/
+                }
+            } else {
+                document.getElementById("dvMap").style.display = "none";
+                /* alert("Your post code is not correct.\nPlease update your correct postcode.");*/
+            }
+        });
+    };
+</script>
+ 

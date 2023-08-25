@@ -1,0 +1,244 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "Sent Item Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style type="text/css">
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: fixed;
+        background-color: rgba(0,0,0,0.65);
+        z-index: 999;
+        /*opacity:0.5*/
+    }
+
+    div#loader_gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Conversation with Admin
+                </h3>
+            </div>
+        </div>
+
+
+
+        <div class="row res-msg">
+            <div class="col-md-4 col-xl-3">
+                <div class="conversation-tile-candidate">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">
+
+                            Admin Details
+                        </h5>
+                    </div>
+                    <div class="card-body bg-white">
+                        <table class="table table-striped my-0 hr-l hr-r hr-b">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Role </b>:  @Model.Role
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Name</b>: @Model.Name @Model.LastName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Email</b>: @Model.Email
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Phone No</b>: @Model.ClientPhone
+                                    </td>
+                                </tr>
+
+                                @*<tr>
+                                    <td>
+                                        <b>Address</b>: @Model.Address
+                                    </td>
+                                </tr>*@
+                                <tr>
+                                    <td>
+                                        <b>Location </b>:  @Model.Location
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 col-xl-9">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="col-12 col-lg-12 col-xl-12 p-0">
+                        <div class="card-header header-golden-bg">
+                            <h5 class="card-title mb-0">
+                                Messages Form Admin
+                            </h5>
+                        </div>
+                        <div class="flex-grow-0 py-3 px-3 border-top bg-light-2  hr-b">
+                            <form class="input-group-2" id="msgchatform">
+                                <textarea type="text" id="massege" onkeypress="return msgsent(event)" autocomplete="off" name="massege" class="form-control" placeholder="Type a message..." rows="5"></textarea>
+                            </form>
+                            <div class="col-md-12 p-0 text-right mt-3">
+                                <button class="btn-new-1" type="button" onclick="savesendgeneralmessage(@Model.Id,@Model.UserId)">Send Message</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-xl-12">
+                                    <div class="card mb-3 hr-t no-shadow">
+
+                                        <div class="col-12 col-lg-12 col-xl-12 p-0">
+
+                                            <div class="messagesdetails-para bg-golden">
+                                                <p class="clr-000">
+                                                    <b class="clr-000">Subject</b> :
+                                                    @Model.Title
+                                                </p>
+                                            </div>
+                                            <div class="position-relative">
+                                                <div class="chat-messages card-body pb-0 pl-0 pr-0">
+                                                    @if (Model.ClienConversationcollection != null)
+                                                    {
+                                                        foreach (var item in Model.ClienConversationcollection)
+                                                        {
+                                                            if (item.CreateBy == Model.UserId)
+                                                            {
+                                                                <div class="chat-message-left pb-4">
+                                                                    <div class="flex-shrink-1 msg">
+                                                                        <div class="font-weight-bold mb-1">
+                                                                            <span>
+                                                                                <span class="font-weight-500 fs-14">
+                                                                                    @item.Name
+                                                                                </span>
+                                                                                <span class="date-msz"> (@item.CreatedDate)</span>
+                                                                            </span>
+                                                                        </div>
+                                                                        @Html.Raw(item.Description)
+                                                                    </div>
+                                                                    <div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="chat-message-left pb-4">
+                                                                    <div class="flex-shrink-1 msg">
+                                                                        <div class="font-weight-bold mb-1">
+                                                                            <span>
+                                                                                <span class="font-weight-500 fs-14">
+                                                                                    @item.Name
+                                                                                </span>
+                                                                                <span class="date-msz">(@item.CreatedDate)</span>
+                                                                            </span>
+                                                                        </div>
+                                                                        @Html.Raw(item.Description)
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</main>
+
+<input type="hidden" name="Id" id="Id" value="@Model.Ids" />
+<div class="loading" align="center">
+    <div id="loader_gif">
+        <img src="~/Scripts/assets/img/loader.png" />
+    </div>
+</div>
+<script>
+    function savesendgeneralmessage(Id, ClientId) {
+        savesendgeneralmessagevalidation();
+        if ($("#msgchatform").valid()) {
+            model = {
+                Id: Id,
+                fromId: ClientId,
+                ToId: 1,
+                Description: $("#massege").val()
+            }
+            $.post("/Client/savesendgeneralmessage", model, function (data) {
+                var url = "/Client/messagesdetails?Ids=" + $("#Id").val();
+                toastr.success("Messages sent  successfully.");
+                setTimeout(function () { window.location.href = url; }, 300);
+            });
+        }
+    }
+    function savesendgeneralmessagevalidation()
+    {
+        $("#msgchatform").validate({
+            rules: {
+                massege: {
+                    required: true,
+                },
+               }
+        });
+    }
+    function msgsent(event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            savesendgeneralmessage(@Model.Id,@Model.UserId);
+    }
+}
+</script>
+<script src="~/Areas/Admin/Admin/enquires.js"></script>
+<script>
+    // Chat
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+    });
+</script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("messages");
+    element.classList.add("show");
+    var element = document.getElementById("generalmessages");
+    element.classList.add("active");
+</script>

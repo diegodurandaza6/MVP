@@ -1,0 +1,144 @@
+﻿@model Web.Model.Paypal.PaymentViewModel
+@{
+    ViewBag.Title = "payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    a:link {
+        text-decoration: none !important;
+        /*text-decoration: underline !important*/
+    } 
+    a:hover {
+        text-decoration: underline !important;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<section class="banner-inner plans-page-banner">
+    <h1 class="banner-caption">Payment</h1>
+</section>
+<section class="payment-section price-section">
+    <div class="container">
+        <section class="payment-top-details bread-crumb header-golden-bg m-0">
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Model.PlanId != 0)
+                    {
+                        <h5 class="m-0 clr-fff">
+
+                            You selected @Model.PlanName Plan
+
+                        </h5> 
+                    }
+                    else
+                    {
+                        <p class="clr-000">Payment successful.</p>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div class="row mt-4">
+            <div class="col-lg-4 col-sm-12">
+                <div class="_pricing_section _payments">
+                    <div class="card">
+                        <div class="card-header payment_bycard">
+                            <h3 style="text-align: left;">
+                                <input type="hidden" name="hPlanName" id="hPlanName" value="@Model.PlanName" />
+                                @Model.PlanName Plan Details
+                                <input type="hidden" id="hPlanName" name="hPlanName" value="@Model.PlanName" />
+                            </h3>
+                        </div>
+                        <div class="card-body_scrollbar">
+                            <ul class="price-list">
+                                <li class="p-0 mt-4">
+                                    <div>
+                                        <div class="price-price">
+                                            <h4>@Model.PlanName</h4>
+                                            <span>$ @Model.Amount/<span>m</span></span>
+                                        </div>
+                                        <div class="price-offer mb-25">
+                                            <span>&nbsp; <span class="off">&nbsp;</span></span>
+                                        </div>
+                                        @{
+                                            string text = Model.Description;
+                                            string[] authorsList = text.Split(',');
+                                            <ul class="sub-price-list">
+                                                @foreach (string author in authorsList)
+                                                {
+                                                    <li><i class="fas fa-check"></i>@author </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-sm-12">
+                <section class="dashboard_table">
+                    <div class="card">
+                        <div class="card-header payment_bycard">
+                            <h3>
+                                Payment by Stripe
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="_card_section">
+                                <div class="card-body">
+                                    <div class="payment-paypal">
+                                        <div class="second-style">
+                                            @if (Model.Amount == "0")
+                                            {
+                                                <form id="paymentform" >
+                                                    <div class="clearfy">
+                                                        <input id="chkid" name="chkid" type="checkbox" class="checkbox-new" required="required" />
+                                                        <p>
+                                                            <a onclick="termscondition()" class="underline-on-hover"   title="Read terms and conditions">Terms and Conditions</a>
+                                                        </p>
+                                                    </div>
+                                                    <h4 class="pricing-card-title pull-left">
+                                                        $@Model.Amount/Month
+                                                    </h4>
+                                                    <button class="btn-new-1 pull-right" type="button" id="btnMakePayment" name="btnMakePayment" onclick="makefreeplan(@Model.PlanId)">Make Payment</button>
+                                                    
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form id="paymentform" action="/Home/StripePayment" method="post">
+                                                    <div class="clearfy">
+                                                        <input id="chkid" name="chkid" type="checkbox" class="checkbox-new" required="required" />
+                                                        <p>
+                                                            <a onclick="termscondition()" class="underline-on-hover" title="Read terms and conditions">Terms and Conditions</a>
+                                                        </p>
+
+                                                    </div>
+                                                    <h4 class="pricing-card-title pull-left">
+                                                        $@Model.Amount/Month
+                                                    </h4>
+                                                    @*<button class="btn-new-1 pull-right" type="button" id="btnMakePayment" name="btnMakePayment" onclick="paymentbypaypal()">Make Payment</button>*@
+                                                    <button class="btn-new-1 pull-right" type="submit" id="btnMakePayment" name="btnMakePayment">Make Payment</button>
+                                                </form>
+                                            } 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script src="~/MvpTelent_js/payment/payment.js"></script>
+
+<script>
+    function termscondition() {
+        window.open("https://mvptalentmarket.com/Home/termscondition", "", "width:80%,height:80%");
+    }
+</script>

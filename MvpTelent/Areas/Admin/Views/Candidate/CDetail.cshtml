@@ -1,0 +1,559 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "CandidateDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/autocomplate/jquery-ui.min.js"></script>
+<div id="Interviewdetail_PopUp" class="modal fade" role="dialog"></div>
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<div id="Sharedjobcandidatepopup" data-backdrop="static" class="modal fade" role="dialog"></div>
+<div id="InterviewStatusByid_Popup" class="modal fade" role="dialog"></div>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Condidates</a></li>
+                    <li><a href="#">/</a></li>
+                    <li>
+                        <a href="#">
+                            Detail
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table candidate_add_sec">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h4 class="text-left right_icon" style="padding:4px 0px;">
+                    Candidate Detail
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid" style=" background: #e6e7eb !important; border-radius: 5px; border: 1px solid #e6e7eb;">
+                    <div class="_candidatedeatils">
+                        <div class="row cse3">
+                            <div class="col-md-2">
+                                <div class="client_profile">
+                                    <img src="@Model.FileName" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="betty_sec cs3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>@Model.Name  @Model.LastName</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p> @Model.location</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>@Model.Title</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="search_btn interview " onclick="CandidatesharedJobpopup('@EncryptDecrypt.Decrypt(Convert.ToString(Model.Ids))')">Submit Resume</button>
+                            </div>
+                            <div class="col-lg-10 col-sm-12">
+                                <div class="candidate_add">
+                                    <ul class="add_list tag">
+                                        @if (Model.candidatetagviewcollection != null)
+                                        {
+                                            foreach (var item in Model.candidatetagviewcollection)
+                                            {
+                                                <li><button type="button" class="save">@item.CandidateTag <i style="color:gray;" onclick="deletecandidatetag(@item.Id)" class="fa fa-times " aria-hidden="true"></i></button></li>
+                                            }
+                                        }
+                                    </ul>
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Please enter tag" onkeyup="return searchKeyPresss(event,'@EncryptDecrypt.Decrypt(Convert.ToString(Model.Ids))')" name="CandidateTag" id="CandidateTag" class="form-control">
+                                        <div id="autocompletedata"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3" style="margin-top:-10px">
+                            <div class="col-md-4">
+                                <div class="download _cv">
+                                    @if (Model.JobId != 0)
+                                    {
+                                        if (Model.resumeName != "")
+                                        {
+                                            <a href="@Model.Resumefile">
+                                                <button><i class="fa fa-download acs" aria-hidden="true"></i>Download CV</button>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a onclick="resumealertmassege()">
+                                                <button><i class="fa fa-download acs" aria-hidden="true"></i>Download CV</button>
+                                            </a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="_candidatedeatils1">
+                        <div class="row" id="aboutus">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect">
+                                                <img src="/Areas/Content/img/experience.png" class="experience_img">
+                                            </div>
+                                            <div class="txt1">
+                                                <h6>Experience</h6>
+                                                <p>@Model.experienceName </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"><i class="fa fa-industry profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Industry</h6>
+                                                <p>@Model.IndustryName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-usd profile-icon" aria-hidden="true"></i> &nbsp; </div>
+                                            <div class="txt1">
+                                                <h6>Current Salary</h6>
+                                                <p>@Model.CurrentSalary </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-usd profile-icon" aria-hidden="true"></i> &nbsp; </div>
+                                            <div class="txt1">
+                                                <h6>Expected Salary</h6>
+                                                <p>@Model.expectedSalary</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-graduation-cap profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Education Levels</h6>
+                                                <p>@Model.educationlevel</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect">
+                                                <img src="/Areas/Content/img/jobs.png" class="experience_img">
+                                            </div>
+                                            <div class="txt1">
+                                                <h6>Job Type</h6>
+                                                <p>@Model.jobtypeName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect">
+                                                <img src="/Areas/Content/img/state.png" class="experience_img">
+                                            </div>
+                                            <div class="txt1">
+                                                <h6>Location</h6>
+                                                <p>@Model.location</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-file-archive-o profile-icon" aria-hidden="true"></i> &nbsp; </div>
+                                            <div class="txt1">
+                                                <h6>Zip Code</h6>
+                                                <p>@Model.Zipcode</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-mobile profile-icon" aria-hidden="true"></i>  &nbsp; </div>
+                                            <div class="txt1">
+                                                <h6>Mobile</h6>
+                                                <p>@Model.Phone</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-envelope-o profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Licenses & Certifications</h6>
+                                                <p>@Model.Certifications</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-envelope-o profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Relocation  </h6>
+                                                <p>@Model.Relocation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-envelope-o profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Preferred Email</h6>
+                                                <p>@Model.PreferredEMail</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-audio-description profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Desired Title 1</h6>
+                                                <p>@Model.DesiredTitle1</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="exp_sec cs3">
+                                            <div class="icon_sect"> <i class="fa fa-audio-description profile-icon" aria-hidden="true"></i></div>
+                                            <div class="txt1">
+                                                <h6>Desired Title 2</h6>
+                                                <p>@Model.DesiredTitle2</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text2 mt-3">
+                                        <p>@Model.PorfileDescerption</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ab_section">
+                            <section class="professional-skills" id="education">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header"> Education</h5>
+                                </div>
+                                <ul class="rank_sec">
+                                    @if (Model.EducationCollection != null)
+                                    {
+                                        foreach (var item in Model.EducationCollection)
+                                        {
+                                            <li>
+                                                <h3>
+                                                    <a class="Edit">@item.Education</a> <span>(@item.year &nbsp; &nbsp;@item.EndYear)</span>
+                                                </h3>
+                                                <h6>@item.univarsity &nbsp; (@item.visibleName)</h6>
+                                                <p>@item.description</p>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </section>
+                            <section class="professional-skills" id="experience">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header">
+                                        Work Experience
+                                    </h5>
+                                </div>
+                                <ul class="rank_sec">
+                                    @if (Model.workexperiencecollection != null)
+                                    {
+                                        foreach (var item in Model.workexperiencecollection)
+                                        {
+                                            <li>
+                                                <h3>
+                                                    <a class="Edit">@item.Company</a> <span>(@item.Todate &nbsp; &nbsp; @item.Fromdate)</span>
+                                                </h3>
+                                                <h6>@item.Title &nbsp; (@item.visibleName)</h6>
+                                                <p>@item.description</p>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </section>
+                            <section class="professional-skills" id="skills">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header">
+                                        Professional Skills
+                                    </h5>
+                                </div>
+                                <div class="skill_section">
+                                    <ul>
+                                        @if (Model.SkillCollection != null)
+                                        {
+                                            foreach (var item in Model.SkillCollection)
+                                            {
+                                                <li><button class="_save">@item.skill </button></li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </section>
+                            <section class="professional-skills" id="report">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header">
+                                        Scouting Report
+                                    </h5>
+                                </div>
+                                <div class="row">
+                                    @if (Model.portfoliocecollection != null)
+                                    {
+                                        foreach (var item in Model.portfoliocecollection)
+                                        {
+                                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                                <div class="scouting_report">
+                                                    <img src="@item.FileUpload" class="img-thumbnail" />
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </section>
+                            @*<section class="professional-skills" id="reference">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header"> Awards</h5>
+                                </div>
+                                <ul class="rank_sec">
+                                    @if (Model.Awardscecollection != null)
+                                    {
+                                        foreach (var item in Model.Awardscecollection)
+                                        {
+                                            <li>
+                                                <h3>
+                                                    @item.Title
+                                                </h3>
+                                                <p>@item.year &nbsp; &nbsp; (@item.visibleName)</p>
+                                                <p>@item.description</p>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </section>*@
+                            <section class="professional-skills" id="experience">
+                                <div class="_education">
+                                    <span class="education"></span>
+                                    <h5 class="education_header">
+                                        Reference
+                                    </h5>
+                                </div>
+                                <ul class="rank_sec">
+                                    @if (Model.candidaterefrencecollection != null)
+                                    {
+                                        foreach (var item in Model.candidaterefrencecollection)
+                                        {
+                                            <li>
+                                                <h3>
+                                                    <a class="Edit">@item.Name</a> <span> </span>
+                                                </h3>
+                                                <h6>@item.Phone &nbsp; </h6>
+                                                <p>@item.Email</p>
+                                                <p>@item.Title</p>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left">Interview List </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="color:#525252">
+                                        S.No
+                                    </th>
+                                    <th style="color:#525252">
+                                        Subject
+                                    </th>
+                                    <th style="color:#525252">
+                                        Interviewer Name
+                                    </th>
+                                    <th style="color:#525252">
+                                        Interviewer Email
+                                    </th>
+                                    <th style="color:#525252">
+                                        Interview Date
+                                    </th>
+                                    <th style="color:#525252">
+                                        Location
+                                    </th>
+                                    <th style="color:#525252">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.interviewListCollection != null)
+                                {
+                                    foreach (var item in Model.interviewListCollection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>@item.Subject</td>
+                                            <td>@item.InterviewerName</td>
+                                            <td>@item.InterviewerEmail</td>
+                                            <td>@item.InterviewDate</td>
+                                            <td>@item.location</td>
+                                            <td>
+                                                <button title="Interview Detail" onclick="Interviewdetailpopup(@item.Id)" type="button" class="btn btn-info action_btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-left" colspan="7">
+                                            <span>No Data found...</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <!-- DataTales Example -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left">Submitted   Job List</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="color:#525252">S.No</th>
+                                    <th style="color:#525252">Job Title </th>
+                                    <th style="color:#525252">Job Type  </th>
+                                    <th style="color:#525252;width:11%;">Job Status</th>
+                                    <th style="color:#525252;width:11%;">Client Name</th>
+                                    <th style="color:#525252">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo4 = 0;}
+                                @if (Model.JobListCollection != null)
+                                {
+                                    foreach (var item in Model.JobListCollection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo4++;}@RowNo4</td>
+                                            <td>@item.jobtitle</td>
+                                            <td>@item.JobTypeName</td>
+                                            <td>@item.JobStatusName</td>
+                                            <td> @item.UserName</td>
+                                            <td class="faicon" style="width:10%;">
+                                                <button title="Details" onclick="GetadminJobDetailbyId('@item.Ids')" type="button" class="btn btn-info action_btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-left" colspan="7">
+                                            <span>No Data found...</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<input type="hidden" id="hfCustomer" name="CustomerId" />
+<script>
+    function GetadminJobDetailbyId(Id) {
+        var url = "/Admin/Admin/JobDetails?Ids=" + Id;
+        window.location.href = url;
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#CandidateTag").autocomplete({
+            appendTo: "#autocompletedata",
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Admin/Candidate/AutoCompleteCandidatetags',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "Post",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.Id,
+                                value: item.Name,
+                            }
+                        }))
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#hfCustomer").val(i.item.val);
+            },
+            minLength: 1
+        });
+    });
+</script>
+<script src="~/Areas/Admin/Admin/enquires.js"></script>

@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "faq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}   
+<section class="banner-inner" style="background-image: url('../../New_Content/images/faq-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Frequently Asked Questions (FAQ)</h1>
+                <p>
+                    Below you will find some of the Frequently Asked Questions we recieve. If you have additional questions or would like more information please contact us.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="about-us gray-bg pb-0">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 position-relative">
+                @*<div class="pattern-1"></div>*@
+                <figure>
+                    <img src="~/New_Content/images/faq-2.png" />
+                </figure>
+            </div>
+            <div class="col-md-6">
+                <h5 class="sub-heading-1 mb-2">
+                    FAQ’s
+                </h5>
+                <h2 class="sub-heading-main mb-2">
+                    Frequently Asked Questions.
+                </h2>
+                <span class="line-1 mb-4"></span>
+                <div class="section-faq">
+                    <div class="accordion" id="accordion1">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        How is confidentiality ensured?
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1">
+                                <div class="card-body">
+                                    A candidate's public profile should have all identifiable information hiden from view. When a company requests to interview a candidate, the candidate will be able to choose to share their full profile and resume. They can also choose to wait to share their full profile until they learn more information. While we encourage a confidential process the entire way, we can not guarantee full confidentiality after the interview stage begins.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Do candidates pay anything?
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion1">
+                                <div class="card-body">
+                                    No. To create a candidate profile is free. A candidate may choose to pay for additional services such as the MVP Package which includes a detailed resume review, full profile creation, and a 1:1 career consultation from a Recruitment Success Manager. There is no fee charged to candidates after they have accepted a position.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        What is the cost for an employer?
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion1">
+                                <div class="card-body">
+                                    Employer Companies pay a monthly membership fee to have access to the MVP Talent Market platform and features (see plans for details). In addition, when a candidate is successfully hired a fee of 10% of the annual salary is charged to the employer company.
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 

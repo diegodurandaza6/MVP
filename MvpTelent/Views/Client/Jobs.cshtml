@@ -1,0 +1,363 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Post A Job";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/MvpTelent_js/autocomplete.js"></script>
+<link href="~/MvpTelent_js/autocomplete.css" rel="stylesheet" />
+<script src="~/MvpTelent_js/JobSkillAutocomplete.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src=@Model.locationKey defer></script>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Post A Job
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header hr-b-1 header-golden-bg">
+                        @if (Model.ValidPlandate != null)
+                        {
+                            if (Model.LeftJobs > 0 && Model.Validdate > DateTime.Now)
+                            {
+                                <div class="card-actions float-right">
+                                    <b>Plan Type : @Model.Name | Job post available @Model.LeftJobs/@Model.noofjob </b>
+                                    <input type="hidden" name="hcheckplan" id="hcheckplan" value="1" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card-actions float-right">
+                                    <b>Plan Type : @Model.Name has expired, Please renew </b>
+                                    <input type="hidden" name="hcheckplan" id="hcheckplan" value="2" />
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="card-actions float-right">
+                                <b> Your current plan has expired,<a href="/Home/Plan" style="cursor:pointer;" target="_blank"> Renew today</a> </b>
+                                <input type="hidden" name="hcheckplan" id="hcheckplan" value="3" />
+                            </div>
+                        }
+                        <h5 class="card-title m-0">
+                            Job Details
+                        </h5>
+                    </div>
+               
+                    
+                    <div class="card-body">
+                        <form class="row" id="PostJobfrom" name="PostJobfrom">
+                            <input type="hidden" name="leftjob" id="leftjob" value="@Model.LeftJobs" />
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" name="jobtitle" autocomplete="off" value="@Model.jobtitle" id="jobtitle" placeholder="Please enter job title" maxlength="100" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Job Type</label>
+                                    @Html.DropDownListFor(m => m.JobTypeId, new SelectList(Model.JobTypeCollection, "Id", "Name"), "Please select job type", new { @class = "form-control", @Id = "JobTypeId", @Name = "JobTypeId" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="skills">
+                                    <div class="form-group key-drop">
+                                        <label>Key Skills</label>
+                                        <div class="form-group autocomplete-new-1">
+                                            <input type="hidden" name="hSId" id="hSId" value="@Model.SId" />
+                                            <input type="hidden" name="hJobId" id="hJobId" value="@Model.Id" />
+                                            <input type="text" placeholder="Please enter skills" onkeyup="enterkeypressskill(event)" value="@Model.KeySkills" name="skill" id="skill" autocomplete="off" maxlength="50" class="form-control">
+                                        </div>
+                                        <ul class="skill-sec-new mt-3" id="dv_JobSkills">
+                                            @if (Model.SkillCollection != null)
+                                            {
+                                                foreach (var item in Model.SkillCollection)
+                                                {
+                                                    <li><button type="button" class="save">@item.Name <i onclick="deleteJobskill(@item.Id,@Model.Id,@Model.SId)" class="fa fa-times" aria-hidden="true"></i></button></li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="skills">
+                                    <div class="form-group key-drop">
+                                        <label>Tags</label>
+                                        <div class="form-group autocomplete-new-1">
+                                            <input type="hidden" name="htagJobId" id="htagJobId" value="@Model.Id" />
+                                            <input type="hidden" name="hTId" id="hTId" value="@Model.TId" />
+                                            <input type="text" placeholder="Please enter tags" onfocusout="enterkeypresstagsfocusout()" onkeyup="enterkeypresstags(event)" value="@Model.Tags" name="Jobtags" id="Jobtags" autocomplete="off" maxlength="50" class="form-control">
+                                        </div>
+                                        <ul class="skill-sec-new mt-3" id="dv_Jobtags">
+                                            @if (Model.tagcollection != null)
+                                            {
+                                                foreach (var item in Model.tagcollection)
+                                                {
+                                                    <li><button type="button" class="save">@item.Name <i onclick="deleteJobtags(@item.Id,@Model.Id,@Model.TId)" class="fa fa-times" aria-hidden="true"></i></button></li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12">
+                                <div class="form-group">
+                                    <label>Job Category</label>
+                                    @Html.DropDownListFor(m => m.JobCategoryId, new SelectList(Model.JobCategoryCollection, "Id", "Name"), "Please select job category", new { @class = "form-control", @Id = "JobCategoryId", @Name = "JobCategoryId", @onchange = "GetSubjobByJobId(this.value)" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12">
+                                <div class="form-group">
+                                    <label>Sub Category</label>
+                                    <select id="SubCategoryId" name="SubCategoryId" class="form-control">
+                                        <option value="">Please select sub category</option>
+                                        @if (Model.SubCategoryCollection != null)
+                                        {
+                                            foreach (var item in Model.SubCategoryCollection)
+                                            {
+                                                <option value="@item.SubCategoryId">@item.SubCategoryName</option>
+                                            }
+                                        }
+                                    </select>
+                                    @if (Model.SubCategoryId > 0)
+                                    {
+                                        <script>
+                                            document.getElementById("SubCategoryId").value = @Model.SubCategoryId;
+                                        </script>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12">
+                                <div class="form-group">
+                                    <label>Position Level</label>
+                                    @*<input type="text" placeholder="Please enter position level" value="@Model.Designation" name="Designation" id="Designation" autocomplete="off" maxlength="40" class="form-control">*@
+                                    @Html.DropDownListFor(m => m.PositionLevelId, new SelectList(Model.PositionLevelCollection, "PositionLevelId", "PositionLevelName"), "Please select position level", new { @class = "form-control", @Id = "PositionLevelId", @Name = "PositionLevelId" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Brief Summary</label>
+                                    <textarea rows="2" cols="100" id="sortdescription" name="sortdescription" class="form-control" placeholder="Please enter brief summary" maxlength="200">@Model.sortdescription</textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Job Description</label>
+                                    <textarea rows="2" cols="100" id="JobDescription" name="JobDescription" class="form-control" placeholder="Please enter description" maxlength="5000" onkeyup="countChar(this)">@Model.JobDescription</textarea><i class="form-control-feedback" style="display: none;"></i>
+                                    <script type="text/javascript">
+                                        CKEDITOR.replace('JobDescription',
+                                            {
+                                                toolbar: 'Basic',
+                                                uiColor: '#F9F8F8',
+                                                maxLength: "7000"
+                                            });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label> Minimum Salary (Annual)$ </label>
+                                    <input type="text" placeholder="Please enter minimum salary" onkeypress="CheckSalaryNumeric(event);"  value="@Model.MinSalary" name="AnnualCTCMin" id="AnnualCTCMin" autocomplete="off" maxlength="15" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Maximum Salary (Annual)$</label>
+                                    <input type="text" placeholder="Please enter maximum salary"  onkeypress="CheckSalaryNumeric(event);"  value="@Model.MaxSalary" name="AnnualCTCMax" id="AnnualCTCMax" autocomplete="off" maxlength="15" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Minimum Education Level</label>
+                                    @Html.DropDownListFor(m => m.QualificationId, new SelectList(Model.JobQualficationCollection, "Id", "Name"), "Please select education level", new { @class = "form-control", @Id = "QualificationId", @Name = "QualificationId" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Job Status</label>
+                                    @Html.DropDownListFor(m => m.JobStatusId, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Please select status", new { @class = "form-control", @Id = "JobStatusId", @Name = "JobStatusId" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Zip Code </label>
+                                    <input type="text" name="zipcode" autocomplete="off" value="@Model.zipcode" id="zipcode" placeholder="Please enter zip code" maxlength="10" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <div class="autocomplete">
+                                        <input id="autocomplete_search" style="width:100%;" autocomplete="off" value="@Model.location" class="form-control" placeholder="Please enter city, state, country" name="autocomplete_search" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12" style="display:none">
+                                <div class="form-group">
+                                    <label>Client</label>
+                                    @Html.DropDownListFor(m => m.ClientId, new SelectList(Model.ClientCollection, "Id", "Name"), "Please select client", new { @class = "form-control", @Id = "ClientId", @Name = "ClientId" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Minimum Years of Experience</label>
+                                    <input type="text" placeholder="Please enter years" value="@Model.WorkExperienceMin" name="WorkExperienceMin" id="WorkExperienceMin" autocomplete="off" maxlength="5" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox jobs-check-error m-t-35">
+                                        @if (Model.Id == 0)
+                                        {
+                                            <input type="checkbox" class="custom-control-input" id="SharedJob" name="SharedJob" checked>
+                                        }
+                                        else if (Model.SharedJob == 1)
+                                        {
+
+                                            <input type="checkbox" class="custom-control-input" id="SharedJob" name="SharedJob" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="custom-control-input" id="SharedJob" name="SharedJob">
+                                        }
+                                        <span class="custom-control-label text-hide">Checkbox</span>
+                                        <span>Share this job with RSM to receive additional candidates.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox jobs-check-error">
+                                        <input type="checkbox" class="custom-control-input" id="Featured" name="Featured" @(Model.Featured == 1 ? "checked" : string.Empty)>
+                                        <span class="custom-control-label text-hide">Checkbox</span>
+                                        <span>Featured Jobs </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox jobs-check-error">
+                                        <input type="checkbox" class="custom-control-input" id="terams" name="terams">
+                                        <span class="custom-control-label text-hide">Checkbox</span>
+                                        <span>I have read and accept the <a onclick="TermsAndCondi()" class="clr-active underline">Terms & Conditions</a>.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="col-12 col-lg-12 text-right">
+                                @if (Model.Id == 0)
+                                {
+                                    <button class="btn-new-1" type="button" id="createJob" name="createJob" onclick="CreateJobs(@Model.Id)">Save</button>
+                                    @*if (Model.LeftJobs > 0 && Model.Validdate > DateTime.Now)
+                                    {
+                                        <button class="btn btn-primary" type="button" id="createJob" name="createJob" onclick="CreateJobs(@Model.Id)">Save</button>
+                                    }*@
+                                }
+                                else
+                                {
+                                    <button class="btn-new-1" type="button" id="createJob" name="createJob" onclick="CreateJobs(@Model.Id)">Update</button>
+                                }
+                                <button type="button" class="btn-new-2" onclick="jobCancel()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main> 
+<script src="~/MvpTelent_js/Client/PostJob.js"></script>
+<script>
+    function jobCancel() {
+        var url = "/Client/JobList";
+        window.location.href = url;
+    }
+</script>
+<script>
+    var url = window.location.toString().toLowerCase();
+    if (url.indexOf('/jobs') > -1) {
+        document.getElementById('jobs').className = 'sidebar-item active';
+        document.getElementById('jobsanchor').className = 'sidebar-link';
+        document.getElementById('jobsanchorul').className = 'sidebar-dropdown list-unstyled collapse show';
+        document.getElementById('postajob').className = 'sidebar-item active';
+    }
+</script>
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length < 2) {
+            disableGoogleAutocomplete();
+        }
+        else {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+    })
+</script>
+<script>
+    $('document').ready(function () {
+        skillautocomplete(document.getElementById("skill"), '/Home/skillautocomplete', null);
+    });
+</script>
+<script>
+    $('document').ready(function () {
+        Tagsautocomplete(document.getElementById("Jobtags"), '/Home/Tagsautocomplete', null);
+    });
+</script>
+<script>
+    function CityAutoComplete(Id) {
+        var model = {
+            prefix: Id
+        };
+        if (Id > 0) {
+            autocomplete(document.getElementById("AutocompleteCity"), '/Home/cityautocomplete', model);
+        }
+    }
+</script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("jobsmenu");
+    element.classList.add("show");
+    var element = document.getElementById("postajobmenu");
+    element.classList.add("active");
+</script>
+ 

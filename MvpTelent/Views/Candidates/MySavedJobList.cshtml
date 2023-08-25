@@ -1,0 +1,99 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Saved Job ";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                     My Saved Jobs
+                </h3>
+                <span>
+                    My Saved Job List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            My Saved Job List
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="my-active-jobs-main">
+                            <div class="my-active-jobs-inner">
+                                @if (Model.MySavedJobsCollection != null)
+                                {
+                                    foreach (var item in Model.MySavedJobsCollection)
+                                    {
+                                        <div class="my-active-jobs-inner-row" >
+                                            <div class="my-active-jobs-inner-tile" onclick="getJobDetail('@item.Ids')" style="cursor:pointer;">
+                                                <div class="my-active-jobs-inner-tile my-active-jobs-inner-tile-2">
+                                                    <div>
+                                                        <i class="far fa-fw fa-building"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h4 > @item.jobtitle</h4>
+                                                        <div class="my-active-jobs-mune-2">
+                                                            @if (item.sortdescription.Length > 0)
+                                                            {
+                                                                <p>
+                                                                    @item.sortdescription
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>
+                                                                    N/A
+                                                                </p>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="my-active-jobs-inner-footer-2">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" onclick=""><i class="fas fa-fw fa-eye"></i>  @item.Jobtype</a>
+                                                            <a class="dropdown-item" onclick=""> <i class="far fa-fw fa-clock"></i> Saved on -  @item.createddate</a>
+                                                            <a class="dropdown-item" onclick=""> <i class="fas fa-fw fa-map-marker-alt"></i>@item.location</a>
+                                                            <a class="dropdown-item" onclick=""> <i class="fas fa-fw fa-map-marker-alt"></i>@item.zipcode</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    if (Model.MySavedJobsCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td class="p-3" colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function PagerClick(CurrentPageIndex) {
+        url = "/Candidates/MySavedJobList?CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = url;
+    }
+</script>
+<script src="~/MvpTelent_js/ApplyJob.js"></script>
+<script>
+    var element = document.getElementById("mysavedjoblist");
+    element.classList.add("active");
+</script>

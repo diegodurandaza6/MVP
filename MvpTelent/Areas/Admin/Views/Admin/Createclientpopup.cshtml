@@ -1,0 +1,189 @@
+﻿@model Web.Model.Client.ClientModel
+<script type="text/javascript" src="@Model.locationKey"></script>
+<style>
+    .pac-container {
+        background-color: #FFF;
+        z-index: 20;
+        position: fixed;
+        display: inline-block;
+        float: left;
+    }
+
+    .modal {
+        z-index: 20;
+    }
+
+    .modal-backdrop {
+        z-index: 10;
+    }
+</style>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> Company Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div id="addclientforms">
+
+                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input id="CompanyName" maxlength="60" onkeyup="checkCompanyName()" autocomplete="off" class="form-control" value="@Model.Name" tabindex="1" placeholder="Please enter company name" name="CompanyName" type="text">
+	                         <label id="lblCompanyName" style="color: #ff0000 !important; margin: 0 !important"></label>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            
+                             <label class="form-label"> Company  Website</label>
+                            <input id="Website" autocomplete="off" class="form-control" value="@Model.Website" tabindex="2" name="Website" placeholder="Please enter company  website " maxlength="50" type="text">
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+                <div class="row" style="margin-top:-12px">
+
+
+                     <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input id="Address" maxlength="40" style="width:100%;" tabindex="3" autocomplete="off" value="@Model.Address" class="form-control" placeholder="Please enter address" name="Address" type="text">
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Location</label>
+                             <input id="autocomplete_search" maxlength="100" style="width:100%;" tabindex="4" autocomplete="off" value="@Model.Location" class="form-control" placeholder="Please enter location" name="autocomplete_search" type="text">
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+                 <div class="row" >
+                       <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label"> Zip Code</label>
+                           <input id="Zip" maxlength="7" autocomplete="off" class="form-control" onkeypress="return isNumberKey(event)" value="@Model.Zip" placeholder="Please enter zip code" name="Zip" tabindex="5" type="text">
+                        </div>
+                      
+
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <div class="autocomplete">
+                                   <input id="FirstName" maxlength="30" onkeyup="checkName()" style="width:100%;" tabindex="6" autocomplete="off" value="@Model.FirstName" class="form-control" placeholder="Please enter first name" name="FirstName" type="text">
+                             <label id="lblFirstName" style="color: #ff0000 !important; margin: 0 !important"></label>
+
+                            </div>
+                        </div>
+                    </div>
+                     </div>
+                <div class="row" style="margin-top:-12px">
+                  
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <div class="autocomplete">
+                                <input id="LastName" maxlength="20" style="width:100%;" tabindex="7" autocomplete="off" value="@Model.LastName" class="form-control" placeholder="Please enter last name" name="LastName" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                             <input id="email" maxlength="50" onkeyup="checkemail()" autocomplete="off" class="form-control" value="@Model.Email" tabindex="8" placeholder="Please enter email" name="email" type="text">
+                             <label id="lblemail" style="color: #ff0000 !important; margin: 0 !important"></label>
+
+                        </div>
+                    </div>
+                </div>
+                   <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <div class="checkbox-1">
+                                <input type="checkbox" id="LoginAccess" @(Model.LoginAccess == 1 ? "checked" : string.Empty) name="LoginAccess" tabindex="9">
+                                <span> Send Registration  Email</span>
+                            </div>
+                        </div>
+                         
+                         
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          
+                        </div>
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            
+                <input type="button" name="companybtn" id="companybtn" class="btn btn-primary" tabindex="9" onclick="Create_Company(@Model.Id)" value="Save">
+          
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+<script>
+
+
+
+     
+
+
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+
+ 

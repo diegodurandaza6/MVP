@@ -1,0 +1,185 @@
+@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "Candidate Dashboard";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<style>
+    .fc .fc-toolbar {
+        display: block;
+    }
+
+    .fc-month-button,
+    .fc-agendaWeek-button,
+    .fc-agendaDay-button {
+        min-width: 62px;
+    }
+
+    #calendar > div > .fc-center > h2 {
+        font-size: 1.05rem;
+        font-weight: 500;
+        background: -webkit-linear-gradient( 45deg, #b68b26,#eedc66,#b68b26 );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 7px 0 0 0;
+    }
+</style>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<div id="Interviewdetail_PopUp" class="modal fade" role="dialog"></div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            data: "{}",
+            url: "/Candidates/interviewlistbycandidate",
+            dataType: "json",
+            success: function (data) {
+
+                var event = new Array();
+                $.each(data, function (index, item) {
+                    event.push(
+                        {
+                            title: this.Title,
+                            start: this.InterviewDate,
+                            end: this.InterviewDate,
+                            id: this.Id,
+                            color: '#65b8f1',
+                        }
+                    );
+                });
+                $('div[id*=calendar]').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    eventClick: function (event, jsEvent, view) {
+                        var Id = event.id;
+                        openevent(Id);
+                    },
+                    defaultDate: new Date(),
+                    editable: false,
+                    events: event,
+                    eventLimit: true,
+                    isRTL: $('html').attr('dir') == 'rtl' ? true : false
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    });
+    $('.calendar').css('font-size', '12px !important');
+    function openevent(Id) {
+
+        model = {
+            Id: Id
+        }
+        $.get("/Candidates/Interviewdetailpopup", model, function (response) {
+            $("#Interviewdetail_PopUp").html(response);
+            $("#Interviewdetail_PopUp").modal("show");
+        });
+    }
+</script>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Dashboard</h3>
+                <span>
+                    Overview of Recent Activities
+                </span>
+            </div>
+        </div>
+        <div class="row patient-dash-tile-size">
+            <div class="col-md-3">
+                <div class="patient-dash-tile" onclick="AppliedJobscount()" style="cursor:pointer;">
+                    <div class="patient-dash-tile-body">
+                        <div class="one">
+                            <i class="far fa fa-briefcase"></i>
+                            <h5>
+                                Applied Jobs
+                            </h5>
+                        </div>
+                        <div class="two">
+                            <h5>
+                                @Model.Jobappliedcount
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="patient-dash-tile" onclick="SavedJobs()" style="cursor:pointer;">
+                    <div class="patient-dash-tile-body">
+                        <div class="one">
+                            <i class="align-middle far fa-fw fa-file"></i>
+                            <h5>
+                                Saved Jobs
+                            </h5>
+                        </div>
+                        <div class="two">
+                            <h5>
+                                @Model.Jobsavedcount
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="patient-dash-tile" onclick="DetailedProfile()" style="cursor:pointer;">
+                    <div class="patient-dash-tile-body">
+                        <div class="one">
+                            <i class="fas fa-fw fa-user"></i>
+                            <h5>
+                                Detailed Profile
+                            </h5>
+                        </div>
+                        <div class="two">
+                            <h5>
+                                &nbsp;
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="patient-dash-tile" onclick="confidentialprofile()" style="cursor:pointer;">
+                    <div class="patient-dash-tile-body">
+                        <div class="one">
+                            <i class="fas fa-fw fa-user"></i>
+                            <h5>
+                                Confidential Profile
+                            </h5>
+                        </div>
+                        <div class="two">
+                            <h5>
+                                &nbsp;
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="card">
+            <div class="card-header p-b-0">
+                <h5 class="card-title">Schedule Interview</h5>
+                <h6 class="card-subtitle text-muted"></h6>
+            </div>
+            <div class="card-body cal-dash">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/MvpTelent_js/Client/clientdashboard.js"></script>
+<script>
+    var element = document.getElementById("dashboard");
+    element.classList.add("active");
+</script>

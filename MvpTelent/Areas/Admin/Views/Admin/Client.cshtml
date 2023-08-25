@@ -1,0 +1,53 @@
+﻿@model Web.Model.Client.ClientModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Client</title>
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <form id="clientform" class="login100-form ">
+            <span class="login100-form-title">
+                Client
+            </span><div class="wrap-input100 ">
+                <input type="text" maxlength="30" id="username" name="username" value="@Model.Name" autocomplete="off" placeholder="Enter Name" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="30" id="Website" name="Website" value="@Model.Website" autocomplete="off" placeholder="Enter Website" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="15" id="Host" name="Host" value="@Model.Host" autocomplete="off" placeholder="Enter Host" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="15" id="Phone1" name="Phone1" value="@Model.Phone1" autocomplete="off" placeholder="Enter Phone1" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="15" id="Phone2" name="Phone2" value="@Model.Phone2" autocomplete="off" placeholder="Enter Phone2" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                @Html.DropDownListFor(m => m.CountryId, new SelectList(Model.CountryCollection, "Id", "Name"), "Select Country", new { @class = "form-control", @onchange = "StateList(this.value)" })
+            </div>
+            <div class="wrap-input100 ">
+                @Html.DropDownListFor(m => m.StateId, new SelectList(Model.StateCollection, "Id", "Name"), "Select State", new { @class = "form-control", @Id = "StateId", @Name = "StateId", @onchange = "CityList(this.value)" })
+            </div>
+            <div class="wrap-input100 ">
+                @Html.DropDownListFor(m => m.CityId, new SelectList(Model.CityCollection, "Id", "Name"), "Select City", new { @class = "form-control", @id = "CityId" })
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="8" id="Zip" name="Zip" value="@Model.Zip" autocomplete="off" placeholder="Enter ZipCode" class="form-control">
+            </div>
+            <div class="container-login100-form-btn">
+                <input type="button" name="login" id="login" class="login100-form-btn" onclick="CreateClient(@Model.Id)" value="Login">
+            </div>
+            <div class="text-center p-t-136">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+<script src="~/MvpTelent_js/adminJs/CLIENTS.js"></script>
+<script src="~/MvpTelent_js/toster/jquery.toaster.js"></script>

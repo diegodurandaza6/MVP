@@ -1,0 +1,223 @@
+﻿@model Web.Model.Candidate.CandidateListModel
+<div class="row">
+    @if (Model.CandiateList != null)
+    {
+        if (Model.CandiateList.Count > 0)
+        {
+            foreach (var item in Model.CandiateList)
+            {
+                <div class="col-md-6">
+                    <div class="candidatelist-main-body">
+                        <div class="candidatelists-main-header">
+                            @*<input type="checkbox" id="candidateId" name="candidateId" value="@item.id">*@
+                            <span onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.id))',@item.jobTypeId, '@item.location')" for="exampleCheck1">@item.current_job_title </span>
+                            <div class="card-actions float-right">
+                                <div class="dropdown">
+                                    <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.id))',@item.jobTypeId,'@item.location')">View Details</a>
+                                        <a class="dropdown-item" onclick="Addcandidateshortlistbyid(@item.id)">Add To Favorite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="candidatelist-main-inner">
+                            <div class="candidatelist-main-inner-img cursor-pointer" onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.id))',@item.jobTypeId'@item.location')">
+                                <img src="@item.profile_image" />
+                            </div>
+                            <div class="candidatelist-main-inner-text">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span>Current Salary($)</span>
+                                                @if (@item.CurrentSalary != "")
+                                                {<span>@item.CurrentSalary</span>
+                                            }
+                                            else
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            </td>
+                                            <td>
+                                                <span>Job Type</span>
+
+                                                @if (@item.jobType == null)
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.jobType</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>Zip Code</span>
+                                                @if (@item.ZipCode == "")
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.ZipCode</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <span>Desired Title</span>
+                                                @if (@item.DesiredTitle1 == "")
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.DesiredTitle1</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="candidatelist-main-footer">
+                            <ul class="candi-tiles-social">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    @if (@item.location == null)
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.location</span>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <i class="fas fa-filter"></i>
+                                    @if (@item.Experience_Name == "")
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Experience_Name</span>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <i class="fas fa-graduation-cap"></i>
+                                    @if (@item.EducationlevelName == "")
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.EducationlevelName</span>
+                                    }
+                                </li>
+                                @if (Model.Zip != null)
+                                {
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>  (@item.miles_range Miles away from @Model.Zip)  </span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-data-section text-center">
+                <figure class="no-data-img">
+                    <img src="/New_Content/images/404-img.png" class="img-fluid" />
+                </figure>
+                <p>Sorry , The data not found</p>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-data-section text-center">
+            <figure class="no-data-img">
+                <img src="/New_Content/images/404-img.png" class="img-fluid" />
+            </figure>
+            <p>Sorry , The data not found</p>
+        </div>
+    }
+
+</div>
+<div class="row">
+    @if (Model.TotalRowCount > Model.maxRows)
+    {
+    <div class="pagination-bar pagination-section my-4 w-100">
+        <nav aria-label="Page navigation " class="d-inline-b">
+            <ul class="pagination justify-content-center custom-pagination-sm">
+                <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(1,@Model.gid);">&laquo;</a></li>
+                @if (Model.CurrentPageIndex > 1)
+                {
+                    <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@Model.CurrentPageIndex - 1,@Model.gid);"><</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                }
+                @if (Model.indexlegth > 20)
+                {
+                    for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                    {
+                        if (i != Model.CurrentPageIndex)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@i);">@i</a></li>
+                        }
+                        else
+                        {
+                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                        }
+                        if (i > (Model.CurrentPageIndex + 19))
+                        {
+                            <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@Model.PageCount);">@Model.PageCount</a></li>
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                    {
+                        if (i != Model.CurrentPageIndex)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@i);">@i</a></li>
+                        }
+                        else
+                        {
+                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                        }
+                    }
+                }
+                @if (Model.CurrentPageIndex < Model.PageCount)
+                {
+                    <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@Model.CurrentPageIndex + 1);">></a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                }
+                <li class="page-item"><a class="page-link" href="javascript:GetSearchCandidates(@Model.PageCount);">&raquo;</a></li>
+            </ul>
+        </nav>
+    </div>
+    }
+</div>
+
+

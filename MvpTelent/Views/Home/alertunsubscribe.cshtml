@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "alertunsubscribe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    .navbar-collapse ul {
+        display: none;
+    }
+
+    .mobile-app-content {
+        display: none;
+    }
+
+    .hero-subscribe {
+        margin-top: 0px;
+    }
+
+    .login_section:after {
+        content: '';
+        position: absolute;
+        top: 80px;
+        left: 0px;
+        width: 100%;
+        height: 5px;
+        background: #55a747;
+        display: none;
+    }
+
+    .confirmationSlot {
+        text-align: center;
+    }
+
+    ._unlocked {
+        padding: 30px 0px;
+    }
+
+        ._unlocked i.fa.fa-unlock-alt {
+            width: 120px;
+            height: 120px;
+            border: 1px solid #dbbd58;
+            border-radius: 50%;
+            padding: 38px;
+            font-size: 50px;
+            color: #dbbd58;
+        }
+
+    section._confirmation {
+        margin: 60px 0px 50px 0px;
+    }
+
+    .confirmation_txt h3 {
+        font-size: 16px;
+        line-height: 28px;
+        font-weight: 600;
+        color: #333;
+    }
+</style>
+<section>
+    <div class="about_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="candidates_banner_text">
+                        <h3>MVP Talent Market</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="_confirmation">
+    <div class="container">
+        <form id="form">
+            <div class="login_section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="confirmationSlot">
+                            <div class="_unlocked">
+                                <i class="fas fa-lock-alt"></i>
+                            </div>
+                            <div class="confirmation_txt">
+                                <h3> Thanku you!  <br /> You have been successfully removed from alert list .</h3>
+                            </div>
+                            <button class="update_section" style="width: 60%;margin:20px 0px;" type="button" onclick="gotologin()">Create New Alert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script>
+    function gotologin() {
+        var Url = "/Home/Index";
+        window.location.href = Url;
+    }
+</script>

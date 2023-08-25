@@ -1,0 +1,83 @@
+﻿@model Web.Model.Admin.EnquiresViewModel
+@{
+    ViewBag.Title = "reply";
+    //Layout = "~/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<div class="row wrapper border-bottom  page-heading">
+    <div class="col-lg-12 float-left">
+        <div class="col-lg-12 float-left m-t-md white-bg">
+            <h3 class="m-t-sm m-b-xs">Enquiries </h3>
+            <ol class="breadcrumb m-b-xs">
+                <li class="breadcrumb-item">
+                    <a href="index-2.html">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <strong>Message Details</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Messages Details </h5>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" id="Jobform" class="row">
+                        <div class="form-group col-md-12">
+                            <div class="col-sm-10">
+                                <div>
+                                    <div class="row m-0">
+                                        <div class="col-my-6">
+                                            <h2><b>Contact Us Query :</b></h2><br>
+                                        </div>
+                                        <div class="col-my-6 other-text-right-767-text-left ">
+                                            <h5 style="margin-top: 15px;"><strong>On @Model.createdate</strong> </h5>
+                                        </div>
+                                    </div>
+                                    <h4 class="m-0"><b>@Model.Name &nbsp;  < @Model.Email></b></h4>
+                                    <br>
+                                    @Html.Raw(Model.message)
+                                    <br>
+                                    <br>
+                                    @if (Model.replymessage == "0")
+                                    {
+                                        <div class="form-group ">
+                                            <textarea rows="7" autofocus="autofocus" cols="100" id="Description" name="Description" class="form-control" placeholder="Please enter description" maxlength="3500"> @Model.message</textarea><i class="form-control-feedback" style="display: none;"></i>
+                                            <script type="text/javascript">
+                                                CKEDITOR.replace('Description',
+                                                    {
+                                                        toolbar: 'Basic',
+                                                        uiColor: '#F9F8F8',
+                                                        maxLength: "7000",
+                                                        startupFocus: true
+                                                    });
+                                            </script>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <hr /><br />
+                                        @Html.Raw(Model.replymessage)
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                @if (Model.replymessage == "0")
+                                {
+                                    <input type="button" id="btnQueryMassage" onclick="Submit(@Model.Id,'@Model.Email')" value="Send" class="btn btn-primary btn-lg">
+                                }
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

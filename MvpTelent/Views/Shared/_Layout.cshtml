@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="~/New_Content/images/mvp_favicon.png">
+    <title>MVP Talent Market</title>
+    @RenderSection("metatags", false)
+    <link href="~/Client_Content/css/light.css" rel="stylesheet" />
+    <link href="~/Client_Content/css/custom.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&amp;display=swap" rel="stylesheet">
+    <link href="~/New_Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/fontawesome.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/regular.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/brands.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/solid.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/animate.css" rel="stylesheet">
+    <link href="~/New_Content/css/flaticon.css" rel="stylesheet">
+    <link href="~/New_Content/css/style.css" rel="stylesheet">
+    <link href="~/New_Content/css/responsive.css" rel="stylesheet">
+    <link href="~/New_Content/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/New_Content/css/aos.css" rel="stylesheet">
+    <link href="~/New_Content/css/toastr.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <!-- header start here -->
+    <header class="header">
+        <section class="top-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="header-icons">
+                            <li>
+                                <a class="fab fa-facebook-f" href="#"></a>
+                            </li>
+                            <li>
+                                <a class="fab fa-twitter" href="#"></a>
+                            </li>
+                            <li>
+                                <a class="fab fa-linkedin-in" href="#"></a>
+                            </li>
+                            <li>
+                                <a class="fas fa-envelope" href="#"></a>
+                            </li>
+                            <li>
+                                <span>
+                                    <a href="#">
+                                        <i class="fas fa-phone rotate-90" href="#"></i>
+                                        +1 401-354-7251
+                                    </a>
+
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <a href="/Home/contact">
+                                        Request a Demo ?
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg" id="navbar-top">
+                <a class="navbar-brand" href="/Home/Index"><img src="~/New_Content/images/mvp_logo2.png" class="img-fluid"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav m-0">
+                        <li class="nav-item" id="home">
+                            <a class="nav-link" href="/Home/Index">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item" id="job">
+                            <a class="nav-link" href="/Home/Job">Search Jobs</a>
+                        </li>
+                        <li class="nav-item" id="candidatelist">
+                            <a class="nav-link" href="/Home/candidatelist">Search Candidates</a>
+                        </li>
+                        <li class="nav-item" id="about">
+                            <a class="nav-link" href="/Home/about">About Us</a>
+                        </li>
+                        <li class="nav-item" id="">
+                            <a class="nav-link" href="/Home/howitworks">Resources</a>
+                        </li>
+                        <li class="nav-item" id="plan">
+                            <a class="nav-link" href="/Home/Plan">Plans </a>
+                        </li>
+                        <li class="nav-item" id="contact">
+                            <a class="nav-link" href="/Home/contact">Contact Us</a>
+                        </li>
+ 
+                        @if (Session["UsertypeId"] != null)
+                        {
+                            if (Session["UsertypeId"].ToString() == "1")
+                            {
+                                <li class="nav-item dropdown home-menu-mini">
+                                    <a class="nav-link dropdown-toggle  mb-2 no-after " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="@Session["Image"].ToString()" alt="img-menu" class="img-fluid" style="background: #fff;width: 30px;border-radius: 50%;height: 30px;margin: 0 10px 0 0;" />
+                                        <i class="fas fa-sort-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @*<a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt mr-2"></i>@Session["Name"].ToString()</a>*@
+                                        <a class="dropdown-item" href="/Admin/Admin/Index"><i class="fas fa-user-tie mr-2"></i>Go To Dashboard</a>
+                                        <a class="dropdown-item" onclick="Logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                                    </div>
+                                </li>
+                            }
+                            else if (Session["UsertypeId"].ToString() == "2")
+                            {
+                                <li class="nav-item dropdown home-menu-mini">
+                                    <a class="nav-link dropdown-toggle  mb-2 no-after " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="@Session["Image"].ToString()" alt="img-menu" class="img-fluid" style="background: #fff;width: 30px;border-radius: 50%;height: 30px;margin: 0 10px 0 0;" />
+                                        <i class="fas fa-sort-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @*<a class="dropdown-item" onclick="redirect('/Client/dashboard')"><i class="fas fa-user-tie mr-2"></i>  @Session["Name"].ToString()</a>*@
+                                        <a class="dropdown-item" onclick="redirect('/Client/dashboard')"><i class="fas fa-user-tie mr-2"></i>Go To Dashboard</a>
+                                        <a class="dropdown-item" onclick="redirect('/Client/CompanyProfile')"><i class="fas fa-sign-out-alt mr-2"></i>My Profile</a>
+                                        <a class="dropdown-item" onclick="redirect('/Client/ChangePassword')"><i class="fas fa-sign-out-alt mr-2"></i>Setting</a>
+                                        <a class="dropdown-item" onclick="Logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown home-menu-mini">
+                                    <a class="nav-link dropdown-toggle  mb-2 no-after " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="@Session["Image"].ToString()" alt="img-menu" class="img-fluid" style="background: #fff;width: 30px;border-radius: 50%;height: 30px;margin: 0 10px 0 0;" />
+                                        <i class="fas fa-sort-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @*<a class="dropdown-item" onclick="redirect('/Candidates/Dashboard')"> @Session["Name"].ToString()</a>*@
+                                        <a class="dropdown-item" onclick="redirect('/Candidates/Dashboard')"><i class="fas fa-user-tie mr-2"></i>Go To Dashboard</a>
+                                        <a class="dropdown-item" onclick="redirect('/Candidates/myProfile')"><i class="fas fa-sign-out-alt mr-2"></i>My Profile</a>
+                                        <a class="dropdown-item" onclick="redirect('/Candidates/Setting')"><i class="fas fa-sign-out-alt mr-2"></i>Setting</a>
+                                        <a class="dropdown-item" onclick="Logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+
+
+                            <li class="nav-item dropdown home-menu-mini dropdown-hover-1">
+                                <a class="nav-link dropdown-toggle mb-2 no-after btn-new-1 pl-3 pr-3 no-after rounded-50" href="/Home/Login" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sign In
+                                </a>
+                                <div class="dropdown-menu m-0" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/Home/Login"><i class="fas fa-lock mr-2 clr-golden"></i>Sign In</a>
+                                    <a class="dropdown-item" href="/Home/SignUp"><i class="fas fa-sign-out-alt mr-2 clr-golden"></i>Sign Up</a>
+                                </div>
+                            </li> 
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- header end here -->
+    @RenderBody()
+    <script> 
+        function redirect(path) {
+            window.location.href = path;
+        }
+    </script> 
+    <footer class="footer-content footer-new">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="footer-primary footer-address">
+                            <div class="footer_logo footer_logo_2">
+                                <img src="~/New_Content/images/mvp_logo2.png" class="img-fluid navbar-brand">
+                            </div>
+                            <p>
+                                <i class="fas fa-map-marker-alt"></i>3 Division Street, Suite 210, <br />
+                                East Greenwich, RI 02818.
+                            </p>
+                            <p><i class="fas fa-phone-alt"></i>+1 401-354-7251</p>
+                            <p><i class="far fa-envelope"></i>info@mvptalentmarket.com</p>
+                            <div class="footer-social-media">
+                                <ul>
+                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-4 col-sm-12">
+                        <div class="footer-primary">
+                            <div class="footer-primary">
+                                <h3>Quick Links </h3>
+                                <div class="row">
+                                    <div class="co-sm-6">
+                                        <ul class="footer-nav">
+                                            <li><a href="/Home/termsofuse"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Privacy Policy</a></li>
+                                            <li><a href="/Home/howitworks"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Resources</a></li>
+                                            <li><a href="/Home/about"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>About US</a></li>
+                                            <li><a href="/Home/contact"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Support </a></li>
+                                            <li><a href="/Home/contact"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Contact Us</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="co-sm-6">
+                                        <ul>
+                                            <li><a href="/Home/termscondition"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Terms & Condition</a></li>
+                                            <li><a href="/Home/termscondition"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Disclaimers </a></li>
+                                            <li><a href="/Home/Job"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>Careers</a></li>
+                                            <li><a href="/Home/Index"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>For Employers </a></li>
+                                            <li><a href="/Home/faq"><span><i class="fa fa-angle-right mr-2" aria-hidden="true"></i></span>FAQs </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                        <div class="footer-primary">
+                            <div class="footer-info">
+                                <h3>Newsletter</h3>
+                                <p>
+                                    Subscribe to stay updated on hiring trends, career advice, featured jobs, and announcements.
+                                </p>
+                            </div>
+                            <div class="newsletter mt-3">
+                                <form id="newletterform">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" autocomplete="off" maxlength="30" name="name" id="name" placeholder="Enter First Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" autocomplete="off" maxlength="30" name="name" id="name" placeholder="Enter Last Name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" autocomplete="off" name="email" maxlength="35" placeholder="Enter Your Email Address" id="email">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <a class="btn btn-primary w-100" name="login" id="login" onclick="NewletterCreate()">Submit</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="footer_logo">
+                            <a class="navbar-brand" href="#">MVP Talent Market</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="all_right">
+                            <p>© 2021 - 2022  All rights reserved.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="gotop">
+                            <div id="gotop">
+                                <a href="#" class="scroll-top" id="scrollToTop">Back to top<i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+  
+    <!-- js links -->
+    <script src="~/New_Content/js/jquery-3.5.1.min.js"></script>
+    <script src="~/New_Content/js/popper.min.js"></script>
+    <script src="~/New_Content/js/jquery-ui.min.js"></script>
+    <script src="~/New_Content/js/popover.min.js"></script>
+    <script src="~/New_Content/js/bootstrap.min.js"></script>
+    <script src="~/New_Content/js/scrollax.min.js"></script>
+    <script>
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 1000,
+                max: 500000,
+                step: 5000,
+                values: [1000, 500000],
+                slide: function (event, ui) {
+                    $("#slider-range .ui-slider-range").html('<div class="dataVal"></div>');
+                    $('#slider-range .dataVal').text("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
+                }
+            });
+            $("#slider-range .ui-slider-range").html('<div class="dataVal"></div>');
+            $('#slider-range .dataVal').text("$" + $("#slider-range").slider("values", 0) +
+                " - $" + $("#slider-range").slider("values", 1));
+        });
+    </script> 
+    <script src="~/New_Content/js/owl.carousel.min.js"></script>
+    <script src="~/New_Content/js/aos.js"></script>
+    <script src="~/MvpTelent_js/Login.js"></script>
+    <script src="~/MvpTelent_js/Client/PostJob.js"></script>
+    <script src="~/New_Content/js/jquery.validate.min.js"></script>
+    <script src="~/New_Content/js/jquery.toaster.js"></script>
+    <script>
+        function getdeshboard() {
+            url = "/Client/dashboard";
+            window.location.href = url;
+        }
+        function getcompanyprofile() {
+            url = "/Client/CompanyProfile";
+            window.location.href = url;
+        }
+        function getsetting() {
+            url = "/Client/ChangePassword";
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).contextmenu(function () {
+                return false;
+            });
+        });
+    </script> 
+</body>
+</html> 

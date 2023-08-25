@@ -1,0 +1,52 @@
+﻿@model Web.Model.Admin.EmailTempleteViewModel
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">
+                Email Template
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+ 
+                    <form id="EmailTemplateForm_Popup" name="EmailTemplateForm_Popup">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-username">Name</label>
+                                    <input type="text" maxlength="25" value="@Model.Name" id="Name" name="Name" autocomplete="off" placeholder="Please enter template name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password">Subject</label>
+                                    <input type="text" maxlength="50" value="@Model.Subject" id="Subject" name="Subject" autocomplete="off" placeholder="Please enter email subject" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Email Body </label>
+                                    <textarea class="form-control" rows="2" id="Description" name="Description" placeholder="Please enter email body">@Model.Description</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Email Body (Follow-Up 1)</label>
+                                    <textarea class="form-control" rows="2" id="Description1" name="Description1" placeholder="Please enter follow-up 1">@Model.Description1</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Email Body (Follow-Up 2) </label>
+                                    <textarea class="form-control" rows="2" id="Description2" name="Description2" placeholder="Please enter follow-up 2">@Model.Description2</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Email Body (Follow-Up 3) </label>
+                                    <textarea class="form-control" rows="2" id="Description3" name="Description3" placeholder="Please enter follow-up 3">@Model.Description3</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+          
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="login" id="login" class="btn btn-primary" onclick="AddUpdateEmailTemplate(@Model.Id)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/Admin/Admin/EmailTemplet.js"></script>

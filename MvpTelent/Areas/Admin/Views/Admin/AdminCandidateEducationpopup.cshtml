@@ -1,0 +1,49 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Education </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          
+                    <form id="CandidateEducationpopup" method="POST">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Education</label>
+                                    <input id="education" maxlength="50" autocomplete="off" class="form-control" value="@Model.Education" placeholder="Please enter education" name="education" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Education Start Year</label>
+                                    <input id="year" maxlength="4" autocomplete="off" class="form-control date-picker" value="@Model.EducaStartYear" placeholder="Please enter start year" name="year" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Education End Year </label>
+                                    <input id="endyear" maxlength="4" autocomplete="off" class="form-control date-picker" value="@Model.EducaEndYear" placeholder="Please enter end year" name="endyear" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">College/University </label>
+                                    <input id="uunivarsity" maxlength="100" autocomplete="off" class="form-control" value="@Model.univarsity" placeholder="Please enter college/university" name="uunivarsity" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea id="description" maxlength="1000" autocomplete="off" class="form-control" placeholder="Please enter description" name="description" type="text">@Model.description</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Visibility </label>
+                                    @Html.DropDownListFor(m => m.visibleid, new SelectList(Model.visibleidCollection, "Id", "Name"), "Please select visibility", new { @class = "form-control", @id = "visibleid", @Name = "visibleid" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+           
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn btn-primary" onclick="Admincreateeducationcandidate(@Model.Id,@Model.CandidateId)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

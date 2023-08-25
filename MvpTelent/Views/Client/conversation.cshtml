@@ -1,0 +1,241 @@
+﻿@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "conversation";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style type="text/css">
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: fixed;
+        background-color: rgba(0,0,0,0.65);
+        z-index: 999;
+        /*opacity:0.5*/
+    }
+
+    div#loader_gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Applicant Pipeline Messages
+                </h3>
+            </div>
+        </div>
+
+
+
+        <div class="row res-msg">
+            <div class="col-md-4 col-xl-3">
+                <div class="conversation-tile-candidate">
+                    <div class="card-header header-golden-bg position-relative">
+                        <img src="@Model.FileUpload" class="conversation-img">
+                        <h5 class="card-title mb-0 p-l-35">
+
+                            Candidate Details
+                        </h5>
+                    </div>
+                    <div class="card-body bg-white">
+                        <table class="table table-striped my-0 hr-l hr-r hr-b">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Name</b>: @Model.FirstName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Title</b>:
+                                        @if (@Model.Title == "")
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        { @Model.Title}
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Desired Title 1</b>:@if (@Model.DesiredTitle1 == "")
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        { @Model.DesiredTitle1}
+                                      
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Desired Title 2</b>:
+                                        @if (@Model.DesiredTitle2 == "")
+                                        { <span>N/A</span>  }
+                                        else
+                                        { @Model.DesiredTitle2}
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>location</b>:
+                                        @if (@Model.location == "")
+                                        {<span>N/A</span> }
+                                        else
+                                        { @Model.location}
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Job Type</b>:  @Model.JobTypeName
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Job Details</h5>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <table class="table table-striped my-0 hr-l hr-r hr-b">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Job Title</b>: @Model.JobTitle
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Location</b>:
+                                        @if (@Model.location == "")
+                                        {<span>N/A</span> }
+                                        else
+                                        { @Model.location}
+                                         
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Job Category</b>:
+
+                                        @if (@Model.jobcategory == "")
+                                        {<span>N/A</span> }
+                                        else
+                                        { @Model.jobcategory}
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Job Type</b>: @Model.JobTypeName
+                                    </td>
+                                </tr>
+                            </tbody>
+
+
+                        </table> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xl-9">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="col-12 col-lg-12 col-xl-12 p-0">
+                        <div class="card-header header-golden-bg">
+                            <h5 class="card-title mb-0"> Send a Message</h5>
+                        </div>
+                        <div class="flex-grow-0 py-3 px-3 border-top bg-light-2">
+                            <input type="hidden" name="messageid" id="messageid" value="@Model.CId" />
+                            <form class="input-group input-group-3" id="candidateConverform">
+                                <textarea rows="4" type="text" id="massege" @*onkeypress="return msgsent(event)"*@ autocomplete="off" name="massege" class="form-control w-100" placeholder="Please type a message"></textarea>
+                            </form>
+                            <div class="col-md-12 p-0 mt-3 text-right">
+                                <button type="submit" class="btn-new-1" onclick="Candidateconversationsaved(@Model.Id,@Model.jId)">Send Message</button>                               
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="position-relative">
+                            <div class="chat-messages card-body pb-0">
+                                @if (Model.candidateconversationcollection != null)
+                                {
+                                    foreach (var item in Model.candidateconversationcollection)
+                                    {
+                                        if (@Model.UserId == item.ClientCandidateId || @item.ClientCandidateId == 0)
+                                        {
+                                            <div class="chat-message-left pb-4">
+                                                <div class="flex-shrink-1 msg text-left">
+                                                    <div class="font-weight-bold mb-1">
+                                                        <span>
+                                                            <span class="font-weight-500 fs-14">
+                                                                @item.Name
+                                                            </span>
+                                                            <span class="date-msz"> (@item.createddate)</span>
+                                                        </span>
+                                                    </div>
+                                                    @item.Description
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+<script>
+    function msgsent(event) {
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                Candidateconversationsaved(@Model.Id,@Model.jId);
+        }
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+    });
+</script>
+<script src="~/MvpTelent_js/Client/Candidateconversation.js"></script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("messages");
+    element.classList.add("show");
+    var element = document.getElementById("messagestocandidates");
+    element.classList.add("active");
+</script>

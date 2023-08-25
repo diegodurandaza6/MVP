@@ -1,0 +1,231 @@
+﻿@model Web.Model.Admin.EmailTempleteViewModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Send Email</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="EmailTemplateForm_Popup">
+                <div class="row">
+                    <div class="col-lg-12">
+
+
+                        <table class="table-2">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Select Contact
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Collectionclientcontact.Count() > 0)
+                                {
+                                    foreach (var item in Model.Collectionclientcontact)
+                                    {
+                                        if (item.Email != "")
+                                        {
+                                            {RowNo++;}
+                                            <tr>
+                                                <td>
+                                                    <div class="label-check _checkbx">
+                                                        <div class="checkbox-1">
+                                                            <input type="checkbox" class="_email" name="Email" id="@item.Id" />
+                                                            <span> @item.Name &#60;@item.Email&#62;</span>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        if (RowNo == 0)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="label-check _checkbx">
+                                                        <div class="checkbox-1">
+
+                                                            <span>  No contact found</span>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="label-check _checkbx">
+                                                <div class="checkbox-1">
+
+                                                    <span>  No contact found</span>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-lg-12 col-form-group-m-b-15">
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Select Email Templete</label>
+                            @Html.DropDownListFor(m => m.emailtempleteid, new SelectList(Model.Collectionemailtemplete, "Id", "Name"), "Empty Email Template", new { @class = "form-control", @id = "TemplateId", name = "TemplateId", @onchange = "GetEmailTemplateById(this.value)" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password">Email Subject</label>
+                            <input type="text" maxlength="500" id="Subject" value="@Model.Subject" name="Subject" autocomplete="off" placeholder="Please enter email subject" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Select Group</label>
+                            @Html.DropDownListFor(m => m.GroupId, new SelectList(Model.candidategroupcollection, "Id", "Name"), "Select group", new { @class = "form-control", @id = "GroupId", name = "GroupId", @onchange = "Candidategroup(this.value)" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @if (Model.isfollow == 0)
+                            {
+                                <div class="label-check">
+                                    <input type="checkbox" id="isfollow" onchange="FollowUpOnChange()" name="isfollow" checked> <span> Enable Follow-up</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="label-check">
+                                    <input type="checkbox" id="isfollow" onchange="FollowUpOnChange()" name="isfollow" checked> <span> Enable Follow-up</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-form-group-m-b-15">
+                        <div class="form-group">
+                            <div id="Dv_ReminderSection" class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" maxlength="20" placeholder="First follow up date" autocomplete="off" id="FirstFollowDate" name="FirstFollowDate" value="@Model.FirstFollowDate" class="form-control" onchange="reminder1Change()">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" maxlength="20" autocomplete="off" id="secondFollowDate" name="secondFollowDate" value="@Model.secondFollowDate" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" maxlength="20" autocomplete="off" id="thirdfollowdate" name="thirdfollowdate" value="@Model.thirdfollowdate" class="form-control" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="validation-password"> Email Body</label>
+                            <textarea class="form-control" rows="2" id="Description" name="Description" placeholder="Email body...">@Model.Description</textarea>
+                        </div>
+                        <div id="Dv_ReminderDescriptionSection">
+                            <div class="form-group">
+                                <label class="form-label" for="validation-password"> Email Body (Follow-Up 1)</label>
+                                <textarea class="form-control" rows="2" id="Description1" name="Description1" placeholder="Please enter follow-up 1">@Model.Description1</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="validation-password"> Email Body (Follow-Up 2)</label>
+                                <textarea class="form-control" rows="2" id="Description2" name="Description2" placeholder="Please enter follow-up 2 ">@Model.Description2</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="validation-password">Email Body (Follow-Up 3)</label>
+                                <textarea class="form-control" rows="2" id="Description3" name="Description3" placeholder="Please enter follow-up 3">@Model.Description3</textarea>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="sendemailpopup" id="sendemailpopup" class="btn btn-primary" style="border:none;" onclick="emailsend(0)" value="Send">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script>
+    $("#FirstFollowDate").datepicker({
+        beforeShowDay: $.datepicker.noWeekends
+    });
+</script>
+<script>
+    $(function () {
+        var _noOfDaysToAdd = 4;
+
+        Date.prototype.toShortFormat = function () {
+            var month_names = ["Jan", "Feb", "Mar",
+                "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep",
+                "Oct", "Nov", "Dec"];
+            var day = this.getDate();
+            var month_index = this.getMonth();
+            var year = this.getFullYear();
+            return "" + day + "-" + month_names[month_index] + "-" + year;
+        }
+        var today = new Date();
+        var startDate = today.toShortFormat();
+        startDate = new Date(startDate.replace(/-/g, "/"));
+        var endDate = "", noOfDaysToAdd = _noOfDaysToAdd, count = 0;
+        while (count < noOfDaysToAdd) {
+            endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+            if (endDate.getDay() != 0 && endDate.getDay() != 6) {
+                count++;
+            }
+        }
+        var x = new Date(endDate);
+        var day = x.getDate();
+        var month = parseInt(x.getUTCMonth()) + 1;
+        var year = x.getFullYear();
+
+        $("#FirstFollowDate").val(month + '/' + day + '/' + year);
+        var aa = new Date($("#FirstFollowDate").val());
+        var startDate = aa.toShortFormat();
+        startDate = new Date(startDate.replace(/-/g, "/"));
+        var endDate = "", noOfDaysToAdd = _noOfDaysToAdd, count = 0;
+        while (count < noOfDaysToAdd) {
+            endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+            if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+                count++;
+            }
+        }
+        var x = new Date(endDate);
+        var day = x.getDate();
+        var month = parseInt(x.getMonth()) + 1;
+        var year = x.getFullYear();
+        $("#secondFollowDate").val(month + '/' + day + '/' + year);
+        var aa = new Date($("#secondFollowDate").val());
+        var startDate = aa.toShortFormat();
+        startDate = new Date(startDate.replace(/-/g, "/"));
+        var endDate = "", noOfDaysToAdd = _noOfDaysToAdd, count = 0;
+        while (count < noOfDaysToAdd) {
+            endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+            if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+                count++;
+            }
+        }
+        var x = new Date(endDate);
+        var day = x.getDate();
+        if (day === 1) {
+            var month1 = parseInt(x.getUTCMonth()) + 2;
+            var year1 = x.getFullYear();
+            var dd = month + '/' + day + '/' + year;
+            $("#thirdfollowdate").val(month1 + '/' + day + '/' + year1);
+        } else {
+            var month = parseInt(x.getUTCMonth()) + 1;
+            var year = x.getFullYear();
+            var dd = month + '/' + day + '/' + year;
+            $("#thirdfollowdate").val(month + '/' + day + '/' + year);
+        }
+    });
+</script>

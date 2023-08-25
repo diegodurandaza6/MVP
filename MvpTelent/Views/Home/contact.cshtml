@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="banner-inner" style="background-image: url('../../New_Content/images/contact-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Contact Us</h1>
+                <p>
+                    Please feel free to contact us with any questions or requests for additional information.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact-page-sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="sec-heading">
+                    <h3>Contact Us</h3>
+                    <div class="devider-left-center"></div>
+                    @*<span class="devider-left text-left"></span>*@
+                    <p>Please fill out the below contact form and a representative will respond as soon as possible. </p>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="banner-icon contact-icon">
+                    <h4> Connect & Follow</h4>
+                    <div class="job-details-icon">
+                        <div class="social-buttons text-center">
+                            <a href="#" target="blank" class="social-margin">
+                                <div class="social-icon facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </div>
+                            </a>
+                            <a href="#" target="blank" class="social-margin">
+                                <div class="social-icon facebook">
+                                    <i class="fab fa-twitter"></i>
+                                </div>
+                            </a>
+                            <a href="#" target="blank" class="social-margin">
+                                <div class="social-icon facebook">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </div>
+                            </a>
+                            <a href="mailto:info@mvptalentmarket.com" target="blank" class="social-margin">
+                                <div class="social-icon facebook">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-page-form">
+                    <div class="row mt-5">
+                        <div class="col-lg-7">
+                            <div class="comment-form">
+                                <form id="contactinqueryfrom">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" name="UName" id="UName" autocomplete="off" maxlength="20" class="form-control" placeholder="Please enter first name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" name="LName" id="LName" autocomplete="off" maxlength="20" class="form-control" placeholder="Please enter last name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" name="Email" id="Email" autocomplete="off" maxlength="50" class="form-control" placeholder="Please enter email">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" name="Phone" autocomplete="off" maxlength="15" id="Phone" class="form-control" placeholder="Please enter phone number">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" name="Subject" id="Subject" autocomplete="off" maxlength="50" class="form-control" placeholder="Please enter subject">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <textarea id="Message" name="Message" class="form-control big" placeholder="Type your message here...." maxlength="2000"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <div class="form-btn">
+                                                    <button type="button" class="btn search-btn button-secondry" id="btncontact" name="btncontact" onclick="CreateContactUs()">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="single_ctinfo">
+                                <figure class="ctinfo_icon"><i class="fas fa-home"></i></figure>
+                                <article class="ctinfo_detail">
+                                    <h3 class="single_info_title cl_2">Office Address </h3>
+                                    3 Division Street, Suite 210, <br> East Greenwich, RI 02818.
+                                </article>
+                            </div>
+                            <div class="single_ctinfo">
+                                <figure class="ctinfo_icon"><i class="fas fa-envelope"></i></figure>
+                                <article class="ctinfo_detail">
+                                    <h3 class="single_info_title cl_2">E-mail Us</h3>
+                                    info@mvptalentmarket.com 
+                                </article>
+                            </div>
+                            <!-- Single Info -->
+                            <div class="single_ctinfo">
+                                <figure class="ctinfo_icon"><i class="fas fa-headphones"></i></figure>
+                                <article class="ctinfo_detail">
+                                    <h3 class="single_info_title cl_2">Call Us</h3>
+                                    +1 401-354-7251 
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/MvpTelent_js/ContactUs.js"></script>
+<script>
+    var element = document.getElementById("contact");
+    element.classList.add("active");
+</script>

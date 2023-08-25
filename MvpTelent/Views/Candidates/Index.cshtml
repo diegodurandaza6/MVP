@@ -1,0 +1,292 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<div id="candidateprofilepopup" class="modal fade" role="dialog"></div>
+<div id="Candidatecupdateprofile_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateeducation_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateworkexperience_PopUp" class="modal fade" role="dialog"></div>
+<div id="candidateawrds_PopUp" class="modal fade" role="dialog"></div>
+<!DOCTYPE html>
+<div class="cui__layout__content">
+    <div class="cui__breadcrumbs">
+        <div class="cui__breadcrumbs__path">
+            <a href="javascript: void(0);">Dashboard</a>
+            <span>
+                <span class="cui__breadcrumbs__arrow"></span>
+                <span>Candidate</span>
+            </span>
+        </div>
+    </div>
+    <div class="my-body">
+        <div class="row m-0">
+            <div class="kit__utils__heading d-block pull-left w-100-pcnt">
+                <a class="inline-btn pull-right" onclick="UpdateCandidateprofilepopup()" data-toggle="modal" data-target="#exampleModal1">
+                    <i class="fe fe-plus"></i>
+                    Edit
+                </a>
+            </div>
+        </div>
+        <div class="detail_list_body">
+            <div class="detail_list_icon">
+                <i class="fa fa-clipboard"></i>
+            </div>
+            <div class="detail_list_right">
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span><b>Name</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Experience</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Age</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Current Salary($)</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Expected  Salary($)</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>
+                            Education Levels
+                        </span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>
+                            Facebook
+                        </span>
+                    </div>
+                </div>
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span>@Model.Name</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.experienceName</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.ageName</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.CurrentSalary</span>
+                    </div> <div class="detail_list_head">
+                        <span>@Model.expectedSalary</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.educationlevel</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.Facebook</span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail_list_right" style="margin-left: 85px">
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span><b>Title</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Country</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>State</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>City</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Zip Code</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Twitter</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>LinkedIn</b></span>
+                    </div>
+                </div>
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span>@Model.Title</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.CountryName</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.StateName</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.CityName</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.Zipcode</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.Twitter</span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>@Model.Linkedin</span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail_list_right" style="margin-left: 85px">
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span><b>File</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Resume Upload</b></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span><b>Profile Image</b></span>
+                    </div>
+                </div>
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span> <a id="lbllogoFile" href="/FileUpload/CandidateResume/@Model.Id/@Model.Resumefile" class="color-green font-12" download style="" title="download"><b>@Model.Resumefile  </b> </a></span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>   <input id="Uploadfiles" type="file">   <input type="button" class="btn btn-primary" onclick="CandidateResumeUpload()" value="Upload Resume"></span>
+                    </div>
+                </div>
+                <div class="detail_list_label">
+                    <div class="detail_list_head">
+                        <span>
+                            <img style="height:50px;width:50px" src="/FileUpload/CandidateImage/candidate.png" alt="Alternate Text" />
+                        </span>
+                    </div>
+                    <div class="detail_list_head">
+                        <span>   <input id="Imagefiles" type="file">   <input type="button" class="btn btn-primary" onclick="ResumeImageUpload()" value="Upload Image"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0">
+            <div class="kit__utils__heading d-block pull-left w-100-pcnt">
+                <h5 class="pull-left">Education </h5>
+                <a class="inline-btn pull-right" onclick="CandidateEducationpopup(0)">
+                    <i class="fe fe-plus"></i>
+                    Add
+                </a>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="s_no">
+                            S.No
+                        </th>
+                        <th>Education</th>
+                        <th>year</th>
+                        <th>university</th>
+                        <th>description</th>
+                        <th class="table_action_3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int RowNo = 0;}
+                    @if (Model.EducationCollection != null)
+                    {
+                        foreach (var item in Model.EducationCollection)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    @{RowNo++;}@RowNo
+                                </td>
+                                <td>@item.Education</td>
+                                <td>@item.year</td>
+                                <td>@item.univarsity</td>
+                                <td>@item.description</td>
+                                <td class="table_btn">
+                                    <a class="table_btn_edit" onclick="CandidateEducationpopup(@item.educationId)" title="Edit">
+                                        <i class="fe fe-edit"></i>
+                                    </a>
+                                    <a class="table_btn_delete" onclick="CandidateEducationDelete(@item.educationId)" title="Delete">
+                                        <i class="fe fe-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row m-0">
+            <div class="kit__utils__heading d-block pull-left w-100-pcnt">
+                <h5 class="pull-left">WORK EXPERIENCE </h5>
+                <a class="inline-btn pull-right" onclick="Candidateworkexperiencepopup(0)">
+                    <i class="fe fe-plus"></i>
+                    Add
+                </a>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="s_no">
+                            S.No
+                        </th>
+                        <th>Title</th>
+                        <th>Todate</th>
+                        <th>FromDate</th>
+                        <th>description</th>
+                        <th class="table_action_3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int RowNo1 = 0;}
+                    @if (Model.workexperiencecollection != null)
+                    {
+                        foreach (var item in Model.workexperiencecollection)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    @{RowNo1++;}@RowNo1
+                                </td>
+                                <td>@item.Title</td>
+                                <td>@item.Todate</td>
+                                <td>@item.Fromdate</td>
+                                <td>@item.description</td>
+                                <td class="table_btn">
+                                    <a class="table_btn_edit" onclick="Candidateworkexperiencepopup(@item.workId)" title="Edit">
+                                        <i class="fe fe-edit"></i>
+                                    </a>
+                                    <a class="table_btn_delete" onclick="CandidateworkexperienceDelete(@item.workId)" title="Delete">
+                                        <i class="fe fe-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+         
+        <div class="row m-0">
+            <div class="kit__utils__heading d-block pull-left w-100-pcnt">
+                <h5 class="pull-left">PORTFOLIO </h5>
+                <input type="file" id="ImageName" class="mobile-width-100" multiple onchange="Candidateportfoliosave()" name="ImageName" />
+            </div>
+        </div>
+        <div>
+            <div>
+                @if (Model.portfoliocecollection != null)
+                {
+                    foreach (var item in Model.portfoliocecollection)
+                    {
+                        <img src="@item.FileUpload" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script> 

@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Change Password";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Change Password
+                </h3>
+                <span>
+                    Manage user Account Setting
+                </span>
+            </div>
+        </div>
+        <hr class="m-0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="changepassword-section">
+                    <div class="card changepassword-section-inner">
+                        <div class="card-header hr-b-1">
+                            <h5 class="card-title m-0">
+                                Change Password
+                            </h5>
+                        </div>
+                        <form class="card-body" id="ChangePasswordform">
+                            <div class="row">
+                                <div class="col-md-12 p-0">
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Current Password</label>
+                                            <input type="password" name="oldpassword" autocomplete="off" id="oldpassword" placeholder="Please enter current password" maxlength="20" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>New Password</label>
+                                            <input type="password" placeholder="Please enter new password" name="newpassword" id="newpassword" autocomplete="off" maxlength="20" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Confirm New Password</label>
+                                            <input type="password" placeholder="Please confirm new password" name="confirmpassword" autocomplete="off" id="confirmpassword" maxlength="20" class="form-control">
+                                        </div>
+                                    </div>
+ 
+                                    <div class="col-12 col-lg-12 text-right">
+                                        <button class="btn-new-1" type="button" onclick="ChangePasswordEmail(@Model.UserId)">Update</button>
+                                        <button type="button" class="btn-new-2" onclick="RedirectToDashboard()">Cancel</button>
+ 
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script>
+<script>
+  
+    function RedirectToDashboard() {
+        url = "/Candidates/Dashboard";
+        window.location.href = url;
+    }
+</script>

@@ -1,0 +1,239 @@
+﻿@model Web.Model.Paypal.PlansListModel
+@{
+    ViewBag.Title = "payment history";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Plan & Payment History</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" href="/Home/Plan" target="_blank">
+                    Upgrade
+                </a>
+                @*@if (Model.Collection != null)
+        {
+            <a class="btn-new-1" onclick="stoppayment(0)">
+                Stop Recurring Payment
+            </a>
+        }
+        else
+        {
+            <a class="btn-new-1">
+                Current recurring payment stop
+            </a>
+        }*@
+            <a class="btn-new-1" href="/Home/contact" target="_blank">
+                Contact Sales
+            </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            My Current Plan
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden m-0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Plan Name :</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.Name != null)
+                                        {
+                                            <span>@Model.Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Free</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Plan Expires :</b>
+                                    </td>
+                                    <td>
+                                        @if (@Model.ValidPlanDate != null)
+                                        {
+                                            <span>
+                                                @Model.ValidPlanDate
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="card flex-fill">
+                    <table class="table table-striped my-0 tr-golden">
+                        <thead>
+                            <tr>
+                                <th class="w-s-no">S.No</th>
+                                <th>Plan Name</th>
+                                <th>Amount</th>
+                                <th> Date</th>
+                                <th>Plan Status</th>
+                                <th class="w-150px text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int RowNo = 0;}
+                            @if (Model.Collection != null)
+                            {
+                                foreach (var item in Model.Collection)
+                                {
+                                    <tr>
+                                        <td> @{RowNo++;}@RowNo</td>
+                                        <td>
+                                            @item.PlanName
+                                        </td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.CreateDate - @item.ValidPlanDate</td>
+                                        <td>
+                                            @if (@item.Status == "Current")
+                                            {
+                                                <span>(@item.Status)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">
+                                                    (@item.Status)
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="table-action text-center">
+                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="plandetailbyid(@item.Id)">
+                                                <i class="far fa-fw fa-eye"></i>
+                                            </a>
+                                             
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="p-3" colspan="6">
+                                        <span class="no-data-found">
+                                            No Data found...
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body">
+                    @if (Model.TotalRowCount > Model.maxRows)
+                    {
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                @if (Model.CurrentPageIndex > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                }
+                                @if (Model.indexlegth > 20)
+                                {
+                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                    {
+                                        if (i != Model.CurrentPageIndex)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                        }
+                                        if (i > (Model.CurrentPageIndex + 19))
+                                        {
+                                            <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                    {
+                                        if (i != Model.CurrentPageIndex)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                        }
+                                    }
+                                }
+                                @if (Model.CurrentPageIndex < Model.PageCount)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                }
+                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function plandetailbyid(Id) {
+        model = { Id: Id }
+        $.get("/Home/plandetails", model, function (response) {
+            $("#plandetail_popup").html(response);
+            $("#plandetail_popup").modal("show");
+        });
+    }
+</script>
+<script>
+    function stoppayment() {
+        if (stoppaymentConfirmation() == false) {
+            return false;
+        }
+        $.get("/Home/stoppayment", function (data) {
+            if (data == 1) {
+                toastr.success("Recurring Payment stop successfully.");
+            } else {
+                toastr.warning("Something went wrong.");
+            }
+        });
+    }
+    function stoppaymentConfirmation() {
+        return confirm(" Do you really want stop recurring payment?");
+    }
+    function PagerClick(CurrentPageIndex) {
+        url = "/Candidates/paymenthistory?CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = url;
+    }
+</script>
+<div id="plandetail_popup" class="modal fade" role="dialog"></div>
+<script>
+    var element = document.getElementById("plan&paymenthistory");
+    element.classList.add("active");
+</script>

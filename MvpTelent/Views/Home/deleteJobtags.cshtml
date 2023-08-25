@@ -1,0 +1,14 @@
+﻿@model Web.Model.Client.JobsModel
+
+@if (Model.tagcollection != null)
+{
+    foreach (var item in Model.tagcollection)
+    {
+
+
+        <li><button type="button" class="save">@item.Name <i onclick="deleteJobtags(@item.Id,@Model.Ids,@Model.TId)" class="fa fa-times" aria-hidden="true"></i></button></li>
+
+
+         
+    }
+}

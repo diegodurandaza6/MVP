@@ -1,0 +1,88 @@
+﻿@model Web.Model.Client.ClientModel
+
+
+
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> Add/Edit User</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="ClientContactForm">
+                    <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label"> First Name</label>
+                            <input type="text" maxlength="25"   id="firstname" name="firstname" autocomplete="off" tabindex="1" value="@Model.Name" placeholder="Please enter first name" class="form-control"> 
+                        </div> 
+                    </div>
+                     <div class="col-lg-6"> 
+                         <div  class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <input type="text" maxlength="25"   id="lastname" name="lastname" autocomplete="off" tabindex="1" value="@Model.LastName" placeholder="Please enter last name" class="form-control">
+                        </div> 
+                    </div>
+                </div> 
+                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label">Email</label>
+                            @if (Model.Id > 0)
+                            {
+                                <input type="text" maxlength="40" id="email" name="email" autocomplete="off" tabindex="3" readonly="readonly" value="@Model.Email" placeholder="Please enter email" class="form-control">
+                            }
+                            else
+                            {
+                                <input type="text" maxlength="40" id="email" name="email" autocomplete="off" tabindex="3"   value="@Model.Email" placeholder="Please enter email" class="form-control">
+                            }
+                        </div> 
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                           <label class="control-label">Phone Number</label>
+                            <input type="text" maxlength="15" id="Phone" name="Phone" autocomplete="off" tabindex="3" value="@Model.Phone1" placeholder="Please enter phone number" class="form-control"  >
+                        </div>
+                         
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="control-label">Position </label>
+                            <input type="text" maxlength="30" id="Position" name="Position" autocomplete="off" tabindex="3" value="@Model.Position" placeholder="Please enter position" class="form-control"  >
+                        </div>
+                         
+                         
+                    </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label">LinkedIn</label>
+                            <input type="text" maxlength="100" id="Linkdin" name="Linkdin" autocomplete="off" tabindex="7" value="@Model.Linkdin" placeholder="Please enter linkedIn profile url" class="form-control">
+                        </div>
+                         
+                    </div>
+                </div>
+                 
+
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            @if(@Model.Id == 0)
+            {<label> <b>Note:</b> Auto generated password will be sent on above email address. </label>}
+            
+
+
+            <input type="button" name="login" id="login" class="btn btn-primary" style="border:none;" onclick="AddCompanyContact(@Model.ClientId,@Model.Id,@Model.UseraccountprofileId )" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,45 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<table class="table table-striped my-0 table-bordered">
+    <thead class="bg-white">
+        <tr>
+            <th class="text-center">Select</th>
+            <th>Job Title</th>
+            <th>Job Location</th>
+            <th>
+                @if (Model.Id == 1)
+                {
+                    <span>Client Name</span>
+                }
+                else
+                {
+                    <span>Company Name</span>
+                }
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int RowNo = 0;}
+        @if (Model.candidatesharedjobcollection != null)
+        {
+            foreach (var item in Model.candidatesharedjobcollection)
+            {
+                <tr>
+                    <td class="faicon text-center">
+                        <input id="CsharedJob" multiple value="@item.Id" type="checkbox" name="CsharedJob" class="btn btn-info action_btn">
+                    </td>
+                    <td><a onclick="jobdetailbyId('@item.Ids')" style="cursor:pointer;">@item.jobtitle</a></td>
+                    <td><a>@item.location</a></td>
+                    <td><a @*onclick="clientdetailbyId(@item.ClientId)" style="cursor:pointer;"*@> @item.ClientName</a></td>
+                </tr>
+            }
+            if (Model.candidatesharedjobcollection.Count() == 0)
+            {
+                <tr>
+                    <td class="text-left" colspan="8">
+                        <span>No Data found...</span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

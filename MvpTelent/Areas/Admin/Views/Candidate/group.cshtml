@@ -1,0 +1,180 @@
+﻿@model Web.Model.Group.GroupListModel
+@{
+    ViewBag.Title = "group";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Groups
+                </h3>
+
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="NewGroup(0)">
+                    Create Group
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" id="_Name" name="_Name" value="@Model.Name" placeholder="Please enter group name"  maxlength="25">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select id="StatusID" name="StatusID" class="form-control">
+                                            <option value="">Select status</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">InActive</option>
+
+                                        </select>
+                                        @if (Model.Status == 0)
+                                        {
+                                            <script>
+                                                document.getElementById("StatusID").value = "0";
+                                            </script>
+                                        }
+                                        else if (Model.Status == 1)
+                                        {
+                                            <script>
+                                                document.getElementById("StatusID").value = "1";
+                                            </script>
+                                        }
+                                        else
+                                        {
+                                            <script>
+                                                document.getElementById("StatusID").value = "";
+                                            </script>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getGroupByName()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="Resetgroup()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Group List
+                        </h5>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Collection != null)
+                                {
+                                    foreach (var item in Model.Collection)
+                                    {
+                                        <tr>
+                                            <td class="text-left" style="width:10%">
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td style="width:40%">
+                                                @item.Name
+                                            </td>
+                                            <td style="width:30%">
+                                                @item.Date
+                                            </td>
+                                            <td style="width:25%">
+                                                @if (item.Status == 1)
+                                                {
+                                                    <span>Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>InActive</span>
+                                                }
+                                            </td>
+
+                                            <td class="table-action">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="NewGroup(@item.Id)">
+                                                    <i class="far fa-fw fa-edit"></i>
+                                                </a>
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="GroupDetail('@item.Ids')">
+                                                    <i class="far fa-fw fa-eye"></i>
+                                                </a>
+                                                @if (item.Status == 1)
+                                                {
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Inactive" onclick="status(@item.Id ,0)">
+                                                        <i class="fas fa-fw fa-lock-open"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Active" onclick="status(@item.Id ,1)">
+                                                        <i class="fas fa-fw fa-lock"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5">
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="AddNewGroupPopup" class="modal fade " role="dialog"></div>
+<script src="~/Areas/Admin/Group/Group.js"></script>
+<script>
+    var element = document.getElementById("Candidates").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Candidates");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Candidates");
+    element.classList.add("show");
+    var element = document.getElementById("Groups+1");
+    element.classList.add("active");
+</script>

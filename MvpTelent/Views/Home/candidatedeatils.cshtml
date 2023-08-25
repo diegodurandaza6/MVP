@@ -1,0 +1,34 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>candidatedeatils</title>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <div>
+        <div class="contact_sec">
+            <h3>Request To Interview</h3>
+            <form id="sendenquery">
+                <div class="betty_cse">
+                    <input type="text" class="form-control" value="" name="EName" id="EName" placeholder="Enter your Name*">
+                    <input type="text" class="form-control" value="" name="Email" id="Email" placeholder="Email Address*">
+                    <input type="text" class="form-control" value="" name="Phone" id="Phone" placeholder="Phone Number*">
+                    <input type="text" class="form-control" value="" name="JobPostingUrl" id="JobPostingUrl" placeholder="Url*">
+                    <textarea class="form-control" rows="4" name="Description" id="Description" placeholder="Message should have more than 50 characters"></textarea>
+                    <input type="file" class="form-control" value="" name="file" id="file">
+                    <div class=s_request>
+                        <button class="send_request" onclick="ClientSendenquery(@Model.Id)">Send Request</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/MvpTelent_js/texting.js"></script>

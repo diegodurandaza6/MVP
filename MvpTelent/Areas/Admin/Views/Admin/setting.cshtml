@@ -1,0 +1,59 @@
+﻿@model Web.Model.Common.LoginModel
+@{
+    ViewBag.Title = "seeting";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Change Password</h3>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6 offset-3 mt-5">
+                <div class="card hr-t hr-r hr-b hr-l">
+                    <div class="card-body">
+                        <form id="ChangePasswordform">
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Current Password</label>
+                                        <input type="password" placeholder="Please enter current password" name="oldpassword" autocomplete="off" id="oldpassword" maxlength="20" value="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>New Password</label>
+                                        <input type="password" placeholder="Please enter new password" name="newpassword" id="newpassword" autocomplete="off" maxlength="20" value="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <input type="password" placeholder="Please confirm new password" name="confirmpassword" autocomplete="off" id="confirmpassword" maxlength="20" value="" class="form-control"> <span class="symbol-input100"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" name="SaveBtn" id="SaveBtnID" class="btn btn-primary" onclick="ChangePasswordEmail(@Model.UserId)" value="Update">
+                        <button type="button" class="btn btn-light" onclick="RedirectToDashboard()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/MvpTelent_js/Login.js"></script>
+<script>
+    function RedirectToDashboard() {
+        url ='/Admin/Admin/Index';
+        window.location.href = url;
+    }
+</script>

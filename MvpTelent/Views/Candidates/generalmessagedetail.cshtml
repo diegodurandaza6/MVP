@@ -1,0 +1,176 @@
+﻿@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "generalmessagedetail";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style type="text/css">
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: fixed;
+        background-color: rgba(0,0,0,0.65);
+        z-index: 999;
+        /*opacity:0.5*/
+    }
+
+    div#loader_gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Messages
+                </h3>
+            </div>
+        </div>
+
+
+        <div class="row res-msg">
+            <div class="col-md-4 col-xl-3">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Admin Detail</h5>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+ 
+                        <ul class="list-unstyled mb-0">
+
+                            <li class="mb-1"><i class="fas fa-fw fa-graduation-cap clr-golden"></i> @Model.Role</li>
+                            <li class="mb-1"><i class="fas fa-fw fa-user clr-golden"></i> @Model.Name @Model.LastName</li>
+                            <li class="mb-1"><i class="fas fa-fw fa-envelope clr-golden"></i> @Model.Email</li>
+                            <li class="mb-1"><i class="fas fa-fw fa-phone clr-golden rotate-90"></i> @Model.ClientPhone</li>
+                            <li class="mb-1"><i class="fas fa-fw fa-map-marker-alt clr-golden"></i> @Model.location</li>
+
+                             
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xl-9">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="col-12 col-lg-12 col-xl-12 p-0">
+                        <div class="card-header header-golden-bg">
+                            <h5 class="card-title mb-0">Conversation with Admin</h5>
+                        </div>
+                        <div class="flex-grow-0 py-3 px-3 border-top bg-light-2">
+                            <input type="hidden" name="messageid" id="messageid" value="@Model.Id" />
+                            <input type="hidden" name="messageIds" id="messageIds" value="@Model.Ids" />
+                            <form class="input-group input-group-3" id="msgchatform">
+                                <textarea type="text" id="candidatemassege" onkeypress="return msgsent(event)" autocomplete="off" rows="4" cols="50" name="candidatemassege" class="form-control w-100" placeholder="Type a message..."></textarea>
+                            </form>
+                            <div class="col-md-12 p-0 text-right mt-3">
+                                <button class="btn btn-primary border-0" onclick="sendmessagebyId()">Send</button> 
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="position-relative">
+                            <div class="chat-messages card-body pb-0">
+                                @if (Model.candidateconversationcollection != null)
+                                {
+                                    foreach (var item in Model.candidateconversationcollection)
+                                    {
+                                        if (item.CreateBy == Model.UserId)
+                                        {
+                                            <div class="chat-message-left pb-4">
+                                                <div class="flex-shrink-1 msg">
+                                                    <div class="font-weight-bold mb-1">
+                                                        <span>
+                                                            <span class="font-weight-500 fs-14">
+                                                                @item.Name
+                                                            </span>
+                                                            <span class="date-msz"> (@item.Date)</span>
+                                                        </span>
+                                                    </div>
+                                                    @Html.Raw(item.Description)
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="chat-message-left pb-4">
+                                                <div class="flex-shrink-1 msg">
+                                                    <div class="font-weight-bold mb-1">
+                                                        <span>
+                                                            <span class="font-weight-500 fs-14">
+                                                                @item.Name
+                                                            </span>
+                                                            <span class="date-msz"> (@item.Date)</span>
+                                                        </span>
+                                                    </div>
+                                                    @Html.Raw(item.Description)
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+<script>
+    function sendmessagebyId() {
+        sendmessagevalidation();
+        if ($('#msgchatform').valid()) {
+            model = {
+                Description: $("#candidatemassege").val(),
+                Id: $("#messageid").val()
+            }
+            $.post("/Candidates/generalmessageconversationsaved", model, function () {
+                var url = "/Candidates/generalmessagedetail?Ids=" + $("#messageIds").val();
+                toastr.success("Messages sent  successfully.");
+                setTimeout(function () { window.location.href = url; }, 300);
+            });
+        }
+    }
+    function sendmessagevalidation() {
+        $("#msgchatform").validate({
+            rules: {
+                candidatemassege: {
+                    required: true
+                },
+            }
+        });
+    }
+</script>
+<script>
+    function msgsent(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            sendmessagebyId()
+        }
+    }
+</script>
+<script>
+    var element = document.getElementById("generalmessages");
+    element.classList.add("active");
+</script>

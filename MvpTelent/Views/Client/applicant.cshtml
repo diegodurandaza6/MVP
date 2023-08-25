@@ -1,0 +1,1152 @@
+﻿@{
+    ViewBag.Title = "applicant list";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style>
+    .detail-tabs > li > a {
+        min-width: 130px;
+    }
+
+    .tlt-rc {
+        position: absolute;
+        right: 46px;
+        top: 21px;
+        font-weight: 500;
+    }
+
+    .tab-content table tr {
+        background-color: #fff !important
+    }
+
+    .detail-tabs > li > a {
+        min-width: 132px;
+    }
+</style>
+@model Web.Model.Candidate.CandidateModel
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Applicants </h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="gotolist('/Client/pipelinemessageslist')">
+                    Interview Pipeline Messages (<span>@Model.pipelinemessagecount</span>)
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-4 m-b-10">
+                                        @Html.DropDownListFor(m => m.jobStatus, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Select job status", new { @class = "form-control", @Id = "jobStatus", @Name = "jobStatus" })
+                                    </div>
+                                    <div class="col-md-8 m-b-10">
+
+                                        @*@Html.DropDownListFor(m => m.JobId, new SelectList(Model.JobCollection, "Id", "Name"), "Select Job", new { @class = "custom-select", @Id = "JobId", @Name = "JobId", @onchange = "GetClient_JobOnwerDetailById(this.value)" })*@
+
+                                        <div style="display:none" >
+                                            @Html.DropDownListFor(m => m.JobId, new SelectList(Model.JobCollection, "Id", "Name"), "Select Job", new { @class = "custom-select", @Id = "JobId", @Name = "JobId" })
+                                        </div>
+                                        <div class="dropdown dropdown_select_job custom-select">
+                                            <a onclick="selectJobId('Please select a job','00','')" class="dropdown-toggle" role="button" name="jobLocationid" id="jobLocationid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                @(Model.Title == null ? "Please select a job" : Model.Title)
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" onclick="selectJobId('Please select a job','','')">Please select a job </a>
+                                                @if (Model.JobCollection != null)
+                                                {
+                                                    foreach (var item in Model.JobCollection)
+                                                    {
+                                                        <a class="dropdown-item" onclick="selectJobId('@item.Name', '@item.Id', '@item.Location')">
+                                                            <span>@item.Name</span> <span> @item.Location.Replace(", USA", "")</span>
+                                                        </a>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+
+                                        @*<div>
+                                                <label id="lblLabel" class="f-w-400" name="lblLabel" style="margin-top:10px"> </label>
+                                                <label id="lblName" class="f-w-400" name="lblName"></label>
+                                                <label name="lblEmail" class="f-w-400" id="lblEmail"></label>
+                                            </div>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getApplicantList()">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="Reset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card flex-fill">
+                            <div class="card-header hr-b">
+                                <h5 class="card-title mb-0">
+                                    Applicants Pipeline
+                                </h5>
+                            </div>
+                            <div class="card-body">
+
+                                <ul class="nav detail-tabs" role="tablist">
+                                    <li>
+                                        <a id="tab_1" onclick="ActiveTab(1,0,2)" data-toggle="tab" href="#NewApplicants" role="tab" aria-controls="home" aria-selected="true">
+                                            New Applicants  (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 1).Count())))
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="tab_2" onclick="ActiveTab(2,0,2)" data-toggle="tab" href="#Reviewed" role="tab" aria-controls="profile" aria-selected="false">
+                                            Reviewed (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 2).Count())))
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="tab_3" onclick="ActiveTab(3,0,2)" data-toggle="tab" href="#Interviewing" role="tab" aria-controls="contact" aria-selected="false">
+                                            Interviewing (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 3).Count())))
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="tab_4" onclick="ActiveTab(4,0,2)" data-toggle="tab" href="#OfferMade" role="tab" aria-controls="offer" aria-selected="true">
+                                            Offer Made (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 4).Count())))
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="tab_5" onclick="ActiveTab(5,0,2)" data-toggle="tab" href="#Rejected" role="tab" aria-controls="raject" aria-selected="true">
+                                            Rejected (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 5).Count())))
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="tab_6" onclick="ActiveTab(6,0,2)" data-toggle="tab" href="#Hired" role="tab" aria-controls="hire" aria-selected="true">
+                                            Hired (@(Model.CandidateCollection == null ?  (0) :  (Model.CandidateCollection.Where(m => m.InterviewSId == 6).Count())))
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                                    <div class="card-body detail-pills" id="myTabContent">
+
+                                        <div class="fade" id="NewApplicants" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 1))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send Message To Recruiter </a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span> @item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 1).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="fade" id="Reviewed" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 2))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i>  Send Message To Recruiter</a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 2).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="fade" id="Interviewing" role="tabpanel" aria-labelledby="contact-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 3))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send Message To Recruiter</a>
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 3).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="fade" id="OfferMade" role="tabpanel" aria-labelledby="offer-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 4))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i>  Send Message To Recruiter</a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 4).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="fade" id="Rejected" role="tabpanel" aria-labelledby="raject-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 5))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i>  Send Message To Recruiter</a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 5).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="fade" id="Hired" role="tabpanel" aria-labelledby="hire-tab">
+                                            <div class="row">
+                                                @if (Model.CandidateCollection != null)
+                                                {
+                                                    foreach (var item in Model.CandidateCollection.Where(m => m.InterviewSId == 6))
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="candidatelist-main-body">
+                                                                <div class="candidatelists-main-header">
+                                                                    <span title="Details" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" for="exampleCheck1">@item.Name</span>
+                                                                    <div class="card-actions float-right">
+                                                                        <div class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                                <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                <a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-file-alt"></i> Add Note</a>
+                                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@Model.JobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>
+                                                                                <a class="dropdown-item" onclick="CandidateDetail('@item.Ids','@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')"><i class="far fa-fw fa-eye"></i> View Candidate Details</a>
+                                                                                <a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@item.InterviewSId,@Model.JobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Pipeline Status</a>
+                                                                                <a class="dropdown-item" onclick="candidateconversation('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i> Send a Message</a>
+
+                                                                                @if (item.SubmitedByAdmin == 1)
+                                                                                {
+                                                                                    <a class="dropdown-item" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')" style="cursor:pointer"><i class="far fa-fw fa-envelope"></i>  Send Message To Recruiter</a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-inner">
+                                                                    <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                                        <img src="@item.imageFile">
+                                                                    </div>
+                                                                    <div class="candidatelist-main-inner-text">
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Current Salary($)</span>
+                                                                                        @if (item.CurrentSalary.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.CurrentSalary</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Job Type</span>
+                                                                                        @if (item.JobType.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.JobType</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <span>Zip Code</span>
+                                                                                        @if (item.Zipcode.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.Zipcode</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span>Industry</span>
+                                                                                        @if (item.IndustryName.Length > 0)
+                                                                                        {
+                                                                                            <span>@item.IndustryName</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="candidatelist-main-footer">
+                                                                    <ul class="candi-tiles-social">
+                                                                        <li>
+                                                                            <i class="fas fa-map-marker-alt"></i>
+                                                                            @if (item.location.Length > 0)
+                                                                            {
+                                                                                <span>@item.location</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-filter"></i>
+                                                                            @if (item.experience.Length > 0)
+                                                                            {
+                                                                                <span>@item.experience</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fas fa-graduation-cap"></i>
+                                                                            @if (item.educationlevel.Length > 0)
+                                                                            {
+                                                                                <span>@item.educationlevel</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>N/A</span>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (Model.CandidateCollection.Where(m => m.InterviewSId == 6).Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td class="p-3" colspan="5">
+                                                                <span class="no-data-found">
+                                                                    No Data found...
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="p-3" colspan="5">
+                                                            <span class="no-data-found">
+                                                                No Data found...
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<input type="hidden" id="H_JobId" name="H_JobId" value="@Model.JIds" />
+<script>
+   if (@Model.Id== 1) {
+          document.getElementById("NewApplicants").className = 'active show';
+    }
+    else if (@Model.Id== 2) {
+          document.getElementById("Reviewed").className = 'active show';
+    }
+    else if (@Model.Id== 3) {
+          document.getElementById("Interviewing").className = 'active show';
+    }
+     else if (@Model.Id== 4) {
+          document.getElementById("OfferMade").className = 'active show';
+    }
+     else if (@Model.Id== 5) {
+
+          document.getElementById("Rejected").className = 'active show';
+      }
+
+     else if (@Model.Id== 6) {
+
+          document.getElementById("Hired").className = 'active show';
+    }
+   document.getElementById("tab_" +@Model.Id).className = 'active show';
+
+</script>
+<script>
+    function submitedprofiledetail(Id) {
+        var url = "/Client/submitedprofiledetail?Ids=" + Id;
+        window.open(url);
+    }
+</script>
+
+<div id="InterviewStatusByid_Popup" class="modal fade" role="dialog"></div>
+<div id="Clientnotepopup" class="modal fade" role="dialog"></div>
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<script>
+    //var element = document.getElementById("applicant");
+    //element.classList.add("active");
+
+    function PagerClick(CurrentPageIndex) {
+        url = "/Client/mycandidate?CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = url;
+    }
+
+</script>
+<script src="~/MvpTelent_js/Client/ClientApplicant.js"></script>
+<script src="~/MvpTelent_js/Client/Client.js"></script>
+<script src="~/MvpTelent_js/Client/Candidateconversation.js"></script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("jobsmenu");
+    element.classList.add("show");
+    var element = document.getElementById("applicantspipeline");
+    element.classList.add("active");
+</script>

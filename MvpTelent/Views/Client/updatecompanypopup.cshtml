@@ -1,0 +1,139 @@
+﻿@model Web.Model.Client.ClientModel
+<script type="text/javascript" src="@Model.locationKey"></script>
+<style>
+    .pac-container {
+        background-color: #FFF;
+        z-index: 20;
+        position: fixed;
+        display: inline-block;
+        float: left;
+    }
+
+    .modal {
+        z-index: 20;
+    }
+
+    .modal-backdrop {
+        z-index: 10;
+    }
+</style>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> Company Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="Clientform">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input id="company" maxlength="50" autocomplete="off" class="form-control" value="@Model.Name" tabindex="1" placeholder="Please enter company name" name="company" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label"> Company  Website</label>
+                            <input id="Website" autocomplete="off" class="form-control" value="@Model.Website" tabindex="2" name="Website" placeholder="Please enter company website " maxlength="50" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input id="Address" maxlength="40" autocomplete="off" class="form-control" value="@Model.Address" placeholder="Please enter address" name="Address" tabindex="3" type="text">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Zip Code</label>
+                            <input id="Zip" maxlength="7" autocomplete="off" class="form-control" onkeypress="return isNumberKey(event)" value="@Model.Zip" placeholder="Please enter zip code" name="Zip" tabindex="4" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <div class="autocomplete">
+                                <input id="autocomplete_search" maxlength="100" style="width:100%;" tabindex="5" autocomplete="off" value="@Model.Location" class="form-control" placeholder="Please enter location" name="autocomplete_search" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label">About Company  </label>
+                            <textarea id="Description" rows="4" maxlength="2000" autocomplete="off" class="form-control" placeholder="Please enter about company" name="Description" tabindex="6" type="text">@Model.Description</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label">Image/Logo  </label>
+                            <input type="file" id="CompanyImageId" class="form-control portfolio-choose"  multiple name="CompanyImageId" value="@Model.FileName"/>
+                            <label id="labelId">@Model.FileName</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+           
+                <input type="button" name="companybtn" id="companybtn" class="btn btn-primary" tabindex="7" onclick="Update_Company(@Model.Id)" value="Save">
+            
+            <button type="button" tabindex="8" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

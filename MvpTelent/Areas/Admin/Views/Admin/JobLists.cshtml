@@ -1,0 +1,239 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "JobLists";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>My Jobs</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" href="/Admin/Admin/PostJobs">
+                    Post A Job
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" id="_jobtilte" name="_jobtilte" value="@Model.jobtitle" placeholder="Please enter job title" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @Html.DropDownListFor(m => m.JobStatusId, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Select Status", new { @class = "form-control", @Id = "JobStatusId", @Name = "JobStatusId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getSearchjobByName()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetSearchjob()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Job List
+                        </h5>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Job Title</th>
+                                    <th>Location</th>
+                                    <th>Client Name</th>
+                                    <th>Job Status</th>
+                                    <th class="text-center">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{int RowNo = Convert.ToInt32(Model.OffsetId);}
+                                @if (Model.JobListCollection != null)
+                                {
+                                    foreach (var item in Model.JobListCollection)
+                                    {
+                                <tr>
+                                    <td> @{RowNo++;}@RowNo</td>
+                                    <td>@item.jobtitle</td>
+                                    <td>@item.location</td>
+
+                                    @if (item.ClientId == 0)
+                                    {
+                                        <td>@item.ClientName_Admin</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.ClientName</td>
+                                    }
+
+                                    <td>@item.JobStatusName</td>
+
+                                    <td class="table-action text-center">
+
+
+                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Applicants" onclick="movesubmittedprofile(@item.Id,2)">
+                                            <i class="far fa-fw fa-user"></i>
+                                        </a>
+
+                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="GetadminEditJobbyId('@item.Ids')">
+                                            <i class="far fa-fw fa-edit"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="GetadminJobDetailbyId('@item.Ids')">
+                                            <i class="far fa-fw fa-eye"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Remove" onclick="JobDetailDeletebyId(@item.Id)">
+                                            <i class="far fa-fw fa-trash-alt"></i>
+                                        </a>
+                                        @if (item.JobPostStatus == 0)
+                                        {
+                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Job share on ziprecruiter" onclick="sharjobIdziprecuiter('@item.Ids',0)">
+                                                <i class="fas fa-fw fa-share-alt"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a data-toggle="tooltip" data-placement="top" data-original-title="Job shared ziprecruiter" onclick="sharjobIdziprecuiter('@item.Ids',1)">
+                                                <i class="fas fa-fw fa-share-alt"></i>
+                                            </a>
+                                        }
+                                    </td>
+
+
+                                </tr>
+                                    }
+                                    if (Model.JobListCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        @if (Model.TotalRowCount > Model.maxRows)
+                        {
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <nav aria-label="Page navigation example" class="pagination-center">
+                                            <ul class="pagination pagination-lg justify-content-center">
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                                @if (Model.CurrentPageIndex > 1)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                                }
+                                                @if (Model.indexlegth > 20)
+                                                {
+                                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                                    {
+                                                        if (i != Model.CurrentPageIndex)
+                                                        {
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                        }
+                                                        if (i > (Model.CurrentPageIndex + 19))
+                                                        {
+                                                            <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                                    {
+                                                        if (i != Model.CurrentPageIndex)
+                                                        {
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                        }
+                                                    }
+                                                }
+                                                @if (Model.CurrentPageIndex < Model.PageCount)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                                }
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="sharjobIdziprecuiter_PopUp" role="dialog"></div>
+<script src="~/MvpTelent_js/ApplyJob.js"></script>
+<script src="~/MvpTelent_js/Client/PostJob.js"></script>
+
+<script>
+    function PagerClick(CurrentPageIndex) {
+        var JobTitle = $("#_jobtilte").val();
+        var JobStatusId = $("#JobStatusId").val();
+        var Url = "/Admin/Admin/JobLists?jobtitle=" + JobTitle + "&JobStatusId=" + JobStatusId + "&CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = Url;
+
+
+    }
+</script>
+
+
+
+<script>
+    var element = document.getElementById("Jobs");
+    element.classList.add("active");
+</script>

@@ -1,0 +1,264 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "sharedJobDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<link href="~/Scripts/Social media/jssocials.css" rel="stylesheet" />
+<link href="~/Scripts/Social media/jssocials-theme-flat.css" rel="stylesheet" />
+<script src="~/Scripts/Social media/jssocials.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Job</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#">Detail </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container-fluid">
+    <section class="company-top card_s">
+        <div class="job_section">
+            <div class="row" style="align-items:center;">
+                <div class="col-md-2">
+                    <img src="@Model.FileName" class=" img-thumbnail job_logo" />
+                </div>
+                <div class="col-md-10">
+                    <div class="jobtital">
+                        <h3> @Model.jobtitle </h3>
+                        <p>
+                            <i class="fa fa-map-marker applications" aria-hidden="true"></i>&nbsp; &nbsp;
+                            @Model.CityName @Model.StateName , @Model.CountyName
+                        </p>
+                        <p>
+                            <i class="fa fa-calendar applications" aria-hidden="true"></i> &nbsp; Post Date: @Model.createddate
+                        </p>
+                    </div>
+                    <div class="float-left">
+                        <div id="sharePopupJobdetail" class="float-left"></div>
+                        <div class="float-left">
+                            <div class="jssocials-share jssocials-share-whatsapp" style="line-height: 2.9;margin-left: 7px;">
+                                <div class="jssocials-share-count-box jssocials-share-no-count">
+                                    <span class="jssocials-share-count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sharedjob_section mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dtails-tab">
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link  active show" id="tab_1" data-toggle="tab" href="#Contact" role="tab" aria-controls="nav-home" aria-selected="true"> Job Information</a>
+                                <a class="nav-item nav-link" id="tab_2" data-toggle="tab" href="#Email" role="tab" aria-controls="nav-profile" aria-selected="false">  Submit Resume</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent" style="background:none">
+                            <div class="tab-pane fade active show" id="Contact" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <section class="job_Description  card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                            <div class="contact_sec jobdetail_left">
+                                                <div class="card">
+                                                    <div class="_jobtital header">
+                                                        <h3>Job Information</h3>
+                                                    </div>
+                                                    <div class="_jobtital">
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"><img src="~/Scripts/assets/img/experience.png" class="experience_img" /></div>
+                                                            <div class="txt1">
+                                                                <h6>Experience</h6>
+                                                                <p>@Model.WorkExperienceMin - @Model.WorkExperienceMax Year(s)</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect">
+                                                                <i class="fa fa-usd" aria-hidden="true"></i> &nbsp;
+                                                            </div>
+                                                            <div class="txt1">
+                                                                <h6>Current Salary</h6>
+                                                                <p>@Model.MinSalary-@Model.MaxSalary yearly </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"> <img src="/Scripts/assets/img/img-job.png" class="img_condidates"></div>
+                                                            <div class="txt1">
+                                                                <h6>Job Category</h6>
+                                                                <p>@Model.JobCategoryName</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"> <img src="/Scripts/assets/img/post_job.png" class="img_condidates"></div>
+                                                            <div class="txt1">
+                                                                <h6>Job Designation</h6>
+                                                                <p>@Model.DesignationName</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"><i class="fa fa-graduation-cap profile-icon" aria-hidden="true"></i></div>
+                                                            <div class="txt1">
+                                                                <h6>Qualification</h6>
+                                                                <p>@Model.qualificationName</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"> <img src="~/Scripts/assets/img/jobs.png" class="experience_img" /></div>
+                                                            <div class="txt1">
+                                                                <h6>Job Type</h6>
+                                                                <p>@Model.JobTypeName</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="exp_sec cs3">
+                                                            <div class="icon_sect"> <img src="/Scripts/assets/img/search-condidates.png" class="img_condidates"></div>
+                                                            <div class="txt1">
+                                                                <h6>Job Status</h6>
+                                                                <p>@Model.JobStatusName</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card mt-3">
+                                                    <div class="_jobtital header">
+                                                        <h3>Company Information</h3>
+                                                    </div>
+                                                    <div class="_jobtital">
+                                                        <a href="#">@Model.CompanyName</a>
+                                                        <ul class="_information">
+                                                            <li>
+                                                                @if (Model.CompanyStateName != "")
+                                                                {
+                                                                    <i class="fa fa-map-marker" aria-hidden="true"></i><a href="#">@Model.Address, @Model.CompanyCityName,@Model.CompanyStateName</a>
+                                                                }
+                                                            </li>
+                                                            <li style="display: flex;">
+                                                                @if (Model.website != "")
+                                                                {
+                                                                    <i class="fa fa-globe" aria-hidden="true"></i> <a href="#">@Model.website</a>
+                                                                }
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-12">
+                                            <div class="jobdetail_right">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3>Job Description</h3>
+                                                        <p>
+                                                            @Html.Raw(Model.JobDescription)
+                                                        </p>
+                                                        <div class="qualification-txt">
+                                                        </div>
+                                                        <div class="qualification-txt">
+                                                            <h3>Required Skills</h3>
+                                                            <ul class="skill_sec">
+                                                                @if (Model.SkillCollection != null)
+                                                                {
+                                                                    foreach (var item in Model.SkillCollection)
+                                                                    {
+                                                                        <li><button class="save">@item.Name</button></li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="tab-pane fade" id="Email" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <section class="job_Description  card-body">
+                                    <div class="row">
+                                        <div class="col-lg-10"></div>
+                                        <div class="col-lg-2 mb-3">
+                                            <input type="button" style="width:100%;" value="upload Resume" class="btn btn-primary" onclick="ResumeBulkUploadPopup(@Model.Id)">
+                                        </div>
+                                    </div>
+                                    <div class="box-secton">
+                                        <ul class="shared-job" style="display: flex;justify-content: space-between;width: 80%;margin: 0px auto;flex-wrap: wrap;">
+                                            @if (Model.Jobsuploadresumecollection != null)
+                                            {
+                                                foreach (var item in Model.Jobsuploadresumecollection)
+                                                {
+                                                    <li style="margin-bottom:20px;">
+                                                        <div class="card sharedjob_style">
+                                                            <div class="card-body ">
+                                                                <ul class="plandetails _sharedjob" style="height: auto;">
+                                                                    <li>
+                                                                        <label>Name :  &nbsp; &nbsp; &nbsp; &nbsp;  </label>
+                                                                        <span>
+                                                                            <a onclick="Scanidatedetailpage('@item.Ids',@item.JobId)" style="cursor:pointer;">@item.Name</a>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label>Email :  &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                                                        <span>
+                                                                            @item.Email
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label>Number : &nbsp; &nbsp; </label>
+                                                                        <span>
+                                                                            @item.Phone
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label>Resume :  &nbsp; &nbsp; </label>
+                                                                        <span>
+                                                                            <a style="color:#525252;text-decoration: underline;" href="@item.FilePath" download>@item.FileName</a>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label>Date : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                                                        <span>
+                                                                            @item.createddate
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div id="ApplyJos_PopUp" class="modal fade" role="dialog"></div>
+<div class="modal fade" id="SendEmailbyjobDetail"></div>
+<div class="modal fade" role="dialog" id="Resumebulkpopupsharejob"></div>
+<script>
+    $("#sharePopupJobdetail").jsSocials({
+        url: "@Model.PageUrl",
+        text: "",
+        showCount: true,
+        showLabel: false,
+        shareIn: "popup",
+        shares: [
+            "twitter",
+            "facebook",
+            "linkedin"
+        ]
+    });
+</script>
+<script src="~/MvpTelent_js/ApplyJob.js"></script>

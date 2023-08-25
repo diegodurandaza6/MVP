@@ -1,0 +1,162 @@
+﻿@model Web.Model.Paypal.PlansListModel
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+ 
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Client Plan
+                </h3>
+                @*<span>
+                    Client Plan List
+                </span>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="date" class="form-control" style="width:100%;" id="fromdate" name="fromdate" value="@Model.FromDate" placeholder="yyyy-mm-dd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="date" class="form-control" style="width:100%;" id="todate" name="todate" value="@Model.Todate" placeholder="yyyy-mm-dd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <select name="Id" id="Id" date" class="form-control">
+                                            <option value="0">Select Type</option>
+                                            <option value="1">Subscribe successfully</option>
+                                            <option value="2">To Be Subscribed</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getplanhistory()">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="HistoryReset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Client Plan List
+                        </h5>
+                    </div>
+                    <div class="">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%">
+                                        S.No
+                                    </th>
+                                    <th>
+                                        Client Name
+                                    </th>
+                                    <th>
+                                        Plan Name
+                                    </th>
+                                    <th>
+                                        Create Date
+                                    </th>
+                                    <th>
+                                        Plan Expires
+                                    </th> 
+                                    <th class="text-center w-150px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Collection != null)
+                                {
+                                    foreach (var item in Model.Collection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>@item.ClientName</td>
+                                            <td>@item.PlanName</td>
+                                            <td>@item.CreateDate</td>
+                                            <td>@item.ValidPlanDate</td>
+
+                                            <td class="table-action text-center">
+
+                                                <a title="Details"><i class="align-middle" data-feather="eye"></i></a>
+                                               
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="p-3" colspan="6">
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    var element = document.getElementById("interviewschedulelist");
+    element.classList.add("active");
+</script>
+
+
+
+<script>
+
+
+    document.getElementById("Id").selectedIndex = @Model.Id;
+
+    function HistoryReset() {
+        var url = "/Admin/Candidate/Payment";
+        window.location.href = url;
+    }
+    function getplanhistory() {
+        var Id = $("#Id").val();
+        var todate = $("#todate").val();
+        var fromdate = $("#fromdate").val();
+        debugger;
+        var url = "/Admin/Candidate/Payment?Id=" + Id + "&fromdate=" + fromdate + "&todate=" + todate;
+        window.location.href = url;
+    }
+   
+
+</script>
+

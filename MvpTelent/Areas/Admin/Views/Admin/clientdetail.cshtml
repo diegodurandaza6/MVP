@@ -1,0 +1,890 @@
+﻿
+
+
+@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "clientdetail";
+    Layout = "~/Areas/Admin/Views/Shared/autocomplete_layout.cshtml";
+
+}
+<style>
+    .detail-tabs > li > a {
+        padding: 0.95rem 0.4rem;
+    }
+</style>
+
+<div id="email_PopUp" class="modal fade" role="dialog"></div>
+<div id="ClientContactDetails_PopUp" class="modal fade" role="dialog"></div>
+<div id="email_DetailsPopUp" class="modal fade" role="dialog"></div>
+<div id="Company_todo_popup" class="modal fade" role="dialog"></div>
+<div id="dashboardtodo_PopUp" class="modal fade" role="dialog"></div>
+<div id="Emaileditpopup_Id" class="modal fade" role="dialog"></div>
+<div id="InterviewDetail_Client" class="modal fade" role="dialog"></div>
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Company Detail</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="Createclientpopup(@Model.Id)">
+                    Edit Company
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 w-100-1500">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b header-golden-bg">
+                        <h5 class="card-title mb-0">
+                            Company Basic Information
+                        </h5>
+                    </div>
+                    <div class="card-body p-b-0">
+                        <div class="row position-relative">
+                            <div class="p-profile mb-3 row-mg w-100 m-0">
+
+                                <div class="p-profile-body col-md-12 pt-0 pl-3">
+                                    <table class="table table-striped hr-b hr-l hr-r m-0">
+
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="3" style="width: 146px;">
+                                                    <div class="p-profile-body-2 pb-0 pt-0" style="width: 122px;">
+
+                                                        @if (Model.FileName != "")
+                                                        {
+                                                            <img src="@Model.FilePath" height="120" width="120">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/FileUpload/candidatedefaultImage/building-icon.png" /> 
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td><b>Name</b> :</td>
+
+
+                                                <td>
+                                                    @Model.Name
+
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><b>Website</b> :</td>
+                                                <td>
+                                                    @if (Model.Website == null)
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    { 
+                                                         if (@Model.Website.StartsWith("http") == true)
+                                                        {
+                                                            <a href="@Model.Website" target="_blank" class="text-underline-hvr">
+                                                                @Model.Website
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="http://@Model.Website" target="_blank" class="text-underline-hvr">
+                                                                @Model.Website
+                                                            </a>
+                                                        }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Address</b> :</td>
+                                                <td>
+                                                    @if (Model.Address == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Model.Address
+                                                    }
+
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Location</b> :</td>
+                                                <td colspan="2">
+                                                    @if (Model.Location == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Model.Location
+                                                    }
+
+                                                   
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>
+                                                        Zip Code
+
+                                                    </b> :
+                                                </td>
+                                                <td colspan="2">
+                                                   
+
+                                                    @if (Model.Zip == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Model.Zip
+                                                    }
+
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 160px;">
+                                                    <b>
+                                                        About Company
+                                                    </b> :
+                                                </td>
+                                                <td colspan="2">
+                                                    @if (Model.Description == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Model.Description
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <div class="form-group mt-2">
+                                                                <input type="text" maxlength="35" placeholder="Please enter tag" onkeyup="return searchKeyPresss(event,'@EncryptDecrypt.Decrypt(Convert.ToString(Model.Ids))')" name="CandidateTag" id="CandidateTag" class="form-control">
+
+                                                                <div id="autocompletedata"></div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="col-md-2">
+                                                            <div class="form-group mt-2">
+                                                                <button type="button" class="btn btn-primary border-0 p-t-8 p-b-8 round-3px" onclick="Companytagvalue('@EncryptDecrypt.Decrypt(Convert.ToString(Model.Ids))')">Save</button>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <ul class="tags-new mb-2">
+                                                        @if (Model.Clienttagcollection != null)
+                                                        {
+                                                            foreach (var item in Model.Clienttagcollection)
+                                                            {
+                                                                <li>
+                                                                    <span>
+                                                                        @item.CandidateTag
+                                                                    </span>
+                                                                    <span>
+                                                                        <a onclick="deletecandidatetag(@item.Id)">
+                                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+
+                <ul class="nav detail-tabs" role="tablist">
+                    <li class="">
+                        <a class="" id="tab_1" data-toggle="tab" href="#Contact" onclick="ActiveTab('@Model.Ids',1)" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-users" aria-hidden="true"></i> Contacts</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_2" data-toggle="tab" href="#Email" role="tab" onclick="ActiveTab('@Model.Ids',2)" aria-controls="nav-profile" aria-selected="false"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_3" data-toggle="tab" href="#Notes" role="tab" onclick="ActiveTab('@Model.Ids',3)" aria-controls="nav-contact" aria-selected="false"><i class="fa fa-address-card" aria-hidden="true"></i> Notes</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_4" data-toggle="tab" href="#ToDO" role="tab" onclick="ActiveTab('@Model.Ids',4)" aria-controls="nav-about" aria-selected="false"><i class="fa fa-address-card" aria-hidden="true"></i> To-Do</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_5" data-toggle="tab" href="#SubmittedProfiles" role="tab" onclick="ActiveTab('@Model.Ids',5)" aria-controls="TabSubmittedProfiles" aria-selected="false"><i class="fas fa-fw fa-file-alt" aria-hidden="true"></i> Submissions</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_6" data-toggle="tab" href="#ScheduledInterviews" role="tab" onclick="ActiveTab('@Model.Ids',6)" aria-controls="TabScheduledInterviews" aria-selected="false"><i class="far fa-fw fa-file-alt" aria-hidden="true"></i>Interviews</a>
+                    </li>
+                    <li>
+                        <a class="" id="tab_7" data-toggle="tab" href="#Jobs" onclick="ActiveTab('@Model.Ids',7)" role="tab" aria-controls="Tabjobs" aria-selected="false"><i class="far fa-fw fa-file-alt" aria-hidden="true"></i>Jobs</a>
+                    </li>
+                </ul>
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                    <div class="card-body detail-pills">
+                        <div class="fade" id="Contact" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                            <div class="row">
+
+                                <div class="col-lg-6 col-sm-6 text-right offset-6 mb-3">
+                                    <a onclick="ClientContact(@Model.Id,0,0)" class="btn btn-primary w-100 border-0 mw-120">Add Contact </a>
+                                </div>
+                            </div>
+                            @if (Model.clientContactForm != null)
+                            {
+                                <div class="my-active-jobs-main">
+                                    <div class="my-active-jobs-inner">
+                                        @foreach (var item in Model.clientContactForm)
+                                        {
+                                            
+                                            <div class="my-active-jobs-inner-row cursor-pointer">
+                                                <div class="my-active-jobs-inner-tile border-t-0">
+                                                    <div class="my-active-jobs-inner-footer-2 hr-b">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="f-s-16 w-100">
+                                                                    <i class="far fa-fw fa-user-circle"></i>
+                                                                    <span class="clr-000">@item.Name  @item.LastName</span>
+                                                                </a>
+
+                                                                <div class="my-active-jobs-mune companyprofile-menu">
+                                                                    <div class="dropdown">
+                                                                        <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                            <a class="dropdown-item" onclick="ClientContact(@Model.Id,@item.Id,@item.UseraccountprofileId)">
+                                                                                <i class="far fa-fw fa-edit"></i> Edit Contact
+                                                                            </a>
+                                                                            <a class="dropdown-item" onclick="Admin_DeleteCompanyContact(@item.Id)">
+                                                                                <i class="far fa-fw fa-trash-alt"></i> Delete
+                                                                            </a>
+                                                                            <a class="dropdown-item" onclick="ActivationEmailToContact(@item.Id)">
+                                                                                <i class="far fa-fw fa-envelope-open"></i> Resend Activation Email
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="my-active-jobs-inner-tile my-active-jobs-inner-tile-2 pull-left w-100">
+                                                        <div>
+                                                            <i class="far fa-fw fa-user-circle"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="my-active-jobs-mune-2">
+                                                                <ul>
+                                                                    <li>
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="width: 120px;">
+                                                                                        <b>Position :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if (item.Position == "")
+                                                                                        {
+                                                                                            <spam>N/A</spam>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            @item.Position
+                                                                                        }
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Phone No :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if (item.Phone1 == "")
+                                                                                        {
+                                                                                            <spam>N/A</spam>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            @item.Phone1
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Email :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <p>
+                                                                                            @if (item.Email == "")
+                                                                                            {
+                                                                                                <spam>N/A</spam>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                @item.Email
+                                                                                            }
+
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Email Status :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if (item.isubscribe == 1)
+                                                                                        {
+                                                                                            <span>
+                                                                                                Subscribed
+                                                                                            </span> }
+                                                                                        else
+                                                                                        {
+                                                                                            <span>
+                                                                                                Unsubscribed
+                                                                                            </span>}
+                                                                                        @if (item.isubscribe == 1)
+                                                                                        {
+                                                                                            <a onclick="unsubscribecontect(@item.Id,0)" title="Unsubscribe it"><i class="fa fa-times clr-golden" aria-hidden="true"></i> </a> }
+                                                                                        else
+                                                                                        {
+                                                                                            <a onclick="unsubscribecontect(@item.Id,1)" title="Subscribe it"><i class="fa fa-plus clr-golden" aria-hidden="true"></i> </a>}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Pipeline Status :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @item.pipeline
+                                                                                        @if (item.pipelineId == "0")
+                                                                                        {
+                                                                                            <a onclick="changePipelinestatus(@item.Id,1)" title="Mark as New Lead"><i class="fa fa-plus clr-golden" aria-hidden="true"></i> </a> }
+                                                                                        else
+                                                                                        {
+                                                                                            <a onclick="changePipelinestatus(@item.Id,0)" title="Remove from PipeLine"><i class="fa fa-times clr-golden" aria-hidden="true"></i> </a>}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                if (Model.clientContactForm.Count() == 0)
+                                {
+                                    <span class="no-data-found">
+                                        No Data found...
+                                    </span>
+                                }
+                            }
+
+
+                            <div class="abcd">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fade" id="Email" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="row">
+                                @*<div class="col-lg-6 col-sm-6">
+                                        <div class="form-group">
+                                            <input type="email" id="myInput" class="form-control" placeholder="Search by email.." id="email">
+                                        </div>
+                                    </div>*@
+                                <div class="col-lg-12 col-sm-12 text-right mb-3">
+                                    <a onclick="emailpopup(@Model.Id,0)" class="btn btn-primary w-100 border-0 mw-120">Send Email </a>
+                                </div>
+                            </div>
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Subject</th>
+                                        @*<th>Sent Count</th>*@
+                                        <th>Sent Date</th>
+                                        <th>Follow up </th>
+                                        <th class="w-100px text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    @{int RowNo1 = 0;}
+                                    @if (Model.ColloctionEmail != null)
+                                    {
+                                        foreach (var item in Model.ColloctionEmail)
+                                        {
+                                            <tr>
+                                                <td> @item.Email</td>
+                                                <td>
+                                                    <a href="#">
+                                                        @if (item.isread == 1)
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" data-original-title="Read" class="fas fa-fw fa-check-double"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" data-original-title="UnRead" class="fas fa-fw fa-check"></i>
+                                                        }
+                                                        @item.Subject
+                                                    </a>
+                                                </td>
+                                                @*<td>@item.sentstatus</td>*@
+                                                <td>@item.createdate </td>
+                                                <td class="enabled">
+                                                    @if (item.isfollow == 1)
+                                                    {
+                                                        <a title="Disable Follow-up" class="table_btn_delete" onclick="ChanageFollowUpStatus(@item.Id,0)">
+                                                            Enabled
+                                                            <i title="Disable Follow-up" style="color:#918262;" class="fa fa fa-remove"></i>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a title="Enable Follow-up" class="table_btn_info" onclick="ChanageFollowUpStatus(@item.Id,1)">
+                                                            Disabled
+                                                            <i title="Enable Follow-up" class="fa fa fa-plus"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                                <td class="table-action">
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="emailEditpopup(@item.Id)">
+                                                        <i class="far fa-fw fa-edit"></i>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="emaildetails(@Model.Id,@item.Id)">
+                                                        <i class="far fa-fw fa-eye"></i>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="ChanageFollowUpStatus(@item.Id,2)">
+                                                        <i class="far fa-fw fa-trash-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-left" colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fade" id="Notes" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="row card-body-2">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <form Id="notesform">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="">Note/Comment</label>
+                                                    <textarea class="form-control" rows="2" maxlength="1000" placeholder="Please enter note/comment" id="comment" name="comment"></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-12 text-right">
+                                            <a onclick="SaveNotes(@Model.Id)" class="btn btn-primary w-100 border-0 mw-120">Save</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>Notes History </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Notescollection != null)
+                                    {
+                                        foreach (var item in Model.Notescollection)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <b>@item.Name (@item.DueDate)</b> : <br />
+                                                    @item.comments  <span><a onclick="NOtesDelete(@item.Id)" class="#"><i title="Delete this Note" class="fa fa-trash notes_trash"></i></a></span>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                        if (Model.Notescollection.Count() == 0)
+                                        {
+                                            <tr>
+                                                <td class="text-left">
+                                                    <span class="no-data-found">
+                                                        No Data found...
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fade" id="ToDO" role="tabpanel" aria-labelledby="nav-about-tab">
+                            <div class="row">
+
+                                <div class="col-lg-6 col-sm-6 text-right offset-6 mb-3">
+                                    <a onclick="AddCompanyToDoPopUp(0,@Model.Id)" class="btn btn-primary w-100 border-0 mw-150">Add To-Do Item</a>
+                                </div>
+                            </div>
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>To-Do Title</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th class="w-100px text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int RowNo3 = 0;}
+                                    @if (Model.CompanyToDoCollection != null)
+                                    {
+                                        foreach (var item in Model.CompanyToDoCollection)
+                                        {
+                                            <tr>
+                                                <td> @{RowNo3++;}@RowNo3</td>
+                                                <td>@item.Subject</td>
+                                                <td>@item.DueDate</td>
+                                                @if (item.Status == 1)
+                                                {
+                                                    <td>Active</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Unactive</td>
+                                                }
+                                                <td class="table-action text-center">
+                                                    @if (item.Status == 1)
+                                                    {
+                                                        <a onclick="companytodounactive(@item.Id)" title="Inactive">
+                                                            <i class="fas fa-fw fa-lock"></i>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a onclick="companytodoactive(@item.Id)" title="Active">
+                                                            <i class="fas fa-fw fa-lock-open" aria-hidden="true"></i>
+                                                        </a>
+                                                    }
+                                                    <a onclick="MeetingActiveTab(@item.Id)" title="detail" class="#">
+                                                        <i class="far fa-fw fa-eye" title=""></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        if (Model.CompanyToDoCollection.Count() == 0)
+                                        {
+                                            <tr>
+                                                <td class="text-left" colspan="5">
+                                                    <span class="no-data-found">
+                                                        No Data found...
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fade" id="SubmittedProfiles" role="tabpanel" aria-labelledby="TabSubmittedProfiles">
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Candidate Name</th>
+                                        <th>Job Title</th>
+                                        <th>Submission Date</th>
+                                        <th class="w-100px text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int RowNo6 = 0;}
+                                    @if (Model.SubmissionCollection != null)
+                                    {
+                                        foreach (var item in Model.SubmissionCollection)
+                                        {
+                                            <tr>
+                                                <td> @{RowNo6++;}@RowNo6</td>
+                                                <td>@item.CandidateName</td>
+                                                <td>@item.Jobtitle</td>
+                                                <td>@item.SubmissionDate</td>
+                                                <td class="table-action text-center">
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title=" View Job Details" onclick="detailedprofile_Client('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')">
+                                                        <i class="far fa-fw fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    @if (Model.SubmissionCollection == null)
+                                    {
+                                        <tr>
+                                            <td class="text-left" colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="fade" id="ScheduledInterviews" role="tabpanel" aria-labelledby="TabScheduledInterviews">
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Candidate Name</th>
+                                        <th>Email Subject</th>
+                                        <th>Interview Date</th>
+                                        <th>Interviewer Name</th>
+                                        <th class="w-100px text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int RowNo4 = 0;}
+                                    @if (Model.interviewListCollection != null)
+                                    {
+                                        foreach (var item in Model.interviewListCollection)
+                                        {
+                                            <tr>
+                                                <td> @{RowNo4++;}@RowNo4</td>
+                                                <td>@item.CandidateName</td>
+                                                <td>@item.Subject</td>
+                                                <td>@item.InterviewDate</td>
+                                                <td>@item.InterviewerName</td>
+                                                <td class="table-action text-center">
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="Interviewdetailpopup_Client(@item.Id)">
+                                                        <i class="far fa-fw fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    @if (Model.interviewListCollection == null)
+                                    {
+                                        <tr>
+                                            <td class="text-left" colspan="6">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="fade" id="Jobs" role="tabpanel" aria-labelledby="Tabjobs">
+                            <table class="table table-striped my-0 table-bordered tr-golden">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Job Title</th>
+                                        <th>Status</th>
+                                        <th class="w-100px text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int RowNo5 = 0;}
+                                    @if (Model.ClientJobsCollection != null)
+                                    {
+                                        foreach (var item in Model.ClientJobsCollection)
+                                        {
+                                            <tr>
+                                                <td> @{RowNo5++;}@RowNo5</td>
+                                                <td>@item.Jobtitle</td>
+                                                @if (item.jobStatus == 2)
+                                                {
+                                                    <td>Open</td>
+                                                }
+
+
+                                                <td class="table-action text-center">
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title=" View Job Details" onclick="GetClientJobDetailbyId('@EncryptDecrypt.encrypt(Convert.ToString(@item.JobId))')">
+                                                        <i class="far fa-fw fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    @if (Model.ClientJobsCollection == null)
+                                    {
+                                        <tr>
+                                            <td class="text-left" colspan="4">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function detailedprofile_Client(Id) {
+
+        var url = "/Admin/Candidate/detailedprofile?Ids=" + Id;
+        window.open(url);
+    }
+
+    function Interviewdetailpopup_Client(Id) { 
+        model = {
+            Id: Id
+        }
+        $.get("/Admin/Admin/Interviewdetailpopup", model, function (response) {
+            $("#InterviewDetail_Client").html(response);
+            jQuery.noConflict();
+            $("#InterviewDetail_Client").modal("show");
+        });
+    }
+
+    function GetClientJobDetailbyId(Id) {
+        var url = "/Admin/Admin/JobDetails?Ids=" + Id;
+        window.open(url);
+    }
+
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+<script>
+    if (@Model.tid== 1) {
+        $("#Contact").addClass(" active  show");
+    }
+    else if (@Model.tid== 2) {
+        $("#Email").addClass(" active  show");
+    }
+    else if (@Model.tid== 3) {
+        $("#Notes").addClass(" active  show");
+    }
+    else if (@Model.tid== 4) {
+        $("#ToDO").addClass(" active  show");
+    }
+    else if (@Model.tid== 5) {
+        $("#SubmittedProfiles").addClass(" active  show");
+    }
+    else if (@Model.tid== 6) {
+        $("#ScheduledInterviews").addClass(" active  show");
+    }
+    else if (@Model.tid== 7) {
+        $("#Jobs").addClass(" active  show");
+    }
+    $("#tab_" +@Model.tid).addClass(" active  show");
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#CandidateTag").autocomplete({
+            appendTo: "#autocompletedata",
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Admin/Candidate/AutoCompleteCompanytags',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "Post",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.Id,
+                                value: item.Name,
+                            }
+                        }))
+                    },
+                    
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#hfCustomer").val(i.item.val);
+            },
+            minLength: 1
+        });
+    });
+
+    function ActivationEmailToContact(Id) {
+        if (ActivationEmailToContact_Confirm() == false) {
+            return false;
+        }
+        model = {
+            Id: Id
+        }
+        $.post("/Admin/Admin/ActivationEmailToContact", model, function () {
+            toastr.success("Email sent successfully.");
+            setTimeout(function () { window.location.reload(); }, 400);
+
+        });
+    }
+
+    function ActivationEmailToContact_Confirm() {
+        return confirm('Do you really want to send the email?');
+    }
+
+</script>
+<div id="Clientcreate_PopUp" class="modal fade" role="dialog"></div>
+<script src="~/MvpTelent_js/adminJs/CLIENTS.js"></script>
+<script src="~/Areas/Admin/Admin/email.js"></script>
+<script>
+    var element = document.getElementById("Companies").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Companies");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Companies");
+    element.classList.add("show");
+    var element = document.getElementById("Companies+1");
+    element.classList.add("active");
+</script>

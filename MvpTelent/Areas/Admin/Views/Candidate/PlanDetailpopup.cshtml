@@ -1,0 +1,110 @@
+﻿@model Web.Model.Candidate.PlanModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="">Plan Details </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="addplanform">
+                <div class="row">
+                    <div class="col-md-6 plan-body">
+                        <div class="plan-body-in">
+                            <h5>
+                                Basic Details
+                            </h5>
+                            <div>
+                                <table class="table-2">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Plan</b>
+                                            </td>
+                                            <td>
+                                                @Model.Name
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Price</b>
+                                            </td>
+                                            <td>
+                                                $ @Model.Price
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>No Of Job</b>
+                                            </td>
+                                            <td>
+                                                @Model.noofjob Jobs
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>No Of Interview</b>
+                                            </td>
+                                            <td>
+                                                @Model.noofinterview Interview
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Subscription </b>
+                                            </td>
+                                            <td>
+                                                 
+                                                @if (Model.Subscription == 30)
+                                                {
+                                                    <span>Monthly</span>
+                                                }
+
+                                                else if (Model.Subscription == 7)
+                                                { <span>Weekly</span>}
+
+                                                else if (Model.Subscription == 1)
+                                                { <span>Daily</span>}
+
+                                                else
+                                                { <span>Yearly</span>}
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td>
+                                                <b>Plan Create Date</b>
+                                            </td>
+                                            <td>
+                                                @Model.CreatedDate
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 plan-body">
+                        <div class="plan-body-in">
+                            <h5>
+                                Plan Description  @*$ @Model.Price*@
+                            </h5>
+                            <div>
+                                <p>
+                                    @Html.Raw(Model.Description)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

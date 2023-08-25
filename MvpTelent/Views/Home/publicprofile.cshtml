@@ -1,0 +1,505 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "PublicProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<section class="banner-inner" style="background-image: url('../../New_Content/images/job-Details.jpg');    background-position: top;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Detailed Profile</h1>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="sec-pd">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="p-profile mb-4">
+                    <div class="p-profile-body col-md-3 pl-0">
+                        <img src="@Model.FileName">
+                    </div>
+                    <div class="p-profile-body col-md-9 pl-0">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 120px;">Name :</td>
+                                    <td>
+                                        <label class="text-capitalize">
+                                            @Model.Name
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Job Title :</td>
+                                    <td>
+                                        <label class="text-capitalize">
+                                            @Model.Title
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Location :</td>
+                                    <td>
+                                        <label>
+                                            @Model.location
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Desired Title 1 :</td>
+                                    <td>
+                                        <label>
+                                            @Model.DesiredTitle1
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Desired Title 2 :</td>
+                                    <td>
+                                        <label>
+                                            @Model.DesiredTitle2
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pp-profile-body p-0 w-100 pull-left d-inline-block card-body">
+                        <hr class="w-100 pull-left">
+                    </div>
+                    <div class="p-profile-body p-0">
+                        <div class="can-details-ul mb-4">
+                            <ul>
+                                <li>
+                                    <a href="#about" title="" class="active">About</a>
+                                </li>
+                                <li>
+                                    <a href="#skills" title="">Professional Skills</a>
+                                </li>
+                                <li>
+                                    <a href="#experience" title="">Work Experience</a>
+                                </li>
+                                <li>
+                                    <a href="#education" title="">Education</a>
+                                </li>
+                                <li>
+                                    <a href="#Licenses" title="">Licenses & Certifications</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="mb-3">Candidate Details</h4>
+                        <div class="row" id="about">
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-audio-description"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Mobile Number
+                                        </h5>
+                                        <p>
+                                            @Model.Phone
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-audio-description"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Preferred E-Mail
+                                        </h5>
+                                        <p>
+                                            @Model.PreferredEMail
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-audio-description"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Experience In Industry
+                                        </h5>
+                                        <p>
+                                            @Model.IndustryName
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Experience
+                                        </h5>
+                                        <p>
+                                            @Model.experienceName
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Education Levels
+                                        </h5>
+                                        <p>
+                                            @Model.educationlevel
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Current Salary($)
+                                        </h5>
+                                        <p>
+                                            @Model.CurrentSalary
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-rocket"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Expected Salary($)
+                                        </h5>
+                                        <p>
+                                            @Model.expectedSalary
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Job Type
+                                        </h5>
+                                        <p>
+                                            @Model.jobtypeName
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-file-archive"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Zip Code
+                                        </h5>
+                                        <p>
+                                            @Model.Zipcode
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-audio-description"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Location
+                                        </h5>
+                                        <p>
+                                            @Model.location
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-audio-description"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Experience
+                                        </h5>
+                                        <p>
+                                            @Model.experienceName
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-0-10">
+                                <div class="details-tile">
+                                    <div class="details-tile-inner left">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="details-tile-inner right">
+                                        <h5>
+                                            Relocation
+                                        </h5>
+                                        <p>
+                                            @Model.Relocation
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <hr>
+                        <h4 class="mb-3 mt-4">About Candidate</h4>
+                        <p>
+                            @Model.PorfileDescerption
+                        </p>
+                        <hr>
+                        <h4 class="mb-3 mt-4" id="skills">Professional Skills</h4>
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                @if (Model.SkillCollection != null)
+                                {
+                                    foreach (var item in Model.SkillCollection)
+                                    {
+                                        <span href="javascript:void(0)" class="badge badge-golgen-noicon home-slills">@item.skill </span>
+                                    }
+                                }
+                            </li>
+                        </ul>
+                        <hr>
+                        <h4 class="mb-3 mt-4" id="experience">Work & Experience</h4>
+                        <ul class="timeline timeline-icon-tie">
+                            @if (Model.workexperiencecollection != null)
+                            {
+                                foreach (var item in Model.workexperiencecollection)
+                                {
+                                    <li class="timeline-item">
+                                        <h6>
+                                            @item.Title
+                                        </h6>
+                                        <p class="m-0">
+                                            <span>@item.Todate - @item.Fromdate</span>
+                                        </p>
+                                        <p>@item.description</p>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                        <hr>
+                        <h4 class="mb-3 mt-4" id="education">Education</h4>
+                        <ul class="timeline">
+                            @if (Model.EducationCollection != null)
+                            {
+                                foreach (var item in Model.EducationCollection)
+                                {
+                                    if (item.visibleid == 1)
+                                    {
+                                        <li class="timeline-item">
+                                            <h6>
+                                                @item.Education
+                                            </h6>
+                                            <p class="m-0">
+                                                @item.year - @item.EndYear
+                                            </p>
+                                            <p class="m-0">
+                                                 @item.univarsity
+                                            </p>
+                                            <p>@item.description</p>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+
+
+
+
+
+                        <hr>
+                        <h4 class="mb-3 mt-4" id="Licenses">Licenses & Certifications</h4>
+                        <ul class="timeline">
+                            @if (Model.LicensesCertifications != null)
+                            {
+                                foreach (var item in Model.LicensesCertifications)
+                                {
+                                    if (item.visibleid == 1)
+                                    {
+                                        <li class="timeline-item">
+                                            <h6>
+                                                @item.Education
+                                            </h6>
+                                            <p class="m-0">
+                                                @item.year - @item.EndYear
+                                            </p>
+                                            <p class="m-0">
+                                                  @item.univarsity
+                                            </p>
+                                            <p>@item.description</p>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+
+
+
+
+                        <hr>
+                        <h4 class="mb-3 mt-4" id="">Scouting Report</h4>
+                        <div class="scouting-report">
+                            @if (Model.portfoliocecollection != null)
+                            {
+                                foreach (var item in Model.portfoliocecollection)
+                                {
+                                    <div>
+                                        <span class="img" style="background-image: url('@item.FileUpload')"></span>
+                                    </div>
+                                }
+                            }
+                            <div>
+                                <span class="img" style="background-image: url(/FileUpload//PortfolioImage/33/images3.jpg)"></span>
+                            </div>
+                            <div>
+                                <span class="img" style="background-image: url(/FileUpload//PortfolioImage/33/images4.jpg)"></span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 z-1">
+                <div class="request-for-interview mb-3">
+                    <div>
+                        <form id="sendenquery">
+                            <h5 class="mb-4">
+                                Request for Interview
+                            </h5>
+                            <div class="form-group">
+                                <input type="text" placeholder="Enter your Name *" value="@Model.CandidateName" name="EName" id="EName" maxlength="30" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Email Address*" value="@Model.Email" name="Email" id="Email" maxlength="45" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Phone Number" value="@Model.CandidatePhone" name="Phone" id="Phone" maxlength="20" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Job Url" class="form-control" name="JobPostingUrl" id="JobPostingUrl" />
+                            </div>
+                            <div class="form-group">
+                                <input type="file" name="file" id="file" placeholder="job url" class="file-choose-home-detail">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Message should have more than 50 characters" name="Description" id="Description"></textarea>
+                            </div>
+                            <button type="button" onclick="ClientSendenquery(@Model.Id)" class="button-secondry w-100 mb-3">Send Email</button>
+                            @if (Model.AccountType == 2)
+                            {
+                                if (Model.favoriteStatusId == 1)
+                                {
+                                    <button type="button" class="button-secondry w-100" onclick="favoritecandidateremove(@Model.Id,@Model.ClientId,1,0)">Remove From Shortlist</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="button-secondry w-100" onclick="favoritecandidate(@Model.Id,@Model.ClientId,0,0)">Add To Shortlist</button>
+                                }
+                            }
+                            else
+                            {
+                                <button type="button" onclick="favoritecandidate(@Model.Id,@Model.ClientId,0,1)" class="button-secondry w-100">Add To Shortlist</button>
+                            }
+                            <p class="mt-2 text-center">You accepts our <a href="javascript: void(0);">Terms and Conditions</a></p>
+                        </form>
+                    </div>
+                </div>
+                @if (Model.candidaterefrencecollection != null)
+                {
+                    <h5 class="mb-3">
+                        Similar Candidates
+                    </h5>
+                }
+                else
+                {
+                    <span class="no-data-found">
+                        No Data found...
+                    </span>
+                }
+                <ul class="similar-list-2">
+                    @if (Model.candidaterefrencecollection != null)
+                    {
+                        foreach (var item in Model.SimilarCandidatescollection)
+                        {
+                            <li onclick="getcandidatedetailspage('@EncryptDecrypt.encrypt(Convert.ToString(item.Id))')">
+                                <div class="pro-list-2">
+                                    <img src="@item.FileUpload" alt="dummy-img" class="img-fluid">
+                                    <article>
+                                        <h5>@item.Name</h5>
+                                        <ul>
+                                            <li><i class="fas fa-filter"></i> @item.experienceName</li>
+                                            <li><i class="fas fa-map-marker-alt"></i> @item.location</li>
+                                            <li><i class="fas fa-graduation-cap"></i> @item.educationlevel</li>
+                                        </ul>
+                                    </article>
+                                </div>
+                            </li>
+                        }
+                        if (Model.SimilarCandidatescollection.Count() == 0)
+                        {
+                            <div>
+                                <div class="text-left" colspan="5">
+                                    <span>No data found...</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function getcandidatedetailspage(Id) {
+         
+        var Url = "/Home/details?Id=" + Id;
+        window.open(Url, '_blank');
+    }
+</script>
+<script src="~/MvpTelent_js/Client/Client.js"></script> 

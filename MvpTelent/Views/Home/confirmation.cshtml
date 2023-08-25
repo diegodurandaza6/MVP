@@ -1,0 +1,35 @@
+﻿@model Web.Model.Common.LoginModel
+@{
+    ViewBag.Title = "confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<section class="banner-inner">
+    <h1 class="banner-caption text-capitalize "> Welcome to MVP Talent Market</h1>
+</section>
+<section class="confirmation-section bg-white">
+    <div class="container">
+        <form id="form">
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="confirmationSlot">
+                        <div class="unlocked">
+                            <i class="fas fa-fw fa-trophy clr-golden"></i>
+                        </div>
+                        <div class="confirmation_txt">
+                            <h2 class="clr-golden"> Congratulations!</h2>
+                            <p> Your account has been activated successfully.</p>
+                        </div>
+                        <button class="btn-new-1" type="button" onclick="gotologin()">Click Here to Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script>
+    function gotologin() {
+        var Url = "/Home/Login";
+        window.location.href = Url;
+    }
+</script>

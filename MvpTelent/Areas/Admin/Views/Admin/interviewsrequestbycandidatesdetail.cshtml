@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Title = "interviewsrequestbycandidatesdetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Detail of Interview Request by Candidate
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+
+                <div class="card flex-fill">
+                    <div class="card-header hr-b header-golden-bg">
+                        <h5 class="card-title mb-0">
+                            Client Candidate Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav detail-tabs" role="tablist">
+                            <li class="">
+                                <a class="active show" id="tab_1" data-toggle="tab" href="#NewLeads" role="tab" aria-controls="home" aria-selected="true">
+                                    Candidate Details
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="" id="tab_2" data-toggle="tab" href="#Follow" role="tab" aria-controls="profile" aria-selected="false">
+                                    Client Details
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="card m-0 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                            <div class="card-body detail-pills p-0">
+                                <div class="fade active show" id="NewLeads" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card flex-fill no-shadow">
+                                                <div class="card-header hr-b">
+                                                    <h5 class="card-title mb-0">
+                                                        Candidate Details
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body p-b-0">
+                                                    <div class="row position-relative">
+                                                        <div class="p-profile mb-3 row-mg w-100 m-0">
+
+                                                            <div class="p-profile-body col-md-12 pt-0 pl-3">
+                                                                <table class="table table-striped hr-l hr-r m-0">
+
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td rowspan="3" style="width: 146px;">
+                                                                                <div class="p-profile-body-2 pb-0 pt-0" style="width: 122px;">
+                                                                                    <img src="@Model.candidateimage" class="p-profile-img p-0 bg-white hr-l hr-r hr-b hr-t">
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width: 200px;"><i class="far fa-fw fa-user-circle clr-golden"></i> <b>Name</b> :</td>
+
+
+                                                                            <td>  @Model.CandidateName</td>
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="far fa-fw fa-envelope clr-golden"></i> <b>Email</b> :</td>
+                                                                            <td colspan="2">
+                                                                                @Model.candidateEmail
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-map-marker-alt clr-golden"></i> <b>Location</b> :</td>
+                                                                            @if (Model.Candidateloction.Length > 0)
+                                                                            {
+                                                                                <td colspan="2">
+                                                                                    @Model.Candidateloction
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td colspan="2">
+                                                                                    N/A
+                                                                                </td>
+                                                                            }
+                                                                        </tr>
+
+                                                                    </tbody>
+
+                                                                </table>
+                                                                <table class="table table-striped hr-b hr-l hr-r m-0 tr-bg-reverse">
+                                                                    <tbody class="border-0">
+
+                                                                        <tr>
+                                                                            <td style="width: 220px;"><i class="far fa-fw fa-building clr-golden"></i> <b>Industry</b> :</td>
+
+                                                                            @if (Model.Industry.Length > 0)
+                                                                            {
+                                                                                <td>
+                                                                                    @Model.Industry
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td>
+                                                                                    N/A
+                                                                                </td>
+                                                                            }
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Title</b> :</td>
+                                                                            <td>
+                                                                                @Model.candidateTitle
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Job Applied Date</b> :</td>
+                                                                            <td>
+                                                                                @Model.CreatedDate
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Job Title</b> :</td>
+                                                                            <td>
+                                                                                <a style="text-decoration: underline" onclick="jobdetailbyid('@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" target="_blank" title="Click here to see the job details">@Model.Jobtitle</a>
+
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body pt-0">
+                                                    <a class="btn-new-1" onclick="viewpublicprofilebyId('@EncryptDecrypt.encrypt(Convert.ToString(Model.CandidateId))')">
+                                                        <i class="far fa-fw fa-user-circle"></i> View Detailed  Profile
+                                                    </a>
+                                                    <a class="btn-new-1" onclick="EditcandidatemovebyId('@EncryptDecrypt.encrypt(Convert.ToString(Model.CandidateId))')">
+                                                        <i class="far fa-fw fa-edit"></i> Edit Candidate
+                                                    </a>
+
+                                                    <a class="btn-new-1" onclick="submitdetailedprofile(@Model.CandidateId,@Model.JobId)">
+                                                        <i class="far fa-fw fa-file-alt"></i> Submit Detailed Profile
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fade" id="Follow" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card flex-fill no-shadow">
+                                                <div class="card-header hr-b">
+                                                    <h5 class="card-title mb-0">
+                                                        Client Details
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body p-b-0">
+                                                    <div class="row position-relative">
+                                                        <div class="p-profile mb-3 row-mg w-100 m-0">
+
+                                                            <div class="p-profile-body col-md-12 pt-0 pl-3">
+                                                                <table class="table table-striped hr-l hr-r m-0">
+
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td rowspan="3" style="width: 146px;">
+                                                                                <div class="p-profile-body-2 pb-0 pt-0 p-profile-body-2-img" style="width: 122px;">
+                                                                                    <div style="background-image: url('@Model.clientLogo'); "></div>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td style="width: 200px;"><i class="far fa-fw fa-building clr-golden"></i> <b>Company Name</b> :</td>
+
+
+                                                                            <td>   @Model.CompanyName</td>
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-globe clr-golden"></i> <b>Company Wesite  </b> :</td>
+                                                                            <td colspan="2">
+                                                                                @Model.Website
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-map-marker-alt clr-golden"></i> <b>Company Location</b> :</td>
+                                                                            <td colspan="2">
+                                                                                @Model.Location
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    </tbody>
+
+                                                                </table>
+                                                                <table class="table table-striped hr-b hr-l hr-r m-0 tr-bg-reverse">
+                                                                    <tbody class="border-0">
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Job Title</b> :</td>
+                                                                            <td>
+                                                                                <a class="text-underline" onclick="jobdetailbyid('@EncryptDecrypt.encrypt(Convert.ToString(Model.JobId))')" title="Click here to see the job details">@Model.Jobtitle</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="fas fa-fw fa-crown clr-golden"></i> <b>Job Applied Date</b> :</td>
+                                                                            <td>
+                                                                                @Model.CreatedDate
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                @*<div class="card flex-fill">
+                        <div class="card-header hr-b header-golden-bg">
+                            <h5 class="card-title mb-0">
+                                Conversion with Clie (Client)
+                            </h5>
+                        </div>
+                        <div class="card-body pb-0">
+                            <form class="input-group" id="msgsentgorm">
+                                <textarea type="text" id="massege" autocomplete="off" rows="3" name="massege" class="form-control" placeholder="Type a message"></textarea>
+                            </form>
+                            <div class="col-md-12 p-0 text-right mt-3 pull-right">
+                                <button class="btn-new-1 pull-right btn-36" type="button" onclick="sendClientconversationsaved(15,3,'client@gmail.com','Clie')">Send Message</button>
+                                <input type="file" onchange="UploadAttachment()" name="Uploadfiles" id="Uploadfiles" class="portfolio-choose form-control cursor-pointer mr-2 w-300px pull-right">
+                            </div>
+                            <div class="col-md-12 p-0 text-right pull-right">
+                                <label id="lblUploadAttachmentName" class="upload-txt"></label>
+                            </div>
+                        </div>
+                        <hr class="m-0">
+                        <div class="card-body">
+                            <div class="position-relative">
+                                <div class="chat-messages p-0">
+                                    <div class="chat-message-left pb-4">
+                                        <div class="flex-shrink-1 msg msg-anchor">
+                                            <div class="font-weight-bold mb-1">
+                                                <span>
+                                                    <span class="font-weight-500 fs-14">
+                                                        Clie
+                                                    </span>
+                                                    <span class="date-msz">(2/3/2022 8:30:15 AM)</span>
+                                                </span>
+                                            </div>
+                                            ok
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+
+
+
+
+    function submitdetailedprofilevalidation() {
+        return confirm("Are you sure you want to submit this profile?.");
+    }
+
+    function submitdetailedprofile(Id, JobId) {
+        debugger;
+        if (submitdetailedprofilevalidation() == false) {
+            return false;
+        }
+        model = {
+            Id: Id,
+            sharedJobCheckId: JobId
+        }
+        $.get("/Admin/Candidate/AddSharedJobcandidatebyId", model, function (data) {
+            if (data.StatusId == 1) {
+                toastr.success("Profile submitted successfully.");
+                setTimeout(function () { window.location.reload() }, 1000);
+            }
+            else {
+                toastr.info("This candidate already submitted for this job.");
+                setTimeout(function () { window.location.reload() }, 1000);
+            }
+
+        });
+    }
+
+    function jobdetailbyid(Id) {
+        var Url = "/Admin/Admin/JobDetails?Ids=" + Id;
+        window.open(Url); 
+    } 
+    function EditcandidatemovebyId(Id) {
+        var url = "/Admin/Candidate/CandidateDetail?Ids=" + Id;
+        window.open(url);
+    }
+
+
+    function viewpublicprofilebyId(Id) {
+
+        var url = "/Admin/Candidate/detailedprofile?Ids=" + Id;
+        window.open(url);
+        // window.location.href = url;
+    }
+
+</script>
+
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("Interview Requests+1");
+    element.classList.add("active");
+</script>

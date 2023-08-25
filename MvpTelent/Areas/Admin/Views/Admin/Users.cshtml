@@ -1,0 +1,101 @@
+﻿@model Web.Model.Admin.UserManagmentmodel
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>User Information</h3>
+                <span>
+                    User Information
+                </span>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card hr-t hr-r hr-b hr-l">
+                    <div class="card-body">
+                        <form id="adminuserform" name="adminuserform">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" name="Fname" autocomplete="off" value="@Model.FirstName" id="Fname" placeholder="Please enter first name" maxlength="25" class="form-control">
+                                    </div>
+                                </div>
+                                                           <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" name="Lname" autocomplete="off" value="@Model.LastName" id="Lname" placeholder="Please enter last name" maxlength="25" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        @if (@Model.Id > 0)
+                                        {
+                                            <input type="text" name="Email" readonly="readonly" autocomplete="off" value="@Model.Email" id="Email" placeholder="Please enter email" maxlength="45" class="form-control">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="Email" autocomplete="off" value="@Model.Email" id="Email" placeholder="Please enter email" maxlength="45" class="form-control">
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input type="text" name="Phoneno" autocomplete="off" value="@Model.Phoneno" id="Phoneno" placeholder="Please enter phone number" maxlength="15" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        @Html.DropDownListFor(m => m.RoleId, new SelectList(Model.rolecollection, "Id", "Name"), "Please select role type", new { @class = "form-control", @Id = "RoleId", @Name = "RoleId" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="Password" autocomplete="off" value="@Model.Password" id="Password" placeholder="Please enter password" maxlength="15" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Confirm password</label>
+                                        <input type="password" name="cPassword" autocomplete="off" value="@Model.Password" id="cPassword" placeholder="Please confirm password" maxlength="15" class="form-control">
+                                    </div>
+                                </div>  
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" name="SaveBtn" id="SaveBtnID" class="btn btn-primary" onclick="AdminUsermanage(@Model.Id)" value="Save">
+                        <button type="button" class="btn btn-light" data-dismiss="modal" onclick="Close()" >Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main> 
+ 
+<script src="~/Areas/Admin/Admin/UserManagment.js"></script>
+<script>
+    var element = document.getElementById("User_Management").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("User_Management");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("User_Management");
+    element.classList.add("show");
+    var element = document.getElementById("New User+1");
+    element.classList.add("active");
+</script>

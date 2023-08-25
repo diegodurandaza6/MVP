@@ -1,0 +1,391 @@
+@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "Company Profile";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src=@Model.locationKey defer></script>
+
+<div id="ClientContactDetails_PopUp" class="modal fade" role="dialog"></div>
+
+
+
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>My Profile</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="updatecompanypopup(@Model.CompanyId)">
+                    Edit Company
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 w-100-1500">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b header-golden-bg">
+                        <h5 class="card-title mb-0">
+                            Company Details
+                        </h5>
+                    </div>
+                    <div class="card-body p-b-0">
+                        <div class="row position-relative">
+                            <div class="p-profile mb-3 row-mg w-100 m-0">
+
+                                <div class="p-profile-body col-md-12 pt-0 pl-3">
+                                    <table class="table table-striped hr-b hr-l hr-r m-0">
+
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="3" style="width: 146px;">
+                                                    <div class="p-profile-body-2 pb-0 pt-0" style="width: 122px;">
+                                                        @if (Model.FileName.Length > 0)
+                                                        {
+                                                            <img src="@Model.FilePath" height="120" width="120">
+                                                        }
+                                                        else
+                                                        {
+                                                            @*<img src="@Model.FilePath" class="p-profile-img p-0 bg-white hr-l hr-r hr-b hr-t">*@
+                                                            <img src="/FileUpload/candidatedefaultImage/building-icon.png" class="p-profile-img p-0 bg-white hr-l hr-r hr-b hr-t">
+                                                        }
+
+                                                    </div>
+                                                </td>
+                                                <td><b>Name</b> :</td>
+
+
+                                                <td>  @Model.CompanyName</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><b>Website</b> :</td>
+                                                <td>
+
+                                                    @if (@Model.Website == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@Model.Website" target="_blank" class="text-underline-hvr">
+                                                            @Model.Website
+                                                        </a>
+                                                    }
+
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Address</b> :</td>
+                                                <td>
+                                                    @if (@Model.Address == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @Model.Address
+
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Location</b> :</td>
+                                                <td colspan="2">
+                                                    @if (@Model.Location == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @Model.Location
+
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>
+                                                        Zip Code
+
+                                                    </b> :
+                                                </td>
+                                                <td colspan="2">
+                                                    @if (@Model.Zip == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @Model.Zip
+
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 160px;">
+                                                    <b>
+                                                        About Company
+                                                    </b> :
+                                                </td>
+                                                <td colspan="2">
+                                                    @if (@Model.Description == "")
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @Model.Description
+
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12"> 
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow mb-4">
+                    <div class="card-header hr-b header-golden-bg">
+                        <div class="card-actions float-right">
+                            <a onclick="CompanyContact(@Model.CompanyId,0,0)" class="clr-000" data-toggle="tooltip" data-placement="top" data-original-title="Add a User">
+                                <i class="fas fa-fw fa-user-plus f-s-18"></i>
+                            </a>
+                        </div>
+                        <h5 class="card-title mb-0">
+                            Manage Users
+                        </h5>
+                    </div>
+                    <div class="card-body detail-pills">
+                        <div class="fade active show" id="Contact" role="tabpanel" aria-labelledby="nav-home-tab"> 
+                            <div class="row"> 
+                                <div class="col-lg-6 col-sm-6 text-right offset-6 mb-3"> 
+                                </div>
+                            </div>
+                            @if (Model.clientContactForm != null)
+                            {
+                                <div class="my-active-jobs-main">
+                                    <div class="my-active-jobs-inner">
+                                        @foreach (var item in Model.clientContactForm)
+                                        {
+
+                                            <div class="my-active-jobs-inner-row cursor-pointer">
+                                                <div class="my-active-jobs-inner-tile border-t-0">
+                                                    <div class="my-active-jobs-inner-footer-2 hr-b">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="f-s-16 w-100">
+                                                                    <i class="far fa-fw fa-user-circle"></i>
+                                                                    <span class="clr-000">@item.Name @item.LastName</span>
+                                                                </a>
+
+
+                                                                @**@
+                                                                <div class="my-active-jobs-mune companyprofile-menu">
+                                                                    <div class="dropdown">
+                                                                        <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                            <a class="dropdown-item" onclick="CompanyContact(@Model.CompanyId,@item.Id,@item.UseraccountprofileId)">
+                                                                                <i class="far fa-fw fa-edit"></i> Edit User
+                                                                            </a>
+                                                                            @if (item.Status == 1)
+                                                                            {
+                                                                                <a class="dropdown-item" onclick="DeleteClientContact(@item.Id,9)">
+                                                                                    <i class="fas fa-fw fa-lock-open"></i> Disable User
+                                                                                </a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="dropdown-item" onclick="DeleteClientContact(@item.Id,1)">
+                                                                                    <i class="fas fa-fw fa-lock"></i> Enable User
+                                                                                </a>
+
+                                                                            }
+                                                                            <a class="dropdown-item" onclick="ResendActivationEmail(@item.Id)">
+                                                                                <i class="far fa-fw fa-envelope-open"></i> Resend Activation Email
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="my-active-jobs-inner-tile my-active-jobs-inner-tile-2 pull-left w-100">
+                                                        <div>
+                                                            <i class="far fa-fw fa-user-circle"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="my-active-jobs-mune-2">
+                                                                <ul>
+                                                                    <li>
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Phone No :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if (item.Phone1 == "")
+                                                                                        {
+                                                                                            <span>N/A</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            @item.Phone1
+
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Email :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <p>
+                                                                                            @item.Email
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>Position :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <p>
+                                                                                            @if (item.Title == "")
+                                                                                            {
+                                                                                                <span>N/A</span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                @item.Title
+
+                                                                                            }
+
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b>LinkedIn Url :</b>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <p>
+                                                                                            @if (item.Linkdin == "")
+                                                                                            {
+                                                                                                <span>N/A</span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                @item.Linkdin
+
+                                                                                            }
+
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <span class="no-data-found">
+                                    No Data found...
+                                </span>
+                            }
+
+                            <div class="abcd">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div id="dv_updatecompanypopup" class="modal fade" role="dialog"></div>
+<script src="~/MvpTelent_js/Client/companyprofile.js"></script>
+
+<script>
+    var element = document.getElementById("companyprofile");
+    element.classList.add("active");
+</script>
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length < 2) {
+            disableGoogleAutocomplete();
+        }
+        else {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+    })
+
+
+
+
+   
+</script>
+<script src="~/MvpTelent_js/Client/Client.js"></script>

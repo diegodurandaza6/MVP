@@ -1,0 +1,167 @@
+﻿@model Web.Model.Candidate.PlanModel
+@{
+    ViewBag.Title = "plan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<section class="banner-inner" style="background-image: url('../../New_Content/images/plan-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Professional Recruitment Solutions</h1>
+                <p>
+                    Multiple Membership Options
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="price-section bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 offset-xl-3">
+                <div class="section-title text-center">
+                    <h2>Choose Your Membership Plan </h2>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <div class="price-tab price-tab-new-plan">
+                    <ul class="nav nav-pills d-flex justify-content-center" id="price-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active show" id="monthly-tab" data-toggle="pill" href="#monthly" role="tab" aria-controls="monthly" aria-selected="true"> Candidate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="yearly-tab" data-toggle="pill" href="#yearly" role="tab" aria-controls="yearly" aria-selected="false">Employer</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="price-tab-content mt-5">
+            <div class="tab-content" id="price-tab-content">
+                <div class="tab-pane animated fadeIn active show" id="monthly" role="tabpanel" aria-labelledby="monthly-tab">
+                    <ul class="price-list plan-2-tabs">
+                        @{int RowNo1 = 0;}
+                        @if (Model.PlanListCollection != null)
+                        {
+                            foreach (var item in Model.PlanListCollection.Where(m => m.PlanTypeId == 1))
+                            {
+
+                                <li>
+                                    <div>
+                                        <div class="price-price">
+                                            <h4>@item.Name</h4>
+                                        </div>
+                                        <div class="col-md-12 bg-f3f3f3 pull-left">
+                                            <hr class="m-0 mb-2">
+                                        </div>
+                                        <div class="price-offer mb-25 text-center">
+                                            @if (RowNo1 > 0)
+                                            {
+                                                <span>$ @item.Price <span class="off"> </span></span>
+                                            }
+                                            else
+                                            {
+                                                <span>  <span class="off"> </span></span>
+                                            }
+
+                                        </div>
+                                        <hr class="hr-1" />
+                                        @{
+                                            string text = item.Description;
+                                            string[] authorsList = text.Split(',');
+                                            <ul class="sub-price-list">
+                                                @{int RowNo = 0;}
+                                                @foreach (string author in authorsList)
+                                                {
+                                                    if (RowNo1 == 1)
+                                                    {
+                                                        if (RowNo == 0)
+                                                        {
+                                                            <li class="clr-golden"><b>Includes all features of FREE Plus</b> </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li><i class="fas fa-check"></i>@author </li>
+                                                        }
+                                                        { RowNo++; }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><i class="fas fa-check"></i>@author </li>
+                                                    }
+
+
+
+                                                }
+                                            </ul>
+                                        }
+                                        <div class="sub-price-btn">
+                                            <a onclick="Buy(3, @Model.UsertypeId,'@item.Ids')" class="button-secondry">Select Plan</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                { RowNo1++; }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="tab-pane animated fadeIn" id="yearly" role="tabpanel" aria-labelledby="yearly-tab">
+                    <ul class="price-list employee-tab">
+                        @if (Model.PlanListCollection != null)
+                        {
+                            foreach (var item in Model.PlanListCollection.Where(m => m.PlanTypeId == 2))
+                            {
+                                <li>
+                                    <div>
+                                        <div class="price-price">
+                                            <h4>@item.Name</h4>
+                                        </div>
+                                        <div class="col-md-12 bg-f3f3f3 pull-left">
+                                            <hr class="m-0 mb-2">
+                                        </div>
+                                        <div class="price-offer mb-25 text-center">
+                                            <span>$ @item.Price / Month <span class="off"> </span></span>
+                                        </div>
+                                        <hr class="hr-1" />
+                                        @{
+                                            string text = item.Description;
+                                            string[] authorsList = text.Split(',');
+                                            <ul class="sub-price-list">
+                                                @foreach (string author in authorsList)
+                                                {
+                                                    <li><i class="fas fa-check"></i>@author </li>
+                                                }
+                                            </ul>
+                                        }
+                                        <div class="sub-price-btn">
+                                            <a onclick="Buy(2,@Model.UsertypeId,'@item.Ids')" class="button-secondry">Select Plan</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <hr />
+                    <div class="text-center">
+                        <h4 class="pt-2">
+                            Company membership also includes
+                        </h4>
+                        <p>
+                            Professional recruitment services at a discounted rate with flexible payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="login_popup" class="modal fade" role="dialog"></div>
+<script src="~/MvpTelent_js/Plan.js"></script>
+<script>
+    var element = document.getElementById("plan");
+    element.classList.add("active");
+</script>

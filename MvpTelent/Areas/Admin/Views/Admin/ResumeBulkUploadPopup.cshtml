@@ -1,0 +1,45 @@
+﻿@model Web.Model.Client.JobsModel
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> candidate submission </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+      
+                    <form id="Candidateresumeblikform">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Name</label>
+                                    <input id="UName" maxlength="20" autocomplete="off" class="form-control" value="" placeholder="Please enter name" name="UName" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input id="ULastName" maxlength="20" autocomplete="off" class="form-control" value="" placeholder="Please enter last name" name="ULastName" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone No</label>
+                                    <input id="Phoneno" maxlength="15" autocomplete="off" class="form-control" value="" placeholder="Please enter phone" name="Phoneno" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input id="UEmail" autocomplete="off" class="form-control" value="" name="UEmail" placeholder="Please enter email" maxlength="50" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">File Upload</label>
+                                    <input id="Uploadfiles" name="Uploadfiles" class="form-control" type="file">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+        
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn btn-primary" id="candidatebtn" name="candidatebtn" onclick="Createuploadresumesave(@Model.JobId)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

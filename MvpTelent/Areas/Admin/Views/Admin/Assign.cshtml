@@ -1,0 +1,128 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "Assign";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="~/Content/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script src="~/Content/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#">Assign</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="table_search">
+    <form class="form-inline" id="assignEmailform">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4">
+                    <input type="text" name="Email" style="width:100%;" autocomplete="off" value="@Model.Email" id="Email" placeholder="Please enter email" maxlength="50" class="form-control">
+                </div>
+                <div class="col-lg-2 ab_btn">
+                    <button type="button" class="search_btn" onclick="getassignByEmail()">Search</button>
+                </div>
+                <div class="col-lg-2 ab_btn">
+                    <button class="reset_btn" type="button" onclick="ResetEmail()">Reset</button>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+    </form>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <div class="card">
+                <div class="card-body mb-5">
+                    <div class="card">
+                        <div class="bread-crumb" style="background:#f9f9f9;">
+                            <h4 class="_assign">Client Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-12">
+                                    <ul class="_lable_section">
+                                        <li>
+                                            <label>Company Name :</label> &nbsp; <span>@Model.CompanyName</span>
+                                        </li>
+                                        <li> <label>Website :</label> &nbsp; &nbsp; &nbsp; <span>@Model.Website</span></li>
+                                        <li> <label>Phone :</label> &nbsp; &nbsp; &nbsp; <span>@Model.Phone1</span></li>
+                                        <li>   <label>City Name :</label> &nbsp; &nbsp; <span>@Model.CityName</span></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-sm-12">
+                                    <ul class="_lable_section">
+                                        <li>
+                                            <label>Address :</label> &nbsp; &nbsp; &nbsp; <span>@Model.Address</span>
+                                        </li>
+                                        <li>   <label>County Name :</label>&nbsp; <span>@Model.CountryName</span> </li>
+                                        <li>  <label>State Name :</label> &nbsp; <span>@Model.StateName</span></li>
+                                        <li>  <label>Zip Code :</label> &nbsp; &nbsp; <span>@Model.Zip</span> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="bread-crumb" style="background:#f9f9f9;">
+                            <h4 class="_assign">Client Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="clientpayform">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Number</label>
+                                            <input id="Number" maxlength="50" class="form-control" value="" tabindex="1" placeholder="Please enter number" name="Number" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input id="CDate" maxlength="50" autocomplete="off" class="form-control" value="" placeholder="Please enter date" name="CDate" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Point</label>
+                                            <input id="point" maxlength="15" autocomplete="off" class="form-control" value="" placeholder="Please enter point" name="point" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Amount</label>
+                                            <input id="Amount" maxlength="50" autocomplete="off" class="form-control" value="" placeholder="Please enter amount" name="Amount" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <input type="hidden" id="PayClientId" name="PayClientId" value="@Model.ClientId" />
+                    <div class="row mt-4">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-2">
+                            <input type="button" name="paybtn" id="paybtn" class="save_button" onclick="Createassignpay(@Model.ClientId)" value="Save">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="_close">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $('#CDate').datetimepicker({
+        useCurrent: false,
+        format: 'Y/m/d H:i',
+        minDate: 0,
+        step: 30,
+    });
+</script>
+<script src="~/Areas/Admin/Admin/Assign.js"></script>

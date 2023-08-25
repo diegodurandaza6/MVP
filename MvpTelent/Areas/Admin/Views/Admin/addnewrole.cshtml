@@ -1,0 +1,65 @@
+﻿@model Web.Model.Admin.RoleViewModel
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">
+                Role Page Mapping
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+         
+                    <form id="RoleForm_Popup" name="RoleForm_Popup">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-username">Role</label>
+                                    <input type="text" maxlength="25" value="@Model.Name" id="Role" name="Role" autocomplete="off" placeholder="Please enter role name " class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Select Page</label>
+                                    <div class="dropdown selected-tags">
+                                        <button class="form-control dropdown-toggle text-left left-caret" type="button" id="tag-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           Please select page
+                                        </button>
+                                        <ul class="dropdown-menu campaign-information-popup" aria-labelledby="tag-dropdown" id="pageli">
+                                            <li>Please Campaign Type</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Role Description </label>
+                                    <textarea class="form-control" rows="2" id="description" maxlength="200" name="description" placeholder="Please enter description">@Model.description </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="validation-password-confirm">Role Status </label>
+                                    @Html.DropDownListFor(model => model.statusId,
+                                    new List<SelectListItem> {
+                                    new SelectListItem { Value = "" , Text = "Please select role status" },
+                                    new SelectListItem { Value = "1" , Text = "Active" },
+                                    new SelectListItem { Value = "2" , Text = "InActive" }
+                                    }, new { @class = "form-control", @Id = "statusId", @Name = "statusId"})
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+           
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="login" id="login" class="btn btn-primary" onclick="AddUpdateRole(@Model.Id)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+@if (Model.Id > 0)
+{
+    <input type="hidden" id="hdnPageids" name="hdnPageids" value="@Model.PageId" />
+}
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).next('.dropdown').slideToggle("fast");
+    });
+</script>
+<script src="~/Areas/Admin/Admin/EmailTemplet.js"></script>

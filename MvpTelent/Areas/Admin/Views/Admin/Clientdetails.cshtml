@@ -1,0 +1,89 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "Clientdetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#"> Client Details</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left right_icon">
+                        Client Information
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-xl-3">
+                            <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                                <div class="card-body text-center">
+                                    <span class="company-icon">
+                                        <i class="far fa-fw fa-building"></i>
+                                    </span>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="card-title mt-2">@Model.CompanyName</h3>
+                                            <p>
+                                                @Model.Email
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-0">
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-1"><i class="fas fa-globe"></i> @Model.Website</li>
+                                        <li class="mb-1"><i class="fas fa-map-marker"></i> @Model.Location</li>
+                                        <li class="mb-1"><i class="fas fa-file-archive-o"></i> @Model.ClientPhone</li>
+                                        <li class="mb-1"><i class="fas fa-home"></i> @Model.Address</li>
+                                        <li class="mb-1"><i class="fa fa-facebook"></i> @Model.FaceBook</li>
+                                        <li class="mb-1"><i class="fa fa-twitter"></i> @Model.Twitter</li>
+                                        <li class="mb-1"><i class="fa fa-linkedin"></i> @Model.Linkdin</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-xl-9">
+                            <div class="card mb-3 ">
+                                <div class="card-header d-flex justify-content-between no-shadow">
+                                    <h4 class="text-left">files </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="scouting-report">
+                                        <div>
+                                            <span class="img" style="background-image: url('@Model.clientLogo');"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between no-shadow">
+                                    <h4 class="text-left">About </h4>
+                                </div>
+                                <div class="card-body">
+                                    <p>
+                                        @Model.Description
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

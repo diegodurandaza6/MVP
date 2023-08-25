@@ -1,0 +1,215 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "generalmessagesdetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<style type="text/css">
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: fixed;
+        background-color: rgba(0,0,0,0.65);
+        z-index: 999;
+    }
+
+    div#loader_gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    General Message
+                </h3>
+            </div>
+        </div>
+
+        <div class="row res-msg">
+            <div class="col-md-4 col-xl-4">
+                <div class="conversation-tile-candidate">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">
+
+                            Conversation With
+                        </h5>
+                    </div>
+                    <div class="card-body bg-white">
+                        <table class="table table-striped my-0 hr-l hr-r hr-b">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Role</b>:
+
+                                        @if (Model.AccountTypeId == 3)
+                                        {
+                                            <span>Candidate</span>
+                                            <a style="" data-toggle="tooltip" data-placement="top" data-original-title="View Candidate Details" onclick="confidentialprofile('@EncryptDecrypt.encrypt(Convert.ToString(Model.CandidateId))')" class="pull-right">
+                                                <i class="far fa-fw fa-eye"></i>
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            <span>Employer </span>
+
+                                            <a style="" data-toggle="tooltip" data-placement="top" data-original-title="View Employer Details" onclick="clientdetail('@EncryptDecrypt.encrypt(Convert.ToString(Model.ClientId))')" class="pull-right">
+                                                <i class="far fa-fw fa-eye"></i>
+                                            </a>
+                                        }
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Name</b>: @Model.Name @Model.LastName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Email</b>: @Model.Email
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Phone No</b>: @Model.ClientPhone
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 col-xl-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card flex-fill">
+                            <div class="card-header hr-b header-golden-bg">
+                                <h5 class="card-title mb-0">
+                                    Send a Message
+                                </h5>
+                            </div>
+                            <div class="card-body pb-0">
+                                <form class="input-group" id="Gmessagechatform">
+                                    <textarea type="text" id="massege" @*onkeypress="return msgsent(event)"*@ autocomplete="off" name="massege" class="form-control w-100" placeholder="Type a message..." rows="5"></textarea>
+
+                                </form>
+                                <div class="col-md-12 p-0 text-right mt-3 pull-right mb-3">
+                                    <button class="btn-new-1" type="button" onclick="savesendgeneralmessagebyadmin(@Model.Id,@Model.ClientId)">Send</button>
+                                </div>
+                            </div>
+                            <div class="card-header hr-b hr-t header-golden-bg">
+                                <h5 class="card-title mb-0">
+                                    <b>Subject</b> :
+                                    <span class="font-weight-400">
+                                        @Model.Title
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="position-relative">
+                                    <div class="chat-messages p-0">
+
+
+                                        @if (Model.ClienConversationcollection != null)
+                                        {
+                                            foreach (var item in Model.ClienConversationcollection)
+                                            {
+                                                if (item.CreateBy == Model.UserId)
+                                                {
+                                                    <div class="chat-message-left pb-4">
+                                                        <div class="flex-shrink-1 msg msg-anchor">
+                                                            <div class="font-weight-bold mb-1">
+                                                                <span>
+                                                                    <span class="font-weight-500 fs-14">
+                                                                        @item.Name
+                                                                    </span>
+                                                                    <span class="date-msz">(@item.CreatedDate)</span>
+                                                                </span>
+                                                            </div>
+                                                            @Html.Raw(item.Description)
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+                                                    <div class="chat-message-left pb-4">
+                                                        <div class="flex-shrink-1 msg msg-anchor">
+                                                            <div class="font-weight-bold mb-1">
+                                                                <span>
+                                                                    <span class="font-weight-500 fs-14">
+                                                                        @item.Name
+                                                                    </span>
+                                                                    <span class="date-msz">(@item.CreatedDate)</span>
+                                                                </span>
+                                                            </div>
+                                                            @Html.Raw(item.Description)
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</main>
+
+
+<input type="hidden" id="h_CandidateId" value="@Model.CandidateId" />
+<input type="hidden" name="GMId" id="GMId" value="@Model.Ids" />
+<div class="loading" align="center">
+    <div id="loader_gif">
+        <img src="~/Scripts/assets/img/loader.png" />
+    </div>
+</div>
+
+<script src="~/Areas/Admin/Admin/generalmessagesdetails.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+    });
+</script>
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("General Messages+1");
+    element.classList.add("active");
+</script>

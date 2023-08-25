@@ -1,0 +1,56 @@
+﻿@model Web.Model.Admin.Dashboardmodel
+<style>
+    label {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            @if (Model.TypeId == 1)
+            {
+                <h5 class="modal-title" id=""> To-Do Detail </h5>
+            }
+            else
+            {
+                <h5 class="modal-title" id=""> Metting Schedule Detail </h5>
+            }
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+         
+                <table class="table table-striped my-0 table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="w-200px">
+                                <b>To-Do Title</b>  
+                            </td>
+                            <td>
+                               @Model.Subject
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w-150px">
+                                <b>Due Date</b>
+                            </td>
+                            <td>
+                                 @Model.Date
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>To-Do Description</b>
+                            </td>
+                            <td>
+                                 @Model.Description
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,242 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="banner-inner">
+    <div class="container">
+        <h1>Find Your Best Jobs</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing .</p>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="registration-inner job-list-reg-form bg-light shadow">
+                    <form class="registration-form">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="registration-form-box">
+                                    <i class="fa fa-briefcase"></i>
+                                    <input type="text" id="exampleInputName1" class="form-control rounded registration-input-box" placeholder=" keybords...">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="registration-form-box">
+                                    <i class="fas fa-user-md"></i>
+                                    <select id="select-country" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options">
+                                            <input type="select-one" autocomplete="off" tabindex="" id="select-country-selectized" placeholder="Job Title...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="registration-form-box">
+                                    <i class="fa fa-location-arrow"></i>
+                                    <select id="select-category" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options">
+                                            <input type="select-one" autocomplete="off" tabindex="" id="select-category-selectized" placeholder="Location...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="registration-form-box">
+                                    <input type="button" onclick="joblistdemo()" id="submit" name="send" class="submitBnt btn btn-primary btn-block" value="Search">
+                                    <script>
+                                        function joblistdemo() {
+                                            url = "/Home/joblist/";
+                                            window.location.href = url;
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="jobs-list-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="sidebar-container">
+                    <!-- location input -->
+                    <div class="sidebar-widget">
+                        <h3>Location</h3>
+                        <div class="location icon">
+                            <div id="autocomplete-container">
+                                <input id="autocomplete-input" type="text" placeholder="Location">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3>Keywords</h3>
+                        <div class="add-ico icon">
+                            <div class="keyword-input-container">
+                                <input type="text" class="keyword-input" placeholder="e.g. job title">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3>Category</h3>
+                        <form>
+                            <div class="form-group caret icon">
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option>All Category</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3>Job Type</h3>
+                        <div class="switches-list">
+                            <div class=" custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">Freelance</label>
+                            </div>
+                            <div class="custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                <label class="custom-control-label" for="customSwitch2">Full Time</label>
+                            </div>
+                            <div class="custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                <label class="custom-control-label" for="customSwitch3">Part Time</label>
+                            </div>
+                            <div class="custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                                <label class="custom-control-label" for="customSwitch4">Internship</label>
+                            </div>
+                            <div class="custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch5">
+                                <label class="custom-control-label" for="customSwitch5">Temporary</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3>Salary</h3>
+                        <div class="salary-counter">
+                            <div id="amount"></div>
+                            <div id="slider-range">
+                                <div class="tooltip-arrow"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3>Tags</h3>
+                        <ul class="side-bar-tag">
+                            <li><a href="#">Front-end dev</a></li>
+                            <li><a href="#">Angular</a></li>
+                            <li><a href="#">React</a></li>
+                            <li><a href="#">Vue js</a></li>
+                            <li><a href="#">Web apps</a></li>
+                            <li><a href="#">Design</a></li>
+                            <li><a href="#">Wordpress</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <h3>Search Results</h3>
+                <div class="jobs-sec-top">
+                    <div class="switches-list">
+                        <div class=" custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch6">
+                            <label class="custom-control-label" for="customSwitch6">Turn on email alerts for this search</label>
+                        </div>
+                    </div>
+                    <div class="sort-by">
+                        <span>Sort by:</span>
+                        <div class="btn-group bootstrap-select caret icon">
+                            <select class="selectpicker hide-tick " tabindex="-98">
+                                <option>Relevance</option>
+                                <option>Newest</option>
+                                <option>Oldest</option>
+                                <option>Random</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jobs-tiles-inner">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="jobs-content">
+                                <figure class="job-figure">
+                                    <a onclick="jobdetailByid(2,2,'New York, NY, USA')" style="cursor:pointer">
+                                        <img src="~/New_Content/images/company-logo-01.png" alt="image">
+                                    </a>
+                                </figure>
+                                <article class="cs-text">
+                                    <div class="row no-gutters">
+                                        <div class="col-10">
+                                            <div class="jobs-title">
+                                                <h4 class="job-listing-company">Healthcare<i class="fas fa-check-circle ml-2"></i></h4>
+                                                <h3>
+                                                    <a onclick="jobdetailByid(2,2,'New York, NY, USA')" style="cursor:pointer">Need Senior Vaccination Nurse</a>
+                                                </h3>
+                                            </div>
+                                            <div class="jobs-para">
+                                                <div> Lorem Ipsum is simply lorem Ipsum has been the industry</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 d-flex justify-content-end">
+                                            <div class="star-ico">
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="job-listing-footer">
+                                <ul>
+                                    <li><i class="fas fa-map-marker-alt"></i> NY, United States</li>
+                                    <li><i class="fas fa-briefcase"></i> Full Time</li>
+                                    <li><i class="fas fa-wallet"></i> $35000-$38000</li>
+                                    <li><i class="far fa-clock"></i> 2 days ago</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination job-pagination justify-content-center mt-5 mb-5">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function jobdetailByid(Id, Jobtype, Location) {
+        var Url = "/Home/jobdetail?Ids=" + Id + "&Jobtype=" + Jobtype + "&location=" + Location;
+        window.open(Url, '_blank');
+    }
+</script>

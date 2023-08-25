@@ -1,0 +1,126 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "Clientenquireydetails";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<div class="col-lg-9 col-sm-12">
+    <div class="tab-pane" id="v-pills-changepassword" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <section class="dashboard_table">
+            <div class="client_table">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="text-left right_icon">
+                            Client Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="ChangePasswordform">
+                            <div class="container">
+                                <div class="client_details">
+                                    <h3 class="info-sec">Candidate Information</h3>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="client_img">
+                                                <img src="@Model.candidateimage" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <div class="client_location">
+                                                <div id="location">
+                                                    <h5>Name : </h5>
+                                                    <p>@Model.CandidateName</p>
+                                                </div>
+                                                <div class="location Title">
+                                                    <h5>Title : </h5>
+                                                    <p>@Model.candidateTitle</p>
+                                                </div>
+                                                <div id="location">
+                                                    <h5>City : </h5>
+                                                    <p>@Model.CityName</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client_details mt-4">
+                                    <h3 class="info-sec">Client Details</h3>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="client_img">
+                                                <img src="@Model.clientLogo" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <div class="client_location">
+                                                <div id="location">
+                                                    <h5>Name : </h5>
+                                                    <p>@Model.ClientName</p>
+                                                </div>
+                                                <div class="location age">
+                                                    <h5>Email :</h5>
+                                                    <p>@Model.Email</p>
+                                                </div>
+                                                <div id="location">
+                                                    <h5>Phone : </h5>
+                                                    <p>@Model.Phone1</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client_details mt-4">
+                                    <h3 class="info-sec">Chat Screen</h3>
+                                    <div class="chat_screen">
+                                        <div class="chat_header">
+                                            <div class="chat-imags">
+                                                <img src="~/Scripts/assets/img/candidate-2.jpg" />
+                                            </div>
+                                            <h2>Chat Name</h2>
+                                        </div>
+                                        @foreach (var item in Model.ClienConversationcollection)
+                                        {
+                                            if (item.fromId == Model.UserId)
+                                            {
+                                                <div class="chat-section" style="margin-top:50px;">
+                                                    <div class="chat-txt">
+                                                        @item.Description
+                                                    </div>
+                                                    <div class="chat-imags">
+                                                        <img src="@item.clientLogo" />
+                                                    </div>
+                                                    <p class="time">@item.CreatedDate</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="chat-section right mt-3">
+                                                    <div class="chat-txt fine">
+                                                        @item.Description
+                                                    </div>
+                                                    <div class="chat-imags icon">
+                                                        <img src="@item.clientLogo" />
+                                                    </div>
+                                                    <p class="time cs3">@item.CreatedDate</p>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="chat-footer mt-4">
+                                            <div class="form-section">
+                                                <from id="sendmassegefrom" name="sendmassegefrom" action="#">
+                                                    <input type="text" id="massege" name="massege" class="form-control" placeholder="Type a message" />
+                                                </from>
+                                                <i class="fa fa-location-arrow" aria-hidden="true" onclick="sendClientconversationsaved(@Model.Id,@Model.ClientId)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="~/Areas/Admin/Admin/enquires.js"></script>

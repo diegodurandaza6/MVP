@@ -1,0 +1,217 @@
+﻿@{
+    ViewBag.Title = "signup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<section class="banner-inner" style="background-image: url('../../New_Content/images/login-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Register</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="login-section">
+    <div class="container">
+        <div class="login-box animated fadeInUp">
+            <div class="row no-gutters align-items-center">
+                <div class="col-md-6">
+                    <div class="sec-heading pb-5">
+                        <h4>Candidates</h4>
+                        <span class="devider-left text-left"></span>
+                        <p>
+                            Your contact information will not be visible on your public (searchable) profile. It will remain 	confidential with only your Recruitment Success Manager and the MVP Talent Market team 	having access until you give permission to share with a perspective employer.
+                        </p>
+                    </div>
+                    <div class="sec-heading">
+                        <h4>Employers</h4>
+                        <span class="devider-left text-left"></span>
+                        <p>
+                            Membership will grant you access to source qualified candidates that are not active on job 	boards. Many of these candidates are currently employed and would be interested in keeping 	their job search confidential.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="home-login-main">
+                        <div class="home-login-box pl-5 pr-5">
+                            <h2>
+                                Register Now
+                            </h2>
+                            <div class="register-tabbing mb-4">
+                                <!-- Nav pills -->
+                                <ul class="nav nav-pills no-gutters row">
+                                    <li class="nav-item col-lg-6">
+                                        <a class="nav-link active" data-toggle="tab" href="#profile-classic-orange" role="tab" aria-controls="profile-classic-orange" aria-selected="true">
+                                            <i class="fas fa-user-plus mr-1"></i>
+                                            I am a Candidate
+                                        </a>
+                                    </li>
+                                    <li class="nav-item col-lg-6">
+                                        <a class="nav-link" data-toggle="tab" href="#follow-classic-orange" role="tab" aria-controls="follow-classic-orange" aria-selected="false" aria-expanded="false">
+                                            <i class="fas fa-briefcase mr-1"></i>
+                                            I am an Employer
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane container active" id="profile-classic-orange" role="tabpanel" aria-labelledby="profile-tab-classic-orange">
+                                    <form id="Candidateform">
+                                        <div class="login-form">
+                                            <div class="row form-group">
+                                                <div class="col-lg-6">
+                                                    <div class="user_ico icon">
+                                                        <input class="form-control" type="text" id="UName" maxlength="20" autocomplete="off" name="UName" placeholder="Please enter first name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="user_ico icon">
+                                                        <input class="form-control" id="ULastName" maxlength="20" autocomplete="off" type="text" name="ULastName" placeholder="Please enter last name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="phone_ico icon"><input class="form-control" id="Phoneno" maxlength="14" placeholder="(XXX) XXX-XXXX" autocomplete="off" type="text" name="Phoneno"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="email_ico icon"><input class="form-control" type="text" id="UEmail" autocomplete="off" name="UEmail" maxlength="50" placeholder="Please enter email"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="pass_ico icon"><input class="form-control" type="password" id="Password" maxlength="20" autocomplete="off" name="Password" placeholder="Please enter password"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="pass_ico icon"><input class="form-control" id="CPassword" maxlength="20" autocomplete="off" type="password" name="CPassword" placeholder="Please confirm password"></div>
+                                            </div>
+                                            <div class="form-group sign-up-required-msg">
+                                                <input type="checkbox" id="CheckboxID" name="CheckboxID" />
+                                                You accepts our <a style="text-decoration: underline !important;" href="/Home/termscondition" target="_blank">
+                                                    Terms and Conditions
+                                                </a>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" id="signup" class="btn btn-primary text-center w-100 h-50px" name="signup" onclick="CreateCandidates()">Create Account</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane container fade" id="follow-classic-orange" role="tabpanel" aria-labelledby="follow-tab-classic-orange">
+                                    <form id="Clientform">
+                                        <div class="login-form">
+                                            <div class="form-group">
+                                                <div class="icon-building icon"><input class="form-control" type="text" id="Company" maxlength="60" autocomplete="off" name="Company" placeholder="Please enter company name"></div>
+                                            </div>
+                                            <div class="row form-group">
+
+                                                <div class="col-lg-6">
+                                                    <div class="user_ico icon">
+                                                        <input class="form-control" type="text" id="CName" maxlength="20" autocomplete="off" name="CName" placeholder="Please enter first name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="user_ico icon">
+                                                        <input class="form-control" id="CLastName" maxlength="20" autocomplete="off" type="text" name="CLastName" placeholder="Please enter last name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="phone_ico icon"><input class="form-control" type="text" id="CPhoneno" maxlength="12" autocomplete="off" name="CPhoneno" placeholder="Please enter phone number"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="email_ico icon"><input class="form-control" id="CEmail" autocomplete="off" type="text" maxlength="50" name="CEmail" placeholder="Please enter email"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="pass_ico icon"><input class="form-control" id="ClientPassword" maxlength="20" autocomplete="off" type="password" name="ClientPassword" placeholder="Please enter password"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="pass_ico icon"><input class="form-control" id="ConfrimPassword" maxlength="20" autocomplete="off" type="password" name="ConfrimPassword" placeholder="Please confirm password"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="checkbox" id="CheckboxID" name="CheckboxID" />
+                                                You accepts our <a style="text-decoration: underline !important;" href="/Home/termsofuse" target="_blank">
+                                                    Terms and Conditions
+                                                </a>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <button type="button" id="Clientsignup" name="Clientsignup" class="btn btn-primary text-center w-100" onclick="CreateClient()">Create Account</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="form-group text-center">
+                                    <small>
+                                        Already have an account?
+                                        <a href="/Home/login" class="text-danger register font-weight-bold">Login Now</a>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ 
+<script> 
+    $('#Phoneno') 
+        .keydown(function (e) {
+            var key = e.which || e.charCode || e.keyCode || 0;
+            $phone = $(this); 
+            // Don't let them remove the starting '('
+            if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+                $phone.val('(');
+                return false;
+            }
+            // Reset if they highlight and type over first char.
+            else if ($phone.val().charAt(0) !== '(') {
+                $phone.val('(' + String.fromCharCode(e.keyCode) + '');
+            }
+
+            // Auto-format- do not expose the mask as the user begins to type
+            if (key !== 8 && key !== 9) {
+                if ($phone.val().length === 4) {
+                    $phone.val($phone.val() + ')');
+                }
+                if ($phone.val().length === 5) {
+                    $phone.val($phone.val() + ' ');
+                }
+                if ($phone.val().length === 9) {
+                    $phone.val($phone.val() + '-');
+                }
+            }
+
+            // Allow numeric (and tab, backspace, delete) keys only
+            return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+        })
+
+        .bind('focus click', function () {
+            $phone = $(this);
+
+            if ($phone.val().length === 0) {
+                $phone.val('(');
+            }
+            else {
+                var val = $phone.val();
+                $phone.val('').val(val); // Ensure cursor remains at the end
+            }
+        })
+
+        .blur(function () {
+            $phone = $(this);
+
+            if ($phone.val() === '(') {
+                $phone.val('');
+            }
+        });
+</script>
+
+

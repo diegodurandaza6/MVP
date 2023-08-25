@@ -1,0 +1,516 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "Favorite  Candidates";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style>
+    .autocomplete-items {
+        overflow: scroll !important;
+        min-height: 400px !important;
+    }
+
+    .no-data-section {
+        margin: auto
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src=@Model.locationKey defer></script>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    My Favorite Candidates
+                </h3>
+                <span>
+                    My Favorite Candidate List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" placeholder="Search by job title" id="Title" name="Title" value="@Model.Title" maxlength="100" />
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" placeholder="Search by keywords" id="keyword" name="keyword" value="@Model.Keyword" maxlength="25" />
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" autocomplete="off" placeholder="Search by location" value="@Model.location" id="autocomplete_search" name="autocomplete_search" maxlength="30" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="searchmyfavourite(1,1)">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="myfavouritereset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card flex-fill">
+                    <div id="filtersection" style="display:none">
+                        <div class="row">
+                            <div class="col-md-4 col-xl-3">
+                                <div class="card mb-3 accordioncandidatelist" id="accordioncandidatelist"> 
+                                    <hr class="my-0">
+                                    <div id="milesfiltersection" class="card-body position-relative p-b-0">
+                                        <h5 class="h6">
+                                            <button class="" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                                                Select Miles
+                                            </button>
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li id="collapse" class="collapse show mb-1" aria-labelledby="filterOne" data-parent="#accordioncandidatelist">
+                                                @foreach (var item in Model.MilesCollection)
+                                                {
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input @(Model.mile == item.Id ? "checked" : string.Empty) type="radio" class="form-check-input" name="miles" value="@item.Id" id="miles" onclick="searchmyfavourite(1, null, null)">
+                                                        <label class="form-check-label ml-1" for="customCheck13">@item.Name </label>
+                                                    </div>
+                                                }
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-body position-relative p-b-0">
+                                        <h5 class="h6" id="filterOne">
+                                            <button class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Profile Type
+                                            </button>
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li id="collapseOne" class="collapse show mb-1" aria-labelledby="filterOne" data-parent="#accordioncandidatelist">
+                                                @foreach (var item in Model.JobTypeCollection)
+                                                {
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input all-select" name="JobtypeId" value="@item.Id" id="JobtypeId_@item.Id" onclick="searchmyfavourite(1, null, null)">
+                                                        <label class="custom-control-label ml-1" for="JobtypeId_@item.Id">@item.Name</label>
+                                                    </div>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body position-relative p-b-0">
+                                        <h5 class="h6" id="filterTwo">
+                                            <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Select Industry
+                                            </button>
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li id="collapseTwo" class="collapse mb-1" aria-labelledby="filterTwo" data-parent="#accordioncandidatelist">
+                                                @foreach (var item in Model.IndustryCollection)
+                                                {
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" name="JobCatagoryId" id="customJobCategory_@item.Id" value="@item.Id" onclick="searchmyfavourite(1, null, null)">
+                                                        <label class="custom-control-label ml-1" for="customJobCategory_@item.Id">@item.Name </label>
+                                                    </div>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body position-relative p-b-0">
+                                        <h5 class="h6" id="filterThree">
+                                            <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                Select Experience
+                                            </button>
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li id="collapseThree" class="collapse mb-1" aria-labelledby="filterThree" data-parent="#accordioncandidatelist">
+                                                @foreach (var item in Model.experienceCollection)
+                                                {
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="radio" class="form-check-input" name="experienceId" value="@item.Id" id="experienceId" onclick="searchmyfavourite(1, null, null)">
+                                                        <label class="form-check-label ml-1" for="customCheck13">@item.Name </label>
+                                                    </div>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <h5 class="h6" id="filterFour">
+                                            <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                Select Education Level
+                                            </button>
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li id="collapseFour" class="collapse mb-1" aria-labelledby="filterThree" data-parent="#accordioncandidatelist">
+                                                @foreach (var item in Model.EducationCollection)
+                                                {
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" name="educationlavelId" value="@item.Id" id="educationlavelId" onclick="searchmyfavourite(1, null, null)" class="form-check-input">
+                                                        <label class="form-check-label ml-1" id="@item.Id" name="@item.Id"> @item.Name </label>
+                                                    </div>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-9">
+                                <div class="card">
+                                    <div class="card-body p-b-0"> 
+                                        <h5 class="h6 card-title">
+                                            SHOWING  RESULTS
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="candidatelist-main-body-outer" id="myfavoriteListTable"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="beforesearchsection">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <div class="candidatelist-main-body-outer" id="CandiateListTable">
+                                    <h4 class="text-center">Please enter job title / keywords / location to search relevant Candidate</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="postal_code" name="postal_code"  />
+                @*<div class="card flex-fill">
+            <div class="card-header hr-b-1">
+                <h5 class="card-title mb-0">
+                    My Favorite Candidate List
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @if (Model.MyCandiateList != null)
+                    {
+                        foreach (var item in Model.MyCandiateList)
+                        {
+                            <div class="col-md-6">
+                                <div class="candidatelist-main-body">
+                                    <div class="candidatelists-main-header">
+                                        <span title="Details" style="cursor:pointer" onclick="getcandidateConfidetails('@EncryptDecrypt.encrypt(Convert.ToString(item.CandidateId))','@EncryptDecrypt.encrypt(Convert.ToString(item.jobId))')" for="exampleCheck1">@item.current_job_title </span>
+                                        <div class="card-actions float-right">
+                                            <div class="dropdown">
+                                                <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                    <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" onclick="getcandidateConfidetails('@EncryptDecrypt.encrypt(Convert.ToString(item.CandidateId))','@EncryptDecrypt.encrypt(Convert.ToString(item.jobId))')"><i class="far fa-fw fa-eye"></i> Schedule Interview </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="candidatelist-main-inner">
+                                        <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                            <img src="@item.profile_image">
+                                        </div>
+                                        <div class="candidatelist-main-inner-text">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span>Current Salary($)</span>
+
+                                                            @if (item.CurrentSalary.Length > 0)
+                                                            {
+                                                                <span> @item.CurrentSalary</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> N/A</span>
+                                                            }
+
+                                                        </td>
+                                                        <td>
+                                                            <span>Education Level</span>
+                                                            @if (item.EducationlevelName.Length > 0)
+                                                            {
+                                                                <span>@item.EducationlevelName</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> N/A</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span>Zip Code</span>
+                                                            @if (item.ZipCode != null)
+                                                            {
+                                                                <span>@item.ZipCode</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> N/A</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <span>Industry</span>
+                                                            @if (item.IndustryName.Length > 0)
+                                                            {
+                                                                <span>@item.IndustryName</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> N/A</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="candidatelist-main-footer">
+                                        <ul class="candi-tiles-social">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i> @item.Job_location
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-filter"></i> @item.Experience_Name
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @if (Model.Title != null || Model.location != null || Model.Keyword != null)
+                    {
+                        if (Model.TotalRowCount == 0)
+                        {
+                            <div class="card-body">
+                                <div class="candidatelist-main-body-outer" id="CandiateListTable">
+                                    <figure class="no-data-img text-center">
+                                        <img src="/New_Content/images/404-img.png" class="img-fluid">
+                                    </figure>
+                                    <p class="text-center">Sorry , The data not found</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <div class="candidatelist-main-body-outer">
+                                <h4 class="text-center">Please enter job title / keywords / location to search relevant Candidate</h4>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+        @if (Model.TotalRowCount > Model.maxRows)
+        {
+            <div class="card-body">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                        @if (Model.CurrentPageIndex > 1)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                        }
+                        @if (Model.indexlegth > 20)
+                        {
+                            for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                            {
+                                if (i != Model.CurrentPageIndex)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                }
+                                if (i > (Model.CurrentPageIndex + 19))
+                                {
+                                    <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                            {
+                                if (i != Model.CurrentPageIndex)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                }
+                            }
+                        }
+                        @if (Model.CurrentPageIndex < Model.PageCount)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                        }
+                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        }*@
+            </div>
+        </div>
+    </div>
+</main>
+ 
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('location'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#location').keypress(function (e) {
+        var input = document.getElementById('location');
+        if (input.value.length < 2) {
+            disableGoogleAutocomplete();
+        }
+        else {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+    })
+</script>
+
+<script>
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                var pos = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                if (pos > -1) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = arr[i].substr(0, pos);
+                    b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(pos + val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    var strArray = [];
+    $.ajax({
+        type: "Post",
+        url: "/Home/getFavoriteCandidateTitleList",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.each(data.candidatetagvaluecollection, function () {
+                var tmpStr = "";
+                for (var i = 0; i < this.Name.length; i++) {
+                    if (this.Name.charAt(i) == ',') {
+                        strArray.push(tmpStr);
+                        tmpStr = "";
+                        continue;
+                    }
+                    tmpStr += this.Name.charAt(i);
+                }
+                strArray.push(tmpStr);
+            });
+            autocomplete(document.getElementById("Title"), strArray);
+        },
+        error: function () {
+            alert("There is an error uploading files!");
+        }
+    });
+</script>
+<script src="~/MvpTelent_js/Client/myfavourite.js"></script>
+<script>
+    var element = document.getElementById("myfavourite");
+    element.classList.add("active");
+</script>

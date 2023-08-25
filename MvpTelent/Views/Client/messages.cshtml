@@ -1,0 +1,190 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = " Sent Items";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Messages From Admin</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="sendgeneralmessagespopup(0)">
+                    New Message
+                </a>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header"> 
+                        <h5 class="card-title mb-0">
+                            Message List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>From Name</th>
+                                    <th>Subject </th>
+                                    <th>Date</th>
+                                    <th class="text-center w-150px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = Convert.ToInt32(Model.OffsetId);}
+                                @if (Model.clientsendenuerycollection != null)
+                                {
+                                    foreach (var item in Model.clientsendenuerycollection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo++;}@RowNo</td>
+                                            <td>@item.Fromname</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td class="table-action text-center">
+                                                <a title="unread message" onclick="details('@item.Ids')" class="count-out">  <i class="align-middle" data-feather="message-circle"></i><span class="count-in">@item.Unreadcount</span></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.clientsendenuerycollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td class="p-3" colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.TotalRowCount > Model.maxRows)
+                        {
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-lg justify-content-center">
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                    @if (Model.CurrentPageIndex > 1)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                    }
+                                    @if (Model.indexlegth > 20)
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                            if (i > (Model.CurrentPageIndex + 19))
+                                            {
+                                                <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                        }
+                                    }
+                                    @if (Model.CurrentPageIndex < Model.PageCount)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                    }
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                </ul>
+                            </nav>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="generalmessagesPopup" class="modal fade" role="dialog"></div>
+<script>
+    function details(id) {
+        url = "/Client/messagesdetails?Ids=" + id;
+        window.location.href = url;
+    }
+    function sendgeneralmessagespopup(Id) {
+        model = {
+            Id: Id
+        }
+        $.get("/Client/sendgeneralmessagespopup", model, function (response) {
+            $("#generalmessagesPopup").html(response);
+            $("#generalmessagesPopup").modal("show");
+        });
+    }
+    // message save on popup
+    function sendgeneralmessages() {
+        sendgeneralmessagesvalidation();
+        if ($("#GeneralMessage").valid()) {
+            model = {
+                Title: $('#title').val(),
+                Description: $('#Description').val(),
+                ToId: 1
+            }
+            $.post("/Client/sendgeneralmessages", model, function (response) {
+                toastr.success("Message sent successfully.");
+                setTimeout(function () { window.location.reload(); }, 1200);
+            });
+        }
+    }
+    function sendgeneralmessagesvalidation() {
+        $("#GeneralMessage").validate({
+            rules: {
+                title: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                },
+            }
+        });
+    }
+</script>
+<script>
+    function PagerClick(CurrentPageIndex) {
+        url = "/Client/messages?CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = url;
+    }
+</script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("messages");
+    element.classList.add("show");
+    var element = document.getElementById("generalmessages");
+    element.classList.add("active");
+</script>

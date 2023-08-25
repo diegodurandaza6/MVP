@@ -1,0 +1,62 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "ShortList";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<div class="col-lg-9 col-sm-12">
+    <div class="tab-pane" id="v-pills-changepassword" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <section class="dashboard_table">
+            <div class="client_table">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="text-left right_icon">
+                            Short List
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="ChangePasswordform">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="color:#525252">S.No</th>
+                                                                <th style="color:#525252"> Cnadidate Name</th>
+                                                                <th style="color:#525252">Mobile</th>
+                                                                <th style="color:#525252">Email </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{int RowNo = 0;}
+                                                            @if (Model.GetShortList != null)
+                                                            {
+                                                                foreach (var item in Model.GetShortList)
+                                                                {
+                                                                    <tr>
+                                                                        <td> @{RowNo++;}@RowNo</td>
+                                                                        <td><a onclick="viewcandidatedetail('@item.Ids')" style="cursor:pointer;"> @item.CandidateName</a> </td>
+                                                                        <td> @item.Phone1</td>
+                                                                        <td> @item.Email</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="~/MvpTelent_js/Client/Client.js"></script>

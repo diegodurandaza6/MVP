@@ -1,0 +1,187 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "sharedJob";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+} 
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Shared Jobs</h3> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @*@Html.DropDownListFor(m => m.ClientId, new SelectList(Model.ClientCollection, "Id", "Name"), "Select client", new { @class = "form-control", @Id = "ClientId", @Name = "ClientId" })*@
+                                        @Html.DropDownListFor(m => m.Ids, new SelectList(Model.ClientCollection, "Ids", "Name"), "Select client", new { @class = "form-control", @Id = "ClientId", @Name = "ClientId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        
+                                        @Html.DropDownListFor(m => m.JobStatusId, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Select Status", new { @class = "form-control", @Id = "JobStatusId", @Name = "JobStatusId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getSharedjobById()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetSharedjob()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Shared Job List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Job Title</th>
+                                    <th>Shared Date</th>
+
+                                    <th>Client Name</th>
+                                    <th>Job Status</th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{int RowNo = Convert.ToInt32(Model.OffsetId);}
+                                @if (Model.JobListCollection != null)
+                                {
+                                    foreach (var item in Model.JobListCollection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo++;}@RowNo</td>
+                                            <td>@item.jobtitle</td>
+                                            <td>@item.SharedJobDate</td>
+
+                                            @*<td> @item.UserName</td>*@
+                                        <td> @item.ClientName</td>
+                                            <td>@item.JobStatusName</td>
+                                            <td class="table-action text-center">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title=" View Job Details" onclick="GetadminJobDetailbyId('@item.Ids')">
+                                                    <i class="far fa-fw fa-eye"></i>
+                                                </a>
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title=" Submitted Profiles" onclick="moveApplicants(@item.Id,2)">
+                                                    <i class="far fa-fw fa-user"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.JobListCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        @if (Model.TotalRowCount > Model.maxRows)
+                        {
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <nav aria-label="Page navigation example" class="pagination-center">
+                                            <ul class="pagination pagination-lg justify-content-center">
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                                @if (Model.CurrentPageIndex > 1)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                                }
+                                                @if (Model.indexlegth > 20)
+                                                {
+                                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                                    {
+                                                        if (i != Model.CurrentPageIndex)
+                                                        {
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                        }
+                                                        if (i > (Model.CurrentPageIndex + 19))
+                                                        {
+                                                            <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                                    {
+                                                        if (i != Model.CurrentPageIndex)
+                                                        {
+                                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                        }
+                                                    }
+                                                }
+                                                @if (Model.CurrentPageIndex < Model.PageCount)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                                }
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main> 
+<script src="~/Areas/Admin/Admin/sharedJobAdmin.js"></script>
+<script>
+    var element = document.getElementById("Shared_Job");
+    element.classList.add("active");
+</script>

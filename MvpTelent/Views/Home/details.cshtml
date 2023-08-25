@@ -1,0 +1,755 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .timeline-icon-tie > li:before {
+        content: "\f19d";
+    }
+
+    .sign-up-required-msg > label.error {
+        position: absolute;
+        top: 46px;
+    }
+</style>
+
+<section class="banner-inner" style="background-image: url('../../New_Content/images/howitworks-banner.jpg'); background-position: top;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Candidate's Confidential Profile</h1>
+                <p>
+                    Does this candidate's skills and experience match what you are looking for?
+                    If so, send a request to interview them and your RSM will begin the process.
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="sec-pd p-t-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="p-profile mb-4">
+
+                    <div class="p-profile-body col-md-3 pl-0">
+                        <img src="@Model.FileName" />
+                    </div>
+                    <div class="p-profile-body col-md-9 pl-0">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 120px;">Name :</td>
+                                    <td>
+                                        <label>
+                                            ******
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Phone No.:</td>
+                                    <td>
+                                        <label>
+                                            ******
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email :</td>
+                                    <td>
+                                        <label>
+                                            ******
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Job Title :</td>
+                                    <td>
+                                        <label class="text-capitalize">
+                                            @Model.Title
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Street Address :</td>
+                                    <td>
+                                        <label>
+                                            ******
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>City/State :</td>
+                                    <td>
+                                        <label>
+                                            ******
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zip Code :</td>
+                                    <td>
+                                        @if (Model.mile > 0)
+                                        {
+                                            <label>
+                                                @Model.Zipcode (@Model.mile Miles away from @Model.zip)
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                @if (@Model.Zipcode == "")
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    @Model.Zipcode
+                                                }
+                                            </label>
+                                        }
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pp-profile-body p-0 w-100 pull-left d-inline-block card-body">
+                        <hr class="w-100 pull-left">
+                    </div>
+                    <div class="p-profile-body p-0">
+                        <div class="can-details-ul mb-4">
+                            <ul>
+                                <li>
+                                    <a href="#about" title="" class="active">About</a>
+                                </li>
+                                <li>
+                                    <a href="#skills" title="">Professional Skills</a>
+                                </li>
+                                <li>
+                                    <a href="#experience" title="">Work Experience</a>
+                                </li>
+                                <li>
+                                    <a href="#education" title="">Education</a>
+                                </li>
+                                <li>
+                                    <a href="#Licenses" title="">Licenses & Certifications</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="mb-3 header-golden-bg clr-000">Candidate Details</h4>
+
+                        <div class="row" id="about">
+                            <div class="new-outer-tile">
+                                <div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-history"></i>
+                                            <div>
+                                                <h5>
+                                                    Experience In Current Position
+                                                </h5>
+                                                @if (Model.experienceName.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.experienceName
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-graduation-cap"></i>
+                                            <div>
+                                                <h5>
+                                                    Education Level
+                                                </h5>
+                                                @if (Model.educationlevel.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.educationlevel
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-building"></i>
+                                            <div>
+                                                <h5>
+                                                    Experience In Industry
+                                                </h5>
+                                                @if (Model.IndustryName.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.IndustryName
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-dollar-sign"></i>
+                                            <div>
+                                                <h5>
+                                                    Current Salary($)
+                                                </h5>
+                                                @if (Model.CurrentSalary.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.CurrentSalary
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-money-bill-wave"></i>
+                                            <div>
+                                                <h5>
+                                                    Expected Salary($)
+                                                </h5>
+                                                @if (Model.expectedSalary.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.expectedSalary
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-briefcase"></i>
+                                            <div>
+                                                <h5>
+                                                    Job Type
+                                                </h5>
+                                                @if (Model.jobtypeName.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.jobtypeName
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-crown"></i>
+                                            <div>
+                                                <h5>
+                                                    Desired Title 1
+                                                </h5>
+                                                @if (Model.DesiredTitle1.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.DesiredTitle1
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-crown"></i>
+                                            <div>
+                                                <h5>
+                                                    Desired Title 2
+                                                </h5>
+                                                @if (Model.DesiredTitle2.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.DesiredTitle2
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <i class="fas fa-fw fa-map-pin"></i>
+                                            <div>
+                                                <h5>
+                                                    Relocation
+                                                </h5>
+                                                @if (Model.Relocation.Length > 0)
+                                                {
+                                                    <p>
+                                                        @Model.Relocation
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>
+                                                        N/A
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <h4 class="mb-3 header-golden-bg clr-000">Summary</h4>
+                        @if (Model.PorfileDescerption.Length > 0)
+                        {
+                            <p>
+                                @Model.PorfileDescerption
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                No Data Found...
+                            </p>
+                        }
+
+                        <hr />
+                        <h4 class="mb-3 header-golden-bg clr-000" id="skills">Professional Skills</h4>
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                @if (Model.SkillCollection != null)
+                                {
+                                    foreach (var item in Model.SkillCollection)
+                                    {
+                                        <span class="badge badge-golgen-noicon home-slills">@item.skill </span>
+                                    }
+                                }
+                                @if (Model.SkillCollection.Count() == 0)
+                                {
+                                    <span>No Data found...</span>
+                                }
+                            </li>
+                        </ul>
+                        <hr />
+                        <h4 class="mb-3 header-golden-bg clr-000" id="education">Education</h4>
+                        <ul class="timeline">
+                            @if (Model.EducationCollection != null)
+                            {
+                                foreach (var item in Model.EducationCollection)
+                                {
+                                    if (item.visibleid == 1)
+                                    {
+                                        <li class="timeline-item">
+                                            <h6>
+                                                @item.Education
+                                            </h6>
+                                            <p class="m-b-8">
+                                                <i class="fas fa-fw fa-clock clr-golden"></i> <span>
+                                                    @(item.EducaStartYear == "" ? "N/A" : item.EducaStartYear)    - @(item.EducaEndYear == "" ? "N/A" : item.EducaEndYear)
+                                                </span>
+                                            </p>
+                                            <p class="m-b-8">
+                                                <i class="fas fa-fw fa-user-graduate clr-golden"></i>   @(item.univarsity == "" ? "N/A" : item.univarsity)
+                                            </p>
+                                            <p>
+                                                @item.description
+                                            </p>
+                                        </li>
+                                    }
+                                    if (Model.EducationCollection.Where(x => x.visibleid == 1).Count() < 1)
+                                    {
+                                        <span>No Data found...</span>
+                                    }
+                                }
+                            }
+                            @if (Model.EducationCollection.Count() == 0)
+                            {
+                                <span>
+                                    No Data found...
+                                </span>
+                            }
+                        </ul>
+
+
+
+                        <hr>
+                        <h4 class="mb-3 header-golden-bg clr-000" id="Licenses">Licenses & Certifications</h4>
+                        <ul class="timeline">
+                            @if (Model.LicensesCertifications != null)
+                            {
+                                foreach (var item in Model.LicensesCertifications)
+                                {
+                                    if (item.visibleid == 1)
+                                    {
+                                        <li class="timeline-item">
+                                            <h6>
+                                                @item.Education
+                                            </h6>
+                                            <p class="m-0">
+                                                <i class="far fa-fw fa-clock clr-golden"></i>
+                                                @(item.year == "" ? "N/A" : item.year)    - @(item.EndYear == "" ? "N/A" : item.EndYear)
+
+                                            </p>
+                                            <p class="m-0">
+                                                <i class="fas fa-fw fa-user-graduate clr-golden"></i>  @(item.univarsity == "" ? "N/A" : item.univarsity)
+                                            </p>
+                                            <p>@item.description</p>
+                                        </li>
+                                    }
+                                    if (Model.LicensesCertifications.Where(x => x.visibleid == 1).Count() < 1)
+                                    {
+                                        <span>No Data found...</span>
+                                    }
+                                }
+                            }
+                            @if (Model.LicensesCertifications.Count() == 0)
+                            {
+                                <span>No Data Found...</span>
+                            }
+                        </ul>
+
+
+                        <hr />
+                        <h4 class="mb-3 header-golden-bg clr-000" id="experience">Work & Experience</h4>
+                        <ul class="timeline">
+                            @if (Model.workexperiencecollection != null)
+                            {
+                                foreach (var item in Model.workexperiencecollection)
+                                {
+                                    if (item.visibleid == 1)
+                                    {
+
+                                        <li class="timeline-item">
+                                            <h6>
+                                                @item.Title
+                                            </h6>
+                                            <p class="m-0">
+                                                <i class="fas fa-fw fa-clock clr-golden"></i>  <span>
+
+                                                    @(item.Todate == "" ? "N/A" : item.Todate)    - @(item.Fromdate == "" ? "N/A" : item.Fromdate)
+
+                                                </span>
+                                            </p>
+                                            <p class="m-0">
+                                                Company Name :
+                                                <span class="value-null-1">
+                                                    <span style="top: 0;">
+                                                        ******
+                                                    </span>
+                                                </span>
+                                            </p>
+
+                                            <p>
+                                                @Html.Raw(item.description)
+                                            </p>
+                                        </li>
+                                    }
+                                    if (Model.workexperiencecollection.Where(x => x.visibleid == 1).Count() < 1)
+                                    {
+                                        <span>No Data found...</span>
+                                    }
+                                }
+                            }
+                            @if (Model.workexperiencecollection.Count() == 0)
+                            {
+                                <span>
+                                    No Data found...
+                                </span>
+                            }
+                        </ul>
+                        <hr />
+                        <h4 class="mb-3 header-golden-bg clr-000" id="">Scouting Reports</h4>
+                        <div class="col-md-12">
+
+                            <div class="lopping-tile">
+                                <ul>
+                                    @if (Model.portfoliocecollection.Count() != 0)
+                                    {
+                                        foreach (var item in Model.portfoliocecollection)
+                                        {
+                                            if (item.visibleid == 1)
+                                            {
+                                                <li>
+                                                    <div>
+
+                                                        <p class="scouting-heading">
+                                                            @Html.Raw(item.description)
+                                                        </p>
+
+                                                    </div>
+                                                </li>
+                                            }
+                                            if (Model.portfoliocecollection.Where(x => x.visibleid == 1).Count() < 1)
+                                            {
+                                                <span>
+                                                    No Data found...
+                                                </span>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            No Data found...
+                                        </span>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="scouting-report">
+                            @*@if (Model.portfoliocecollection != null)
+                                {
+                                    foreach (var item in Model.portfoliocecollection)
+                                    {
+                                        if (item.visibleid == 1)
+                                        {
+                                            <div>
+                                                <span class="img" style="background-image: url(@item.FileUpload)"></span>
+                                            </div>
+                                        }
+                                        if (Model.portfoliocecollection.Where(x => x.visibleid == 1).Count() < 1)
+                                        {
+                                            <span>No Data found...</span>
+                                        }
+                                    }
+
+                                }
+                                @if (Model.portfoliocecollection.Count() == 0)
+                                {
+                                    <span>
+                                        No Data found...
+                                    </span>
+                                }*@
+                        </div>
+                        @*<hr />
+                            <h4 class="mb-3 mt-4" id="">Reference</h4>
+                            <ul class="timeline timeline-icon-tie">
+                                @if (Model.candidaterefrencecollection != null)
+                                {
+                                    foreach (var item in Model.candidaterefrencecollection)
+                                    {
+                                        <li class="timeline-item">
+                                            <h5>
+                                                @item.Name
+                                            </h5>
+                                            <p class="m-0">
+                                                <i class="fas fa-fw fa-phone flip-90"></i>  @item.Phone
+                                            </p>
+                                            <p class="m-0">
+                                                <i class="fas fa-fw fa-envelope"></i>   <a href="mailto:vikrantverma173@yahoo.com" class="clr-888">@item.Email</a><br>
+                                            </p>
+                                            <p class="m-0">
+                                                <i class="fas fa-fw fa-user"></i>  @item.Title
+                                            </p>
+                                        </li>
+                                    }
+                                }
+                            </ul>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 z-1">
+                <div class="request-for-interview mb-3">
+                    <div>
+                        <form id="sendenquery">
+                            <h5 class="mb-4">
+                                Request for Interview
+                            </h5>
+                            <div class="form-group">
+                                <input type="text" placeholder="Please enter your Name" value="@Model.CandidateName" name="EName" id="EName" maxlength="30" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Please enter your email" value="@Model.Email" name="Email" id="Email" maxlength="45" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Please enter your phone number" value="@Model.CandidatePhone" name="Phone" id="Phone" maxlength="20" class="form-control" />
+                            </div>
+                            <div class="form-group">
+
+
+                                <div class="dropdown dropdown_select_job">
+                                    <a onclick="selectvalue('Please select a job','00','')" class="dropdown-toggle"  role="button" name="jobLocationid" id="jobLocationid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Please select a job
+                                    </a> 
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" onclick="selectvalue('Please select a job',0,'')">Please select a job </a>
+                                        @if (Model.JobCollection != null)
+                                        {
+                                            foreach (var item in Model.JobCollection)
+                                            {
+                                                <a class="dropdown-item" onclick="selectvalue('@item.Title',@item.Id,'@item.Location')"><span>@item.Title</span> <span> @item.Location</span>      </a>
+                                            }
+                                        }
+                                    </div> 
+                                    <div  >
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.JobCollection, "Id", "Title"), "Please select a job", new { @class = "form-control select-lablel-hide", @Id = "jobid", @Name = "jobid" })
+
+                                    </div>
+                                </div> 
+                            </div> 
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <p class="mt-2 mb-0 pl-3">
+                                            OR
+                                        </p>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="file" name="file" id="file" placeholder="job url" class="file-choose-home-detail">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Please enter your message" name="Description" id="Description" rows="5"></textarea>
+                            </div>
+                            <div class="form-group sign-up-required-msg">
+                                <input type="checkbox" id="CheckboxID" name="CheckboxID" />
+                                You accepts our <a style="text-decoration: underline !important;" href="/Home/termscondition" target="_blank">
+                                    Terms and Conditions
+                                </a>
+                            </div>
+                            <button type="button" id="btnsend" name="btnsend" onclick="ClientSendenquery(@Model.Id, @Model.AccountType)" class="btn-new-1 w-100 mb-3 outer-btn">Send Email</button>
+                            @if (Model.AccountType == 2)
+                            {
+                                if (Model.favoriteStatusId == 1)
+                                {
+                                    <button type="button" class="btn-new-1 w-100 mb-3 outer-btn" onclick="favoritecandidateremove(@Model.Id,@Model.ClientId,1,0)">Remove From Favorites List</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn-new-1 w-100 mb-3 outer-btn" onclick="favoritecandidate(@Model.Id,@Model.ClientId,0,0)">Add to My Favorites List</button>
+                                }
+                            }
+                            else
+                            {
+                                <button type="button" onclick="favoritecandidate(@Model.Id,@Model.ClientId,0,1)" class="btn-new-1 w-100 mb-3 outer-btn">Add to My Favorites List</button>
+                            }
+
+                        </form>
+                    </div>
+                </div>
+                @if (Model.candidaterefrencecollection != null)
+                {
+                    <h5 class="mb-3">
+                        Similar Candidates
+                    </h5>
+                }
+                else
+                {
+                    <span class="no-data-found">
+                        No Data found...
+                    </span>
+                }
+                <ul class="similar-list-2">
+                    @if (Model.candidaterefrencecollection != null)
+                    {
+                        foreach (var item in Model.SimilarCandidatescollection)
+                        {
+                            <li onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.UserId))',@item.JobTypeId )">
+                                <div class="pro-list-2">
+                                    <img src="@item.FileUpload" alt="dummy-img" class="img-fluid">
+                                    <article>
+                                        <h5>@item.Title</h5>
+                                        <ul>
+                                            @if (item.jobtypeName.Length > 0)
+                                            {
+                                                <li><i class="fas fa-filter"></i> @item.jobtypeName</li>
+                                            }
+                                            else
+                                            {
+                                                <li><i class="fas fa-filter"></i> N/A</li>
+                                            }
+                                            @if (item.location.Length > 0)
+                                            {
+                                                <li><i class="fas fa-map-marker-alt"></i> @item.location</li>
+                                            }
+                                            else
+                                            {
+                                                <li><i class="fas fa-map-marker-alt"></i> N/A</li>
+                                            }
+                                            @if (item.educationlevel.Length > 0)
+                                            {
+                                                <li><i class="fas fa-graduation-cap"></i> @item.educationlevel</li>
+                                            }
+                                            else
+                                            {
+                                                <li><i class="fas fa-graduation-cap"></i> N/A</li>
+                                            }
+
+
+
+                                        </ul>
+                                    </article>
+                                </div>
+                            </li>
+                        }
+                        if (Model.SimilarCandidatescollection.Count() == 0)
+                        {
+                            <div>
+                                <div class="text-left" colspan="5">
+                                    <span>No data found...</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<script> 
+    function getcandidatedetails(Id, jobtypeId) {
+        var Url = "/Home/details?Id=" + Id + "&JobTypeId=" + jobtypeId;
+        window.open(Url, '_blank');
+    }
+</script>
+<script src="~/MvpTelent_js/Client/Client.js"></script> 

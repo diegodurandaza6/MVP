@@ -1,0 +1,164 @@
+﻿@model Web.Model.Group.GroupViewModel
+@{
+    ViewBag.Title = "details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>*@
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Groups</h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" href="/Admin/Candidate/CandidateList">
+                    Add Candidate
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b header-golden-bg">
+                        <h5 class="card-title mb-0">
+                            Group Detail
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="p-profile mb-3 row-mg w-100">
+                                <div class="p-profile-body-2 pb-0 pt-0">
+                                    <div class="p-profile-img p-profile-img-users p-profile-img-bg-2"></div>
+                                </div>
+                                <div class="p-profile-body col-md-12 p-l-p-profile pt-0">
+
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 140px;"><b>Name</b>:</td>
+                                                <td>
+                                                    @Model.Name
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td>
+                                                    <b>Created Date</b> :
+                                                </td>
+                                                <td>
+                                                    @Model.Date
+                                                </td>
+                                            </tr>
+
+                                            @if (Model.CandidateCollection != null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <b>Candidate Count</b> :
+                                                    </td>
+                                                    <td>
+                                                        @Model.CandidateCollection.Count()
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            <tr>
+                                                <td>
+                                                    <b>Description</b> :
+                                                </td>
+                                                <td>
+                                                    @Model.Description
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card flex-fill">
+                            <div class="card-header hr-b-1">
+                                <h5 class="card-title mb-0">
+                                    Candidates in this Group
+                                </h5>
+
+                            </div>
+                            <div class="">
+                                <table class="table table-striped my-0 tr-golden">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-60px">
+                                                S.No
+                                            </th>
+                                            <th>Name</th>
+                                            <th>Title</th>
+                                            <th>Phone No</th>
+                                            <th>Email</th>
+                                            <th>Location</th>
+                                            @*<th class="w-100px">Zip code</th>*@
+                                            <th class="w-100px text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{int RowNo = 0;}
+                                        @if (Model.CandidateCollection != null)
+                                        {
+                                            foreach (var item in Model.CandidateCollection)
+                                            {
+                                                <tr>
+                                                    <td>@{RowNo++;}@RowNo</td>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.Title</td>
+                                                    <td>@item.Phone</td>
+                                                    <td>@item.Email</td>
+                                                    <td>@item.location</td>
+                                                    @*<td>@item.Zipcode</td>*@
+                                                    <td class="table-action text-center">
+                                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="CandidateDetail('@item.Ids')">
+                                                            <i class="far fa-fw fa-eye"></i>
+                                                        </a>
+                                                        <a data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="removeingroup(@item.Id)">
+                                                            <i class="far fa-fw fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="text-left" colspan="7">
+                                                    <span class="no-data-found">
+                                                        No Data found...
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="card-body"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/Areas/Admin/Group/Group.js"></script>
+<script>
+    var element = document.getElementById("Candidates").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Candidates");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Candidates");
+    element.classList.add("show");
+    var element = document.getElementById("Groups+1");
+    element.classList.add("active");
+</script>

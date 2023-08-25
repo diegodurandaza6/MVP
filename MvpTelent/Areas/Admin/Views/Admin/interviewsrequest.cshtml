@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "interviewsrequest";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<style>
+    .dash-new-tile > .dash-new-tile-inner > .dash-new-tile-main > .dash-new-tile-box {
+        padding: 44px 10px 64px 10px;
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Interview Requests</h3>
+            </div>
+        </div>
+        <div class="dash-new-tile">
+            <div class="dash-new-tile-inner">
+                <a class="dash-new-tile-main w-50" href="/Admin/Admin/ClientSendenquery">
+                    <div class="dash-new-tile-box">
+                        <div>
+                            <div>
+                                <div>
+                                    <span>
+                                        <i class="align-middle far fa-fw fa-building"></i>
+                                    </span>
+                                    <h4>Interview Requests by Clients</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="dash-new-tile-main w-50" href="/Admin/Admin/interviewsrequestbycandidates">
+                    <div class="dash-new-tile-box">
+                        <div>
+                            <div>
+                                <div>
+                                    <span>
+                                        <i class="align-middle far fa-fw fa-user"></i>
+                                    </span>
+                                    <h4>Interview Requests by Candidates</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                 
+            </div>
+        </div>
+    </div>
+</main> 
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("Interview Requests+1");
+    element.classList.add("active");
+</script>
+

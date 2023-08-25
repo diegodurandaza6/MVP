@@ -1,0 +1,199 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "INTERVIEW LIST";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<div id="Interviewdetail_PopUp" class="modal fade" role="dialog"></div>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Interviews
+                </h3>
+                <span>
+                    Interview List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="date" class="form-control" style="width:100%;" id="fromdate" name="fromdate" value="@Model.fromdate" placeholder="yyyy-mm-dd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="date" class="form-control" style="width:100%;" id="todate" name="todate" value="@Model.todate" placeholder="yyyy-mm-dd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.JIds, new SelectList(Model.Jobscollection, "Ids", "Name"), "Please select job", new { @class = "custom-select", @Id = "JobId", @Name = "JobId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getInterviewByTitle()">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetInterviewByTitle()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Interview List
+                        </h5>
+                    </div>
+                    <div class="">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%">
+                                        S.No
+                                    </th>
+                                    <th>
+                                        Job Title
+                                    </th>
+                                    <th>
+                                        Candidate Name
+                                    </th>
+                                    <th>
+                                        Interview Date
+                                    </th>
+                                    <th>
+                                        Interviewer Name
+                                    </th>
+
+
+                                    <th class="text-center w-150px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.interviewListCollection != null)
+                                {
+                                    foreach (var item in Model.interviewListCollection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td><span title="Job Detail" onclick="GetJobDetailbyId('@EncryptDecrypt.encrypt(Convert.ToString(@item.JobId))')" style="cursor:pointer;">@item.Jobtitle</span></td>
+                                            <td> <a title="View Candidate Detail" onclick="Detail('@item.Ids', '@EncryptDecrypt.encrypt(Convert.ToString(@item.JobId))')">@item.CandidateName</a></td>
+                                            <td>@item.InterviewDate</td>
+                                            <td>@item.ClientName</td>
+
+                                            <td class="table-action text-center">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Reschedule Interview" onclick="InterviewSchedulepopup_Client(@item.Id,@item.ClientId,@item.CandidateId,@item.JobId)">
+                                                    <i class="far fa-fw fa-edit"></i>
+                                                </a>
+                                                <a title="Details" onclick="Interviewdetailpopup(@item.Id)"><i class="align-middle" data-feather="eye"></i></a>
+                                                <a title="Remove" onclick="InterViewdelete(@item.Id)"><i class="align-middle" data-feather="trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.interviewListCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td class="p-3" colspan="6">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                            @if (Model.TotalRowCount > Model.maxRows)
+                            {
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-lg justify-content-center">
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                        @if (Model.CurrentPageIndex > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                        }
+                                        @if (Model.indexlegth > 20)
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                                if (i > (Model.CurrentPageIndex + 19))
+                                                {
+                                                    <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                            }
+                                        }
+                                        @if (Model.CurrentPageIndex < Model.PageCount)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                        }
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    var element = document.getElementById("interviewschedulelist");
+    element.classList.add("active");
+</script>
+<script src="~/MvpTelent_js/Client/Client.js"></script>
+
+<script src="~/MvpTelent_js/Client/interviewschedulelist.js"></script>

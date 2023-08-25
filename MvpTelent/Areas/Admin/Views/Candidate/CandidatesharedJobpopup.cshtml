@@ -1,0 +1,178 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">
+                Submit Profile
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="candidatedetail-popup-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Select One </label>
+                        <select class="_selectdrop form-control" name="jobytpeid" id="jobytpeid" onchange="getjoblist(this.value)">
+                            <option value="1">Jobs Shared By Client</option>
+                            <option value="0">Jobs Posted By Admin</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8" id="dvclientfield">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Client Name  </label>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    @Html.DropDownListFor(m => m.tid, new SelectList(Model.CompanyColloction, "Id", "Name"), "Please select Client", new { @class = "form-control", @Id = "ClientId", @Name = "ClientId", @onchange = "getcontactbycompanyId(this.value)" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <select name="CompanyContact" id="CompanyContact" class="form-control">
+                                        <option value="volvo">Select Job Owner</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8" id="dvAdminfield">
+                        <label>Job Owner</label>
+                        @Html.DropDownListFor(m => m.tid, new SelectList(Model.ClientCollection.Where(x => x.Ids == "1"), "Id", "Name"), "Select One", new { @class = "form-control", @Id = "Id", @Name = "Id" })
+                    </div>
+                </div>
+                <div class="candidatedetail-btn">
+                    <input type="button" name="search" id="search" class="btn btn-primary border-0 p-t-8 p-b-8 round-3px" onclick="getsharedjoblistbyclientid()" value="Search">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group position-relative">
+                        <label>Select a Job  </label>
+                        <button class="form-control dropdown-toggle text-left left-caret" type="button" id="tag-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Please select Job
+                        </button>
+                        <ul class="dropdown-menu dropdown-default" aria-labelledby="tag-dropdown" id="jobli">
+                            <li>
+                                <span>
+                                   Please select Job
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="dv_sendSubmitProfilemessage">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Write a message </label>
+                        <textarea id="Description" autocomplete="off" maxlength="2000" class="form-control" placeholder="Please enter message" name="Description" type="text" rows="4"></textarea>
+                    </div>
+                </div>
+            </div> 
+            <div class="modal-footer">
+                <input type="button" style="width: 140px;" name="login" id="login" class="btn btn-primary" onclick="AddSharedJobcandidatebyId(@Model.Id)" value="Submit Profile">
+                <button type="button" class="btn btn-light" data-dismiss="modal" onclick="cloesfunction()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#dvclientfield").show();
+    $("#dvAdminfield").hide();
+    function getjoblist(Id) {
+
+        $("#jobli").empty();
+        $("#jobli").append('<li>  <span> No Job Found  </span></li >');
+
+        $("#ClientId").val('');
+        $("#CompanyContact").val('');
+        $("#Id").val('');
+
+        if ($("#jobytpeid").val() == 1) {
+            $("#dvclientfield").show();
+            $("#dvAdminfield").hide();
+            $("#dv_sendSubmitProfilemessage").show();
+
+        }
+        else {
+            $("#dv_sendSubmitProfilemessage").hide();
+            $("#dvclientfield").hide();
+            $("#dvAdminfield").show();
+        }
+    }
+    function jobdetailbyId(Id) {
+        var url = "/Home/jobdetail?Ids=" + Id;
+        window.open(url, '_blank');
+    }
+    function clientdetailbyId(Id) {
+        var url = "/Admin/Admin/ClientDetailbyId?UserId=" + Id;
+        window.open(url, '_blank');
+    }
+    function getsharedjoblistbyclientid() {
+
+        $("#jobli").empty();
+        $("#jobli").append('<li> Please select Job</li>');
+        
+
+        if ($("#jobytpeid").val() == 1) {
+            if ($("#ClientId").val() == '') {
+                toastr.info("Please select client.");
+                return false;
+            }
+        }
+        var _Id = 0;
+        if ($("#CompanyContact").val() > 0) {
+            _Id = $("#CompanyContact").val();
+        }
+        else {
+            _Id = $("#Id").val()
+        }
+        var model = {
+            Id: $("#jobytpeid").val(),
+            Ids: _Id,
+            CompanyId: $("#ClientId").val()
+        };
+        $.get("/Admin/Candidate/getsharedjobbyclientid", model, function (data) {
+            $("#jobli").empty();
+            var html = "";
+            $.each(data.candidatesharedjobcollection, function () {
+                html += '<li><a><input class="clsrole" type="checkbox" name="CsharedJob" value="' + this.Id + '" /> ' + this.jobtitle + '</a></li>';
+            }); 
+            debugger;
+            if (data.candidatesharedjobcollection.length > 0) {
+                $("#jobli").append(html);
+            }
+            else
+            {
+                $("#jobli").append('<li>  <span> No Job Found  </span></li >');
+            }
+            
+        });
+    }
+
+    function cloesfunction() {
+        location.reload();
+    }
+    function getcontactbycompanyId(Id) {
+        $("#CompanyContact").empty();
+        $("#CompanyContact").append($("<option />").val("").html("Select Contact"));
+
+        $("#jobli").empty();
+        $("#jobli").append('<li> Please select Job</li>');
+
+       
+        if (Id > 0) {
+            var model = {
+                Id: Id
+            };
+            $.get("/Admin/Admin/getcontactbycompanyId", model, function (data) {
+                $.each(data, function () {
+                    $("#CompanyContact").append($("<option />").val(this.Id).html(this.Name));
+                });
+            });
+        }
+    }
+</script>

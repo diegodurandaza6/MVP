@@ -1,0 +1,595 @@
+﻿@model Web.Model.Candidate.CandidateListModel
+@{
+    ViewBag.Title = "candidate list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" name="accounttype" id="accounttype" value="@Model.accounttype" />
+<input type="hidden" name="clientId" id="clientId" value="@Model.Id" />
+<div id="candidatesendemail_PopUp" class="modal fade" role="dialog"></div>
+
+
+<section class="banner-inner" style="background-image: url('../../New_Content/images/candidatelist-banner.jpg');">
+    <div class="container">
+        <h1>Search   Candidates</h1>
+        <p>Improve your team. Find your next MVP!</p>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="registration-inner job-list-reg-form bg-light shadow">
+                    <form class="registration-form">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <i class="fas fa-user-md"></i>
+                                    <select id="select-country" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options cadidatelist-autocomplete">
+                                            <input type="select-one" autocomplete="off" tabindex="" style="text-transform: capitalize" id="Title" name="Title" placeholder="Enter job title" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <i class="fa fa-briefcase"></i>
+                                    <input type="hidden" name="postal_code" id="postal_code">
+                                    <input type="hidden" name="checkgroupId" id="checkgroupId" value="@Model.gid">
+                                    <input type="text" id="Keyword" name="Keyword" class="form-control rounded registration-input-box" placeholder="Enter keywords...">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <i class="fa fa-location-arrow"></i>
+                                    <select id="select-category" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options">
+                                            <input type="select-one" autocomplete="off" tabindex="" id="autocomplete_search" name="" placeholder="Enter city / state / zip code">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <input type="button" onclick="GetSearchCandidates(1,@Model.gid,1)" id="search" name="search" class="submitBnt btn btn-primary btn-block" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="">
+    <div id="filtersection" style="display:none">
+        <section class="pt-5 pb-5">
+            <div class="container pt-5">
+                <div class="row">
+                    <div class="col-md-4 col-xl-3">
+                        <div class="card mb-3 accordioncandidatelist" id="accordioncandidatelist">
+                            <div class="card-body">
+                                <a onclick="jobalert(2)" class="btn btn-cus-2"><i class="far fa-envelope mr-1"></i>Email Alert</a>
+                            </div>
+
+                            <hr class="my-0">
+                            <div id="milesfiltersection" class="card-body position-relative p-b-0">
+                                <h5 class="h6">
+                                    <button class="" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                                        Select Miles
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li id="collapse" class="collapse show mb-1" aria-labelledby="filterOne" data-parent="#accordioncandidatelist">
+                                        @foreach (var item in Model.milescollection)
+                                        {
+                                            <div class="custom-control custom-checkbox">
+                                                <input @(Model.mile == item.Id ? "checked" : string.Empty) type="radio" class="form-check-input" name="miles" value="@item.Id" id="miles" onclick="GetSearchCandidates(1, null, null)">
+                                                <label class="form-check-label ml-1" for="customCheck13">@item.Name </label>
+                                            </div>
+                                        }
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr class="my-0">
+                            <div class="card-body position-relative p-b-0">
+                                <h5 class="h6" id="filterOne">
+                                    <button class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Profile Type
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li id="collapseOne" class="collapse show mb-1" aria-labelledby="filterOne" data-parent="#accordioncandidatelist">
+                                        @foreach (var item in Model.jobtypecollection)
+                                        {
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input all-select" name="JobtypeId" value="@item.Id" id="JobtypeId_@item.Id" onclick="GetSearchCandidates(1, null, null)">
+                                                <label class="custom-control-label ml-1" for="JobtypeId_@item.Id">@item.Name</label>
+                                            </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body position-relative p-b-0">
+                                <h5 class="h6" id="filterTwo">
+                                    <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Select Industry
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li id="collapseTwo" class="collapse mb-1" aria-labelledby="filterTwo" data-parent="#accordioncandidatelist">
+                                        @foreach (var item in Model.IndustryCollection)
+                                        {
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="JobCatagoryId" id="customJobCategory_@item.Id" value="@item.Id" onclick="GetSearchCandidates(1, null, null)">
+                                                <label class="custom-control-label ml-1" for="customJobCategory_@item.Id">@item.Name </label>
+                                            </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body position-relative p-b-0">
+                                <h5 class="h6" id="filterThree">
+                                    <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Select Experience
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li id="collapseThree" class="collapse mb-1" aria-labelledby="filterThree" data-parent="#accordioncandidatelist">
+                                        @foreach (var item in Model.experiencecollection)
+                                        {
+                                        <div class="custom-control custom-checkbox">
+                                             
+                                            <input type="checkbox" class="form-check-input" name="experienceId" value="@item.Id" id="experienceId_@item.Id" onclick="GetSearchCandidates(1, null, null)">
+                                            <label class="form-check-label ml-1" for="customCheck13_@item.Id">@item.Name </label>
+
+                                        </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body position-relative">
+                                <h5 class="h6" id="filterFour">
+                                    <button class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Select Education Level
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li id="collapseFour" class="collapse mb-1" aria-labelledby="filterThree" data-parent="#accordioncandidatelist">
+                                        @foreach (var item in Model.Educationcollection)
+                                        {
+                                        <div class="custom-control custom-radio">
+                                           
+                                            <input type="checkbox" class="form-check-input" name="educationlavelId" value="@item.Name" id="educationlavelId_@item.Id" onclick="GetSearchCandidates(1, null, null)">
+                                            <label class="form-check-label ml-1" for="customCheck131_@item.Id">@item.Name </label>
+
+
+                                        </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xl-9">
+                        <div class="card">
+                            <div class="card-body p-b-0">
+                                <div class="card-actions float-right">
+                                    <span class="select-new">
+                                        <select class="form-control" id="salertfilter" name="salertfilter" onchange="GetSearchCandidates(1, null, null)">
+                                            <option data-display="Sort By" value="0">Sort By</option>
+                                            <option value="1">Salary Asc</option>
+                                            <option value="2">Salary Desc</option>
+                                        </select> &nbsp;&nbsp;
+
+                                    </span>
+                                </div>
+                                <h5 class="h6 card-title">
+                                    SHOWING  RESULTS
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="candidatelist-main-body-outer" id="CandiateListTable"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="beforesearchsection">
+        <section class="pt-5 pb-5">
+            <div class="container pt-5">
+                <div class="card">
+                    <div class="card-body header-golden-bg">
+                        <h5 class="h6 card-title m-0">
+                            Featured Candidates
+                        </h5>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row m-0--10">
+                            @if (Model.SearchCollection != null)
+                            {
+                                foreach (var item in Model.SearchCollection)
+                                {
+                                    <div class="col-md-6 p-0-10">
+                                        <div class="candidatelist-main-body">
+                                            <div class="candidatelists-main-header p-l-15px">
+                                                @*<input type="checkbox" id="candidateId" name="candidateId" value="28">*@
+                                                <span onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.UserId))',@item.jobtypeId )" for="exampleCheck1">@item.Title </span>
+                                                <div class="card-actions float-right">
+                                                    <div class="dropdown">
+
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.UserId))',@item.jobtypeId )">View Details</a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="candidatelist-main-inner">
+                                                <div class="candidatelist-main-inner-img cursor-pointer">
+                                                    <img src="@item.imagepath">
+                                                </div>
+                                                <div onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.UserId))',@item.jobtypeId )" class="candidatelist-main-inner-text">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <span>Current Salary($)</span>
+                                                                    @if (item.SaleryName.Length > 0)
+                                                                    {
+                                                                        <span>@item.SaleryName</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>N/A</span>
+                                                                    }
+
+                                                                </td>
+                                                                <td>
+                                                                    <span>Job Type</span>
+                                                                    @if (item.Jobtype.Length > 0)
+                                                                    {
+                                                                        <span>@item.Jobtype</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>N/A</span>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <span>Zip Code</span>
+                                                                    @if (item.Zip.Length > 0)
+                                                                    {
+                                                                        <span>@item.Zip</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>N/A</span>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    <span>Industry</span>
+                                                                    @if (item.Industry.Length > 0)
+                                                                    {
+                                                                        <span>@item.Industry</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>N/A</span>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="candidatelist-main-footer">
+                                                <ul class="candi-tiles-social">
+                                                    <li>
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        @if (item.Location.Length > 0)
+                                                        {
+                                                            <span>@item.Location</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>N/A</span>
+                                                        }
+
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="fas fa-graduation-cap"></i>
+                                                        @if (item.educationlavel.Length > 0)
+                                                        {
+                                                            <span>@item.educationlavel</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>N/A</span>
+                                                        }
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="no-data-section text-center">
+                                    <figure class="no-data-img">
+                                        <img src="/New_Content/images/404-img.png" class="img-fluid" />
+                                    </figure>
+                                    <p> Featured Confidential Profile Not Found</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+@if (Model.gid > 0)
+{
+    <script>
+        $("#filtersection").show();
+        $("#recentsearch").hide();
+        $("#beforesearchsection").hide();
+    </script>
+}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="@Model.locationKey"></script>
+<div id="jobalert_PopUp" class="modal fade" role="dialog"></div>
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script>
+<script src="~/MvpTelent_js/jobalert.js"></script>
+<script>
+    var element = document.getElementById("candidatelist");
+    element.classList.add("active");
+
+</script>
+
+
+
+<script>
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                var pos = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                if (pos > -1) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = arr[i].substr(0, pos);
+                    b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(pos + val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    var strArray = [];
+    $.ajax({
+        type: "Post",
+        url: "/Home/getCandidateTitleList",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.each(data.candidatetagvaluecollection, function () {
+                var tmpStr = "";
+                for (var i = 0; i < this.Name.length; i++) {
+                    if (this.Name.charAt(i) == ',') {
+                        strArray.push(tmpStr);
+                        tmpStr = "";
+                        continue;
+                    }
+                    tmpStr += this.Name.charAt(i);
+                }
+                strArray.push(tmpStr);
+            });
+            autocomplete(document.getElementById("Title"), strArray);
+        },
+        error: function () {
+            alert("There is an error uploading files!");
+        }
+    });
+</script>
+
+<div id="CandidateTagIdautocomplete-list"></div>
+
+<style>
+    #button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 30px;
+        background-color: #eee;
+        border: solid #ccc 1px;
+        cursor: pointer;
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+    }
+
+    .is-hide {
+        display: none;
+    }
+</style>
+
+
+<div id="overlay">
+    <div class="cv-spinner">
+        <span class="spinner"></span>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+        $(document).ajaxSend(function () {
+            $("#overlay").fadeIn(300);
+        });
+
+        $('input[name="JobtypeId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="JobCatagoryId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="experienceId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="educationlavelId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="miles"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+
+        $('#search').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+    });
+</script> 
+<div class='response'></div>

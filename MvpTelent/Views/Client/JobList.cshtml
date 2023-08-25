@@ -1,0 +1,244 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "My JOB";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style>
+    .my-active-jobs-main .my-active-jobs-mune-2 > ul > li > span {
+        width: 50% !important;
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    My Jobs
+                </h3>
+                <span>
+                    My Job List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" placeholder="Search by title" id="_jobtilte" name="_jobtilte" value="@Model.jobtitle" maxlength="100" />
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        @Html.DropDownListFor(m => m.JobStatusId, new SelectList(Model.JobStatusCollection, "Id", "Name"), "Select job status", new { @class = "custom-select", @Id = "JobStatusId", @Name = "JobStatusId" })
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        @Html.DropDownListFor(m => m.JobTypeId, new SelectList(Model.JobTypeCollection, "Id", "Name"), "Select job type", new { @class = "custom-select", @Id = "JobTypeId", @Name = "JobTypeId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getJobList()">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="JobsReset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-fill">
+                    <div class="card-header p-b-0">
+                        <h5 class="card-title mb-0">
+                            My Job List
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="my-active-jobs-main">
+                            <div class="my-active-jobs-inner">
+                                @if (Model.JobListCollection != null)
+                                {
+                                    foreach (var item in Model.JobListCollection)
+                                    {
+                                        <div class="my-active-jobs-inner-row">
+                                            <div class="my-active-jobs-inner-tile">
+                                                <div class="my-active-jobs-inner-tile my-active-jobs-inner-tile-2">
+                                                    <div>
+                                                        <i class="far fa-fw fa-building"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="my-active-jobs-mune">
+                                                            <div class="dropdown">
+                                                                <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a target="_blank" class="dropdown-item" onclick="GetEditJobbyId('@item.Ids')"><i class="far fa-fw fa-edit"></i> Edit Job</a>
+                                                                    <a class="dropdown-item" onclick="GetJobDetailbyId('@item.Ids')"><i class="far fa-fw fa-eye"></i> Job Detail</a>
+                                                                    <a class="dropdown-item" onclick="JobDetailDeletebyId(@item.Id)"><i class="far fa-fw fa-trash-alt"></i> Delete Job</a>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <h4 onclick="GetJobDetailbyId('@item.Ids')"> @item.jobtitle</h4>
+                                                        <div class="my-active-jobs-mune-2">
+                                                            <ul>
+                                                                <li onclick="GetJobDetailbyId('@item.Ids')">
+                                                                    <span>
+                                                                        <i class="fas fa-fw fa-eye"></i>   @item.viewcount Job View (s)
+                                                                    </span>
+                                                                    <span>
+                                                                        <i class="far fa-fw fa-clock"></i> @item.createddate
+                                                                    </span>
+                                                                    @if (item.location.Length > 0)
+                                                                    {
+                                                                        <span>
+                                                                            <i class="fas fa-fw fa-map-marker-alt"></i>@item.location
+                                                                        </span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>
+                                                                            <i class="fas fa-fw fa-map-marker-alt"></i>N/A
+                                                                        </span>
+                                                                    }
+                                                                    <span>
+                                                                        <i class="fas fa-fw fa-map-marker-alt"></i>   @item.zipcode
+                                                                    </span>
+
+
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="my-active-jobs-inner-footer-2">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" onclick="jobapplicantlist('@EncryptDecrypt.Decrypt(Convert.ToString(@item.Ids))', '@EncryptDecrypt.Decrypt(Convert.ToString(@item.JSs))')"><i class="far fa-fw fa-user clr-golden"></i> Total Applicants (@item.applicantcount)</a>
+                                                            <a class="dropdown-item" onclick="jobapplicantlist('@EncryptDecrypt.Decrypt(Convert.ToString(@item.Ids))', '@EncryptDecrypt.Decrypt(Convert.ToString(@item.JSs))')"><i class="far fa-fw fa-user clr-golden"></i> New Applicants(@item.NewCandidatecount)</a>
+ 
+                                                            <a class="dropdown-item" onclick="getinterviewlistbyjobId('@item.Ids')"><i class="fas fa-fw fa-file-alt clr-golden"></i> Interviews (@item.Interviewcount)</a>
+                                                            <a class="dropdown-item" onclick="NewMessgae()"><i class="fas fa-fw fa-envelope clr-golden"></i> New Messages (@item.pipelinemessagecount)</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    if (Model.JobListCollection.Count() == 0)
+                                    {
+
+                                        <div class="p-3">
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </div>
+
+                                    }
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        @if (Model.TotalRowCount > Model.maxRows)
+                        {
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-lg justify-content-center">
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                    @if (Model.CurrentPageIndex > 1)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                    }
+                                    @if (Model.indexlegth > 20)
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                            if (i > (Model.CurrentPageIndex + 19))
+                                            {
+                                                <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                        }
+                                    }
+                                    @if (Model.CurrentPageIndex < Model.PageCount)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                    }
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                </ul>
+                            </nav>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+<div class="modal fade" id="clientsharjobIdziprecuiter_PopUp" role="dialog"></div>
+<script src="~/MvpTelent_js/ApplyJob.js"></script>
+<script src="~/MvpTelent_js/Client/PostJob.js"></script>
+<script>
+    function PagerClick(CurrentPageIndex) {
+        url = "/Client/JobList?CurrentPageIndex=" + CurrentPageIndex;
+        window.location.href = url;
+    }
+    function getinterviewlistbyjobId(JobId) {
+        var url = "/Client/interviewschedulelist?JIds=" + JobId;
+        window.location.href = url;
+    }
+
+    function NewMessgae() {
+        var url = "/Client/pipelinemessageslist";
+        window.location.href = url;
+    }
+
+
+</script>
+<script>
+    var element = document.getElementById("messagesmenu").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("messagesmenu");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("jobsmenu");
+    element.classList.add("show");
+    var element = document.getElementById("myjobsmenu");
+    element.classList.add("active");
+</script>

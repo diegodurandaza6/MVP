@@ -1,0 +1,90 @@
+﻿@model Web.Model.Client.ClientModel
+@{
+    ViewBag.Title = "ClientDetailbyId";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<script src="~/Areas/Content/vendor/jquery/jquery.min.js"></script>
+<section class="bread_crumbs">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <li><a href="#">View</a></li>
+                    <li><a href="#">/</a></li>
+                    <li><a href="#"> Client Detail</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard_table">
+    <div class="container-fluid">
+        <div class="client_table">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="text-left right_icon">
+                        Client Details
+                    </h4>
+                </div>
+                <div class="container-fluid mt-5">
+                    <section class="company-details card">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="dtails-tab condidates">
+                                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="Contact" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            <div class="client_details">
+                                                <h3 class="info-sec">Client  Detail</h3>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="client_profile">
+                                                            <img src="~/FileUpload/CandidateImage/@Model.ClientId/@Model.clientLogo" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <div class="client_location">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped">
+                                                                    <tbody class="thead-dark">
+                                                                        <tr class="table-active">
+                                                                            <td>Company Name &nbsp;: &nbsp; @Model.CompanyName </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> Website &nbsp;: &nbsp; @Model.Website</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> Location &nbsp;: &nbsp; @Model.Location </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> Zip code &nbsp;: &nbsp; @Model.Zip </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>  FaceBook Url &nbsp;: &nbsp; @Model.FaceBook</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>  Twitter Url &nbsp;: &nbsp; @Model.Twitter</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>  Linkdin Url &nbsp;: &nbsp; @Model.Linkdin </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>  Description Url &nbsp;: &nbsp; @Model.Description </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

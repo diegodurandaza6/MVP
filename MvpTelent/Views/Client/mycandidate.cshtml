@@ -1,0 +1,271 @@
+﻿@model Web.Model.Candidate.CandidateModel
+@{
+    ViewBag.Title = "mycandidate";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src=@Model.locationKey defer></script>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    My Candidates
+                </h3>
+                <span>
+                    My Candidate List
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" placeholder="Search by job title" id="Title" name="Title" value="@Model.Title" />
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" placeholder="Search by keywords" id="keyword" name="keyword" value="@Model.Keyword" />
+                                    </div>
+                                    <div class="col-md-4 m-b-10">
+                                        <input type="text" class="form-control" autocomplete="off" placeholder="Search by location" value="@Model.location" id="location" name="location" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="searchmycandidate()">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="mycandidatereset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            My Candidate List
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @if (Model.MyCandiateList != null)
+                            {
+                                foreach (var item in Model.MyCandiateList)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="candidatelist-main-body">
+                                            <div class="candidatelists-main-header">
+                                                <span title="Details" onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.CandidateId))', '@EncryptDecrypt.encrypt(Convert.ToString(item.jobId))')" for="exampleCheck1">@item.current_job_title</span>
+                                                <div class="card-actions float-right">
+                                                    <div class="dropdown">
+                                                        <a href="#" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                                            <i class="fas fa-fw fa-bars clr-000" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            @*<a class="dropdown-item" onclick="Clientnotepopup(@item.CandidateId,@item.jobId)"><i class="far fa-fw fa-file-alt"></i> Add Notes</a>
+                                                                <a class="dropdown-item" onclick="InterviewSchedulepopup(0,@item.CandidateId,@item.jobId)"><i class="far fa-fw fa-calendar-alt"></i> Schedule Interview</a>*@
+                                                            <a class="dropdown-item" onclick="getcandidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.CandidateId))','@EncryptDecrypt.encrypt(Convert.ToString(item.jobId))')"><i class="far fa-fw fa-eye"></i> Candidate Details</a>
+                                                            @*<a class="dropdown-item" onclick="interviewStatusPopup(@item.CandidateId,@Model.InterviewSId,@item.jobId)" style="cursor:pointer"><i class="fas fa-fw fa-exchange-alt"></i> Change Status</a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="candidatelist-main-inner">
+                                                <div class="candidatelist-main-inner-img cursor-pointer" onclick="">
+                                                    <img src="@item.profile_image">
+                                                </div>
+                                                <div class="candidatelist-main-inner-text">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <span>Current Salary($)</span>
+                                                                    <span>@item.CurrentSalary</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span>Job Type</span>
+                                                                    <span>@item.jobType</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <span>Zip Code</span>
+                                                                    <span>@item.ZipCode</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span>Industry</span>
+                                                                    <span>@item.IndustryName</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="candidatelist-main-footer">
+                                                <ul class="candi-tiles-social">
+                                                    <li>
+                                                        <i class="fas fa-map-marker-alt"></i> @item.Job_location
+                                                    </li>
+                                                    <li>
+                                                        <i class="fas fa-filter"></i> @item.Experience_Name
+                                                    </li>
+                                                    <li>
+                                                        <i class="fas fa-graduation-cap"></i> @item.EducationlevelName
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            @if (Model.TotalRowCount == 0)
+                            {
+                                <tr>
+                                    <td class="p-3" colspan="5">
+                                        <span class="no-data-found">
+                                            No Data found...
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </div>
+                        <div class="card-body">
+                            @if (Model.TotalRowCount > Model.maxRows)
+                            {
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-lg justify-content-center">
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                        @if (Model.CurrentPageIndex > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                        }
+                                        @if (Model.indexlegth > 20)
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                                if (i > (Model.CurrentPageIndex + 19))
+                                                {
+                                                    <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                            }
+                                        }
+                                        @if (Model.CurrentPageIndex < Model.PageCount)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                        }
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="InterviewStatusByid_Popup" class="modal fade" role="dialog"></div>
+<div id="Clientnotepopup" class="modal fade" role="dialog"></div>
+<div id="CreateInterview_PopUp" class="modal fade" role="dialog"></div>
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('location'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#location').keypress(function (e) {
+        var input = document.getElementById('location');
+        if (input.value.length < 3) {
+            disableGoogleAutocomplete();
+        }
+        else {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+    })
+</script>
+<script>
+    function getcandidatedetails(Id, JobId) {
+        var Url = "/Client/detail?Ids=" + Id + "&JIds=" + JobId;
+        window.open(Url);
+    }
+    function searchmycandidate() {
+        var CandidateName = $("#_CName").val();
+        var location = $("#location").val();
+        var keyword = $("#keyword").val();
+        var Title = $("#Title").val();
+        var Url = "/Client/mycandidate?location=" + location + "&keyword=" + keyword + "&Title=" + Title;
+        window.location.href = Url;
+    }
+    function mycandidatereset() {
+        var Url = "/Client/mycandidate";
+        window.location.href = Url;
+    }
+    function PagerClick(CurrentPageIndex) {
+        var CandidateName = $("#_CName").val();
+        var location = $("#location").val();
+        url = "/Client/mycandidate?CurrentPageIndex=" + CurrentPageIndex + "&CandidateName=" + CandidateName + "&location=" + location;
+        window.location.href = url;
+    }
+</script>
+<script src="~/MvpTelent_js/Client/ClientApplicant.js"></script>
+<script src="~/MvpTelent_js/Client/Client.js"></script>
+<script>
+    var element = document.getElementById("mycandidate");
+    element.classList.add("active");
+</script>

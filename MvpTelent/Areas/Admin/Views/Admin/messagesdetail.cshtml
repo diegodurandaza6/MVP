@@ -1,0 +1,530 @@
+﻿@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "messagesdetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+} 
+   
+ 
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Interview Pipeline Message
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+
+                <div class="row res-msg">
+                    <div class="col-md-4 col-xl-3">
+                        <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                            <div class="card-header header-golden-bg">
+                                <h5 class="card-title mb-0">Candidate Details</h5>
+                                @*<h5 class="card-title mb-0">@Model.CandidateName</h5>*@
+                            </div>
+
+                            <hr class="my-0">
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Name">
+                                            <i class="far fa-fw fa-user-circle clr-golden"></i>   @Model.CandidateName
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="">
+                                            <i class="fas fa-fw fa-crown clr-golden"></i>
+                                            @if (Model.CandidateTitle == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.CandidateTitle
+                                            }
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="">
+                                            <i class="fas fa-fw fa-crown clr-golden"></i>
+                                            @if (Model.DesiredTitle1 == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.DesiredTitle1
+                                            }
+
+
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="">
+                                            <i class="fas fa-fw fa-crown clr-golden"></i>
+                                            @if (Model.DesiredTitle2 == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.DesiredTitle2
+                                            }
+
+                                        </span>
+                                    </li>
+
+
+
+
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Location">
+                                            <i class="fas fa-fw fa-map-marker-alt clr-golden"></i>
+                                            @if (Model.CandidateLocation == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.CandidateLocation
+                                            }
+
+
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Job Type">
+                                            <i class="me-2 far fa-fw fa-file-alt clr-golden"></i>
+
+                                            @if (Model.CandidateJobTypeName == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.CandidateJobTypeName
+                                            }
+
+
+                                        </span>
+
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Zip Code">
+                                            <i class="fas fa-fw fa-map-pin clr-golden"></i>
+                                            @if (Model.zipcode == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.zipcode
+                                            }
+
+                                        </span>
+
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Salary">
+                                            <i class="fas fa-fw fa-dollar-sign clr-golden"></i>
+                                            @if (@Model.Salery == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.Salery
+                                            }
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a onclick="popup('@Model.CandidateName','@Model.CandidateEmail',@Model.CandidateId,3)" class="underline hov-pointer" style="font-size: 14px;">
+                                            <i class="fas fa-fw fa-envelope clr-golden "></i> General Message
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+
+                            <div class="card-header header-golden-bg">
+                                <h5 class="card-title mb-0">Client Details</h5>
+                            </div>
+                            <hr class="my-0">
+
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Company Name">
+                                            <i class="fas fa-fw fa-user clr-golden"></i>
+
+                                            @if (@Model.compnayname == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.compnayname
+                                            }
+
+
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Company Website">
+                                            <i class="fas fa-fw fa-globe clr-golden "></i>
+                                            @if (@Model.ClientWebsite == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.ClientWebsite
+                                            }
+
+
+                                        </span>
+                                    </li>
+
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Company Location">
+                                            <i class="fas fa-fw fa-map-marker-alt clr-golden"></i>
+                                            @if (@Model.location == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.location
+                                            }
+
+
+                                        </span>
+                                    </li>
+
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="User Name">
+                                            <i class="fas fa-fw fa-user clr-golden"></i>
+
+                                            @if (@Model.ClientName == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.ClientName
+                                            }
+
+
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="User Email">
+                                            <i class="fas fa-fw fa-envelope clr-golden"></i>
+                                            @if (@Model.ClientEmail == "")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.ClientEmail
+                                            }
+
+
+                                        </span>
+
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="User Phone no.">
+                                            <i class="fas fa-fw fa-phone clr-golden rotate-90"></i> @Model.ClientPhoneNo
+                                        </span>
+
+                                    </li>
+
+                                    <li>
+                                        <a onclick="popup('@Model.ClientName','@Model.ClientEmail',@Model.ClientId,2)" class="underline hov-pointer">
+                                            <i class="fas fa-fw fa-envelope clr-golden "></i> General Message
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                            <div class="card-header header-golden-bg">
+                                <h5 class="card-title mb-0">
+                                    Job Details
+                                </h5>
+                            </div>
+                            <hr class="my-0">
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Title">
+                                            <i class="far fa-fw fa-user-circle clr-golden"></i> @Model.JobTitle
+                                        </span>
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Job Type">
+                                            <i class="me-2 far fa-fw fa-file-alt clr-golden"></i> @Model.JobTypeName
+                                        </span>
+
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Location">
+                                            <i class="fas fa-fw fa-map-marker-alt clr-golden "></i> @Model.location
+                                        </span>
+
+                                    </li>
+                                    <li class="mb-1">
+                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Category">
+                                            <i class="me-2 far fa-fw fa-file-alt clr-golden"></i> @Model.jobcategory
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xl-9">
+                        <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                            <div class="card-header header-golden-bg">
+                                <h5 class="card-title mb-0">
+                                    Conversation with Candidate
+                                </h5>
+                            </div>
+                            <hr class="m-0">
+                            <div class="card-body p-b-0">
+                                <form class="input-group" id="Gmessagechatform">
+                                    <textarea class="form-control mb-3" autofocus="autofocus" @*onkeypress="return msgsent(event)"*@ name="massege" id="massege" placeholder="Type a message..." rows="5"></textarea>
+                                    <div class="col-md-12 p-0 text-md-right mb-3">
+                                        <div class="w-150px d-inline-block mr-2">
+                                            <select class="form-control" Id="ClientCandidateId" name="ClientCandidateId">
+                                                <option value="0">Send To All</option>
+                                                <option value="@Model.ClientId">Send To @Model.ClientName</option>
+                                                <option value="@Model.CandidateId">Send To @Model.CandidateName</option>
+                                            </select>
+                                        </div>
+                                        <button class="btn-2" type="button" onclick="pipelinemessagesendbyadmin()">Send</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <hr class="m-0">
+                            <div class="card-body p-b-0">
+                                <div class="position-relative">
+                                    <div class="chat-messages">
+                                        @if (Model.candidateconversationcollection != null)
+                                        {
+                                            foreach (var item in Model.candidateconversationcollection)
+                                            {
+                                                <div class="chat-message-left pb-4">
+                                                    <div class="flex-shrink-1 msg">
+                                                        <div class="font-weight-bold mb-1">
+                                                            <span>
+                                                                <span class="font-weight-500 fs-14">
+                                                                    @if (item.AccountTypeId == 2)
+                                                                    {
+                                                                        <a target="_blank" style="cursor: pointer;text-decoration: underline" title="Detail" @*onclick="clientdetails('@EncryptDecrypt.encrypt(Convert.ToString(item.Id))')"*@> @item.Name</a>
+                                                                    }
+                                                                    else if (item.AccountTypeId == 3)
+                                                                    {
+                                                                        <a target="_blank" style="cursor: pointer;text-decoration: underline" title="Detail" onclick="Candidatedetails('@EncryptDecrypt.encrypt(Convert.ToString(item.Id))')"> @item.Name</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @item.Name
+                                                                        if (item.SendName == "")
+                                                                        {
+                                                                            <span>(Sent to All)</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span>(Sent to @item.SendName)</span>
+                                                                        }
+                                                                    }
+                                                                </span>
+                                                                <span class="date-msz">(@item.createddate)</span>
+                                                            </span>
+                                                        </div>
+                                                        @item.Description
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="dv_messagesadmin_popup" class="modal fade" role="dialog"></div>
+<input type="hidden" id="h_ClientId" value="@Model.ClientId" />
+<script>
+    function Candidatedetails(Id) {
+        var Url = "/Home/details?Id=" + Id;
+        window.open(Url);
+    }
+    function clientdetails(Id) {
+
+        var Url = "/Admin/Admin/Clientdetails?Ids=" + Id;
+        window.open(Url);
+    }
+    function validation() {
+        $("#Gmessagechatform").validate({
+            rules: {
+                massege: {
+                    required: true
+                },
+            }
+        });
+    }
+    function pipelinemessagesendbyadmin() {
+        validation();
+        if ($('#Gmessagechatform').valid()) {
+              model = {
+            Id: @Model.Id,
+            FromId: @Model.UserId,
+            ClientId: @Model.ClientId,
+            CandidateId: @Model.CandidateId,
+            description: $("#massege").val(),
+            JobId: @Model.JobId,
+            ClientCandidateId: $("#ClientCandidateId").val(),
+        }
+        $.post("/Admin/Admin/pipelinemessagesendbyadmin", model, function (response) {
+            toastr.success("Message sent successfully.");
+            $("#massege").val(null);
+            setTimeout(function () { window.location.reload(); }, 1200);
+        });
+        }
+    }
+    function msgsent(event) {
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            pipelinemessagesendbyadmin();
+        }
+    }
+</script>
+<script>
+    function popup(Name, email, Id, type) {
+        var nameemail = Name + ' (' + email + ')';
+        if (type == 3) {
+            $('#h_ToId').val(Id);
+            $("#Clientname").prop('disabled', true);
+            $("#Candidatename").prop('disabled', true);
+            $('#Candidatename').val(nameemail);
+            $('#Clientname').val('');
+        }
+        else {
+            $('#h_ToId').val(Id);
+            $("#Clientname").prop('disabled', true);
+            $("#Candidatename").prop('disabled', true);
+            $('#Clientname').val(nameemail);
+            $('#Candidatename').val('');
+        }
+        $("#generalmessagePopup").modal("show");
+    }
+</script>
+<script>
+    function sendAdmingeneralmessagesvalidation() {
+        $("#GeneralMessagefrom").validate({
+            rules: {
+                Clientname: {
+                    required: true,
+                },
+                title: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                },
+            }
+        });
+    }
+    function sendAdmingeneralmessages() {
+        sendAdmingeneralmessagesvalidation();
+        if ($("#GeneralMessagefrom").valid()) {
+            model = {
+                ToId: $('#h_ToId').val(),
+                Title: $('#title').val(),
+                Description: $('#Description').val()
+            }
+            $.post("/Admin/Admin/sendAdmingeneralmessages", model, function (response) {
+                toastr.success("Message sent successfully.");
+                setTimeout(function () { window.location.reload(); }, 1200);
+            });
+        }
+    }
+</script>
+<div id="generalmessagePopup" class="modal fade " role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="#">General Message </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <form id="GeneralMessagefrom">
+                    <div class="card-body">
+                        <div class="row">
+                            <input type="hidden" name="h_ToId" id="h_ToId" />
+                            <div class="col-lg-5 col-sm-5">
+                                <div class="form-group">
+                                    <label class="form-label"> Client Name</label>
+                                    <input class="form-control" style="width:100%;" autocomplete="off" type="text" id="Clientname" placeholder="Please enter client name" name="Clientname" />
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 text-center">
+                                <label class="form-label" style="margin-top: 35px;">OR</label>
+                            </div>
+                            <div class="col-lg-5 col-sm-5">
+                                <div class="form-group">
+                                    <label class="form-label"> Candidate Name</label>
+                                    <input class="form-control" style="width:100%;" autocomplete="off" type="text" id="Candidatename" placeholder="Please enter candidate name" value="" name="Candidatename" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label"> Title</label>
+                                    <input id="title" maxlength="80" autocomplete="off" class="form-control" placeholder="Please enter title" name="title" type="text">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label"> Messages</label>
+                                    <textarea id="Description" autocomplete="off" maxlength="2000" class="form-control" placeholder="Please enter message" name="Description" type="text" rows="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="button" name="InterviewBtn" id="InterviewBtn" class="btn btn-primary" onclick="sendAdmingeneralmessages()" value="Send">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    //var element = document.getElementById("Messages");
+    //element.classList.remove("collapsed");
+    //var element = document.getElementById("Messages");
+    //element.classList.add("show");
+    //var element = document.getElementById("Pipeline Messages+1");
+    //element.classList.add("active");
+</script>

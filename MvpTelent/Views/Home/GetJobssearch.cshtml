@@ -1,0 +1,245 @@
+﻿@model Web.Model.Client.JobsModel
+
+<div class="card-body">
+    <div class="search-best-jobs-tiles-inner">
+        <ul>
+            @if (Model.SolrJobListCollection != null)
+            {
+                if (Model.SolrJobListCollection.Count > 0)
+                {
+                    foreach (var item in Model.SolrJobListCollection)
+                    {
+                        <li>
+                            <div class="search-best-jobs-tiles-inner-body">
+                                <a onclick="jobdetailbbyid('@item.ids')" target="_blank" class="jobs-img"> <img src="@item.ImagePath" alt="image"></a>
+                                <div class="jobs-body">
+                                    <div>
+                                        <p class="head">
+
+                                            @if (@item.JobType == null)
+                                            {
+                                                <span> <i class="fas fa-briefcase"></i> N/A</span>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-briefcase"></i> @item.JobType
+                                            }
+                                        </p>
+                                        <a onclick="jobdetailbbyid('@item.ids')" target="_blank" style="cursor:pointer">@item.jobtitle</a>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                @if (@item.CategoryName == null)
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    @item.CategoryName
+                                                }
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span>
+                                                    @if (@item.SubCategoryName == null)
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@item.SubCategoryName</span>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jobs-star"><i class="fas fa-star"></i></div>
+                            </div>
+                            <ul class="custom-filterlistsection">
+                                <li style="width: 40%!important;text-align: left;">
+                                    <span>
+                                        <i class="fas fa-map-marker-alt">
+
+                                            @if (@item.location == null)
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @item.location
+                                            }
+
+                                        </i>
+                                        &nbsp;&nbsp; -
+
+                                        @if (@item.zip_code == null)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            @item.zip_code
+                                        }
+                                    </span>
+                                </li>
+                                @*<li>
+                                        <span>
+                                            <i class="fas fa-map-marker-alt"></i>
+
+                                            @if (@item.zip_code == null)
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @item.zip_code
+                                            }
+
+
+                                        </span>
+                                    </li>*@
+                                @if (Model.zipcode != null)
+                                {
+                                    <li style="width: 30%!important;">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>  (@item.miles_range Miles away from @Model.zipcode)  </span>
+                                    </li>
+                                }
+                                @*<li>
+                                         <span>
+                                            <i class="fas fa-briefcase"></i>
+                                            @if (@item.JobType == null)
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                            else
+                                            {
+                                                @item.JobType
+                                            }
+                                        </span>
+                                    </li>*@
+                                <li>
+                                    <span>
+                                        <i class="fas fa-wallet"></i>
+                                        @if (@item.MinimumSalary == null)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>$@item.MinimumSalary</span>
+                                        }
+
+
+
+                                        @if (@item.MaximumSalary == null)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span> - $@item.MaximumSalary</span>
+                                        }
+
+                                    </span>
+                                </li>
+
+                                @*@if (Model.zipcode != null)
+                                    {
+                                        <li>
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>  (@item.miles_range Miles away from @Model.zipcode)  </span>
+                                        </li>
+                                    }*@
+
+
+                            </ul>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <div class="no-data-section text-center">
+                        <figure class="no-data-img">
+                            <img src="/New_Content/images/404-img.png" class="img-fluid" />
+                        </figure>
+                        <p>Sorry , The data not found</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-data-section text-center">
+                    <figure class="no-data-img">
+                        <img src="/New_Content/images/404-img.png" class="img-fluid" />
+                    </figure>
+                    <p>Sorry , The data not found</p>
+                </div>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        @if (Model.TotalRowCount > Model.maxRows)
+        {
+            <div class="pagination-bar pagination-section my-4 w-100">
+                <nav aria-label="Page navigation " class="d-inline-b">
+                    <ul class="pagination justify-content-center custom-pagination-sm">
+                        <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(1);">&laquo;</a></li>
+                        @if (Model.CurrentPageIndex > 1)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@Model.CurrentPageIndex - 1);"><</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                        }
+                        @if (Model.indexlegth > 20)
+                        {
+                            for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                            {
+                                if (i != Model.CurrentPageIndex)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@i);">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                }
+                                if (i > (Model.CurrentPageIndex + 19))
+                                {
+                                    <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                    <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@Model.PageCount);">@Model.PageCount</a></li>
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                            {
+                                if (i != Model.CurrentPageIndex)
+                                {
+                                    <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@i);">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                }
+                            }
+                        }
+                        @if (Model.CurrentPageIndex < Model.PageCount)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@Model.CurrentPageIndex + 1);">></a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                        }
+                        <li class="page-item"><a class="page-link" href="javascript:GetSearchJob(@Model.PageCount);">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,272 @@
+﻿@model Web.Model.Candidate.CandidateListModel
+@{
+    ViewBag.Title = "Search Candidate";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="@Model.locationKey"></script>
+<div id="jobalert_PopUp" class="modal fade" role="dialog"></div>
+<style>
+    .candidatelist-main-body > .candidatelists-main-header > span {
+        text-transform: capitalize;
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Interviews
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="text" autocomplete="off" tabindex="" class="form-control" style="text-transform: capitalize" id="Title" name="Title" placeholder="Job Title">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="hidden" name="postal_code" id="postal_code">
+                                        <input type="hidden" name="checkgroupId" id="checkgroupId" value="@Model.gid">
+                                        <input type="text" class="form-control" width="100%"  id="Keyword" name="Keyword" placeholder="keywords...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <input type="text" autocomplete="off" class="form-control" id="autocomplete_search" name="" placeholder="Enter City, State, Zip Code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" id="milesfiltersection">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.milescollection, "Id", "Name"), "Please select miles", new { @class = "custom-select", @Id = "miles", @Name = "miles" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.jobtypecollection, "Id", "Name"), "Please select type", new { @class = "custom-select", @Id = "JobtypeId", @Name = "JobtypeId" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.IndustryCollection, "Id", "Name"), "Please select industry", new { @class = "custom-select", @Id = "JobCatagoryId", @Name = "JobCatagoryId" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.experiencecollection, "Id", "Name"), "Please select experience", new { @class = "custom-select", @Id = "experienceId", @Name = "experienceId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        @Html.DropDownListFor(m => m.Id, new SelectList(Model.Educationcollection, "Id", "Name"), "Please select education level", new { @class = "custom-select", @Id = "educationlavelId", @Name = "educationlavelId" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="button" class="btn btn-primary w-100 border-0" onclick="GetSearchCandidates(1,0)" id="search" name="search">Search</button>
+                                    </div>
+                                    <div class="col-md-6 m-b-10">
+                                        <button type="button" class="btn btn-fade w-100 border-0">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Interview List
+                        </h5>
+                    </div>
+                    <div class="">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%">
+                                        S.No
+                                    </th>
+                                    <th>
+                                        Job Title
+                                    </th>
+                                    <th>
+                                        Candidate Name
+                                    </th>
+                                    <th>
+                                        Interview Date
+                                    </th>
+                                    <th>
+                                        Interviewer Name
+                                    </th>
+
+
+                                    <th class="text-center w-150px">Action</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+<script>
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                var pos = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                if (pos > -1) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = arr[i].substr(0, pos);
+                    b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(pos + val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    var strArray = [];
+    $.ajax({
+        type: "Post",
+        url: "/Home/getCandidateTitleList",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.each(data.candidatetagvaluecollection, function () {
+                var tmpStr = "";
+                for (var i = 0; i < this.Name.length; i++) {
+                    if (this.Name.charAt(i) == ',') {
+                        strArray.push(tmpStr);
+                        tmpStr = "";
+                        continue;
+                    }
+                    tmpStr += this.Name.charAt(i);
+                }
+                strArray.push(tmpStr);
+            });
+            autocomplete(document.getElementById("Title"), strArray);
+        },
+        error: function () {
+            alert("There is an error uploading files!");
+        }
+    });
+</script>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script> 

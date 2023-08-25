@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/calendar/fullcalendar.css" rel="stylesheet" />
+<script src="~/calendar/moment.min.js"></script>
+<script src="~/calendar/jquery.min.js"></script>
+<script src="~/calendar/fullcalendar.min.js"></script>
+<script>
+    $(document).ready(function () {
+         
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            data: "{}",
+            url: "/Client/InterviewSchedulecalenderlist",
+            dataType: "json",
+            success: function (data) {
+                var event = new Array(); 
+                $.each(data.interviewListCollection, function (index, item) { 
+                    event.push(
+                        {
+                            Title: this.Title,
+                            InterviewDate: this.InterviewDate,
+                            Id: this.Id,
+                            color: '#65b8f1',
+                        }
+                    );
+                });
+                $('div[id=calendar]').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'Title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    eventClick: function (event, jsEvent, view) {
+                        var Id = event.Id;
+                        openevent(Id);
+                    },
+                    defaultDate: new Date(),
+                    editable: false,
+                    events: event,
+                    eventLimit: true,
+                    isRTL: $('html').attr('dir') == 'rtl' ? true : false
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    });
+    $('.calendar').css('font-size', '12px !important');
+    function openevent(Id) {
+        model = { Id: Id };
+        $.get("/Admin/Admin/MettingScheduleDetailsPopUp", model, function (response) {
+            $("#MettingScheduleDetails_PopUp").html(response);
+            $("#MettingScheduleDetails_PopUp").modal('show');
+        });
+    }
+</script>
+<div id="MettingScheduleDetails_PopUp" class="modal fade" role="dialog"></div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>calenderdemo</title>
+</head>
+<body>
+    <div>
+        <div>hello</div>
+        <div id='calendar'></div>
+    </div>
+</body>
+</html>

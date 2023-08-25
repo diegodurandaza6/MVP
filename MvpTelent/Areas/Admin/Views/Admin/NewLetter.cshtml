@@ -1,0 +1,120 @@
+﻿@model Web.Model.Admin.EnquiresViewModel
+@{
+    ViewBag.Title = "NewLetter";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Email Subscribers</h3> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="_Name" name="_Name" value="@Model.Name" placeholder="Please enter name" maxlength="25">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getcampainByName()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="NewLettterReset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Email Subscriber List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-65px">
+                                        S.No
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Newlettercollection != null)
+                                {
+                                    foreach (var item in Model.Newlettercollection)
+                                    {
+                                        <tr>
+                                            <td class="text-left width-46px">
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Email
+                                            </td>
+                                            <td>
+                                                @item.Date
+                                            </td>
+                                            <td class="table-action text-center">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Remove" onclick="DeleteNewletter(@item.Id)">
+                                                    <i class="far fa-fw fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.Newlettercollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+ 
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("Email Subscribers+1");
+    element.classList.add("active");
+</script>

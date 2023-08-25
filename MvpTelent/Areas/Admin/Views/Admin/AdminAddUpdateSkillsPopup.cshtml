@@ -1,0 +1,46 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<script>
+    var model = new Object();
+    model.prefix = '';
+    autocomplete(document.getElementById("skill"), '/Home/skillautocomplete', model);
+</script>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">PROFESSIONAL SKILLS </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          
+                    <form id="skillform">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="autocomplete">
+                                        <label class="form-label">Skill </label>
+                                        <input id="skill" maxlength="50" autocomplete="off" class="form-control" value="@Model.skill" onfocus="" onkeyup="return searchKeyPresss(event,@Model.CandidateId)" placeholder="Please enter skill" name="skill" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Percentage   (100) </label>
+                                    <input id="percentage" maxlength="3" autocomplete="off" class="form-control" value="@Model.percentage" placeholder="Please enter percentage" name="percentage" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Visible</label>
+                                    @Html.DropDownListFor(m => m.visibleid, new SelectList(Model.visibleidCollection, "Id", "Name"), "Select", new { @class = "form-control", @id = "visibleid", @Name = "visibleid" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+           
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn btn-primary" onclick="AdminSkillAddUpdate(@Model.Id,@Model.CandidateId)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hfCustomer" name="CustomerId" />
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script>

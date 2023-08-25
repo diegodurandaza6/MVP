@@ -1,0 +1,416 @@
+﻿@model Web.Model.Paypal.PlansListModel
+@{
+    /**/
+    ViewBag.Title = "payment history";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Plan & Payment History</h3>
+            </div>
+            <div class="breadcum-2">
+                @if (Model.CheckDate == 1)
+                {
+                    <a class="btn-new-1" onclick="stoppayment(@Model.UserId,'@Model.pId')">
+                        Stop Recurring Payment
+                    </a>
+                    @*if (Model.recurringpayment == 1)
+                        {
+                            <a class="btn-new-1" onclick="Renewpayment(@Model.UserId,'@Model.pId')">
+                                Renew
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn-new-1" onclick="stoppayment(@Model.UserId,'@Model.pId')">
+                                Stop Recurring Payment
+                            </a>
+
+                        }*@
+                }
+                else
+                {
+                    @*<a class="btn-new-1" onclick="Renewpayment(@Model.UserId,'@Model.pId')">
+                            Renew
+                        </a>*@
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            My Current Plan
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden m-0">
+                            <tbody>
+
+                                <tr>
+
+                                    <td>
+                                        <b>Plan Name</b>
+                                    </td>
+
+                                    <td>
+                                        @if (Model.Name == null)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Name</span>
+                                        }
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <b> No. of Interviews Allowed</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.noofinterview == 0)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.noofinterview</span>
+                                        }
+
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <b>No. of Jobs Allowed</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.noofjob == 0)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.noofjob</span>
+                                        }
+
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <b>Plan Expiry Date</b>
+                                    </td>
+                                    <td>
+                                        @if (@Model.ValidPlanDate != null)
+                                        {
+                                            <span>
+                                                @Model.ValidPlanDate
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                @if (Model.RefundDate != "")
+                                {
+                                    <tr>
+                                        <td>
+                                            <b>Stop & Refund By</b>
+                                        </td>
+                                        <td>
+                                            <b>@Model.RefundBy</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Stop & Refund Date</b>
+                                        </td>
+                                        <td>
+                                            <b>@Model.RefundDate</b>
+                                        </td>
+                                    </tr>
+
+                                }
+                                else
+                                {
+                                    if (Model.PaymentStopDate != "" && Model.recurringpayment == 1)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <b>Payment Stop By</b>
+                                            </td>
+                                            <td>
+                                                <b>@Model.PaymentStopBy</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> Payment Stop Date</b>
+                                            </td>
+                                            <td>
+                                                <b>@Model.PaymentStopDate</b>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.RenewDate != "" && Model.recurringpayment == 0)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <b>Payment Renew By</b>
+                                            </td>
+                                            <td>
+                                                <b>@Model.RenewBy</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> Payment Renew Date</b>
+                                            </td>
+                                            <td>
+                                                <b>@Model.RenewDate</b>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Current Uses
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden m-0">
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <b>Plan Name</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.Name == null)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Name</span>
+                                        }
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <b>Interview scheduled</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.LeftInterview == 0)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Usesnoofinterview</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <b>Jobs Created</b>
+                                    </td>
+                                    <td>
+                                        @if (Model.jobleft == 0)
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Usesnoofjob</span>
+                                        }
+
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <b>Plan Expiry Date</b>
+                                    </td>
+                                    <td>
+                                        @if (@Model.ValidPlanDate != null)
+                                        {
+                                            <span>
+                                                @Model.ValidPlanDate
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <div class="card-actions float-right f-w-500">
+                            <a id="btnPaymentHistoryshow" title="Show History" style="cursor:pointer" name="btnPaymentHistoryshow" onclick="PaymentHistoryhideshow(1)">Show History</a>
+                            <a id="btnPaymentHistoryHide" title="Hide History" style="cursor:pointer; display:none" name="btnPaymentHistoryHide" onclick="PaymentHistoryhideshow(2)">Hide History</a>
+                        </div>
+                        <h5 class="card-title mb-0">
+                            Payment History
+                        </h5>
+                    </div>
+                    <div id="tblPaymentHistory" name="tblPaymentHistory" style="display:none">
+                        <table class="table table-striped my-0 tr-golden" >
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Plan Name</th>
+                                    <th>Amount</th>
+                                    <th>Start / Expiry Date</th>
+                                    <th>Plan Status</th>
+                                    <th class="text-center mw-120">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Collection != null)
+                                {
+                                    foreach (var item in Model.Collection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo++;}@RowNo</td>
+                                            <td>
+                                                @item.PlanName
+                                            </td>
+                                            <td>@item.Amount</td>
+                                            <td>@item.CreateDate - @item.ValidPlanDate</td>
+                                            <td>
+                                                @if (@item.Status == "Current")
+                                                {
+                                                    <span style="color:#918262">(@item.Status)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color:red">(@item.Status)</span>
+                                                }
+                                            </td>
+                                            <td class="table-action text-center">
+                                                <a title="Payment  Details" onclick="plandetailbyid(@item.Id)"><i class="align-middle" data-feather="eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="p-3" colspan="6">
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                            @if (Model.TotalRowCount > Model.maxRows)
+                            {
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-lg justify-content-center">
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                        @if (Model.CurrentPageIndex > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                        }
+                                        @if (Model.indexlegth > 20)
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                                if (i > (Model.CurrentPageIndex + 19))
+                                                {
+                                                    <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                            {
+                                                if (i != Model.CurrentPageIndex)
+                                                {
+                                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                }
+                                            }
+                                        }
+                                        @if (Model.CurrentPageIndex < Model.PageCount)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                        }
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/MvpTelent_js/Client/ClientPaymentHistory.js"></script>
+<script>
+    var element = document.getElementById("paymenthistory");
+    element.classList.add("active");
+</script>
+
+
+<div id="plandetail_popup" class="modal fade" role="dialog"></div> 

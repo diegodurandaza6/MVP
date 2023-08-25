@@ -1,0 +1,179 @@
+﻿@model Web.Model.Admin.EnquiresViewModel
+@{
+    ViewBag.Title = "enquires";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+<div id="replypopup" class="modal fade" role="dialog"></div>
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Contact us</h3> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="email" name="email" value="@Model.Email" placeholder="Please enter email" onchange="getEnquiresByEmail()" maxlength="45">
+                            </div>
+                           
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getEnquiresByEmail()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="Reset()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1"> 
+                        <h5 class="card-title mb-0">
+                            Contact Us List
+                        </h5> 
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Inquiry Date</th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Collection != null)
+                                {
+                                    foreach (var item in Model.Collection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>@item.Name @item.LastName</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.subject</td>
+                                            <td>@item.createdate</td>
+                                            <td class="table-action text-center">
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="View / Reply" onclick="getmessagebyId('@item.Ids')">
+                                                    <i class="fas fa-fw fa-reply"></i>
+                                                </a>
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Remove" onclick="enquerydelete(@item.Id)">
+                                                    <i class="far fa-fw fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6">
+                                            <span class="no-data-found">
+                                                No Data found...
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                            @if (Model.TotalRowCount > Model.maxRows)
+                            {
+                                <div class="pagination-bar pagination-section my-4">
+                                    <nav aria-label="Page navigation " class="d-inline-b">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                            @if (Model.CurrentPageIndex > 1)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                            }
+                                            @if (Model.indexlegth > 20)
+                                            {
+                                                for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                                {
+                                                    if (i != Model.CurrentPageIndex)
+                                                    {
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                    }
+                                                    if (i > (Model.CurrentPageIndex + 19))
+                                                    {
+                                                        <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                                {
+                                                    if (i != Model.CurrentPageIndex)
+                                                    {
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                    }
+                                                }
+                                            }
+                                            @if (Model.CurrentPageIndex < Model.PageCount)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                            }
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- /.container-fluid -->
+<script src="~/Areas/Admin/Admin/enquires.js"></script>
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("Contact us+1");
+    element.classList.add("active");
+</script>

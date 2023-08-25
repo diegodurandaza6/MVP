@@ -1,0 +1,46 @@
+﻿@model Web.Model.Common.LoginModel
+@{
+    ViewBag.Title = "unsubscribe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<section class="banner-inner">
+    <h1 class="banner-caption">Unsubscribe</h1>
+</section>
+<section class="unsubscribeSlot login-section unsubscribe-sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                <form class="slds-form--stacked center-block">
+                    <div class="card">
+                        <h2 class="login_header">Unsubscribe</h2>
+                        <div class="unsubscribe_txt">
+                            <p>
+                                We are Sorry to see you go.
+                                Please help us serve you better by explaining you have chosen to Unsubscribe
+                            </p>
+                            <ul class="unsubcribe_checkbox-list">
+                                @foreach (var item in Model.Collection)
+                                {
+                                    <li><input type="radio" name="Subscribed" id="Subscribed" value="@item.Id" maxlength="150"> @item.Name</li>
+                                }
+                            </ul>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="4" id="Description" name="Description" placeholder="Description" style="border-radius:7px;height: 130px;"></textarea>
+                            </div>
+                            <div class="unsubscribe_btn">
+                                <button type="button" class="update_section button-secondry" onclick="unsubscribeClick(@Model.ContactId)">Unsubscribe</button>
+                                <button type="button" style="width:130px;" class="_close button-primary" onclick="Cancel()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function unsubscribeClickConfirm() {
+        return confirm("Are you sure you'd like to stop receiving similar messages.")
+    }
+</script>

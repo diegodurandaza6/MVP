@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP Talent Market</title>
+
+    <link rel="icon" type="image/x-icon" href="~/New_Content/images/mvp_favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="~/Client_Content/css/light.css" rel="stylesheet" />
+    <link href="~/Client_Content/css/custom.css" rel="stylesheet" />
+    <script src="~/Client_Content/js/settings.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="~/Scripts/daterange/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="~/New_Content/css/toastr.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand-2" href="/Admin/Admin/index">
+                    <img src="/Client_Content/img/mvp_logo2.png" />
+                    <div class="sidebar-brand-2-text">
+                        <span>Your Confidential  </span>
+                        <span>Talent Market</span>
+                    </div>
+                </a>
+                @{
+                    var user = User as MvpTelent.Security.CustomPrincipal;
+                    var menus = Session["Menus"] as IEnumerable<Web.Model.Common.MainMenu>;
+                    if (menus != null && user != null)
+                    {
+                        var tuple = MvpTelent.Security.ParseUrl.GetComponent(Context);
+                        string actionName = tuple.Item3;
+                        string controllerName = tuple.Item2;
+                        string areaName = tuple.Item1;
+                        var ids = menus.SelectMany(x => x.SubMenus).SelectMany(x => x.SubMenuRoles).Where(x => user.Roles.Contains(x.RoleId));
+                        var RoleMenus = menus.Where(x => ids.Select(z => z.MenuId).Contains(x.MenuId));
+                        <ul class="sidebar-nav">
+                            @foreach (var menu in RoleMenus)
+                            {
+                                if (menu.SubMenus.Where(x => x.ishidden == false).Count() == 1)
+                                {
+                                    var subMenu = menu.SubMenus.Where(x => x.ishidden == false).First();
+                                    if (actionName.Equals(subMenu.Action, StringComparison.OrdinalIgnoreCase) && controllerName.Equals(subMenu.Controller, StringComparison.OrdinalIgnoreCase) && areaName.Equals(subMenu.Area, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <li class="sidebar-item" id="@menu.MenuName@menu.MenuName.Replace(" ", "_")">
+                                            <a class="sidebar-link" href="@Url.Action(subMenu.Action, subMenu.Controller, new { area=subMenu.Area})">
+                                                <i class="align-middle" data-feather="chevrons-right"></i> <span class="align-middle">@menu.MenuName</span>
+                                            </a>
+                                        </li>
+                                        <script>
+                                            var element = document.getElementById("@menu.MenuName@menu.MenuName.Replace(" ", "_")");
+                                            element.classList.add("active");
+                                        </script>
+                                    }
+                                    else
+                                    {
+                                        <li class="sidebar-item" id="@menu.MenuName@menu.MenuName.Replace(" ", "_")">
+                                            <a class="sidebar-link" href="@Url.Action(subMenu.Action, subMenu.Controller, new { area=subMenu.Area})">
+                                                <i class="align-middle" data-feather="chevrons-right"></i> <span class="align-middle">@menu.MenuName</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                else if (menu.SubMenus.Count() > 1)
+                                {
+                                    <li class="sidebar-item">
+                                        <a href="#@menu.MenuName.Replace(" ", "_")" data-toggle="collapse" class="sidebar-link collapsed" id="foractive">
+                                            <i class="align-middle" data-feather="chevrons-right"></i> <span class="align-middle">@menu.MenuName</span>
+                                        </a>
+                                        <ul id="@menu.MenuName.Replace(" ", "_")" class="sidebar-dropdown list-unstyled collapse p-0" data-parent="#sidebar">
+                                            @foreach (var subMenu in menu.SubMenus)
+                                            {
+                                                if (subMenu.SubMenuRoles.Any(x => x.SubMenuId == subMenu.SubMenuId && user.Roles.Contains(x.RoleId)) && subMenu.ishidden == false)
+                                                {
+                                                    if (actionName.Equals(subMenu.Action, StringComparison.OrdinalIgnoreCase) && controllerName.Equals(subMenu.Controller, StringComparison.OrdinalIgnoreCase) && areaName.Equals(subMenu.Area, StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        <li class="sidebar-item">
+                                                            <a class="sidebar-link" href="@Url.Action(subMenu.Action, subMenu.Controller, new { area=subMenu.Area})" id="@subMenu.SubMenuName+1">
+                                                                @subMenu.SubMenuName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else if (subMenu.ishidden == false)
+                                                    {
+                                                        <li class="sidebar-item">
+                                                            <a class="sidebar-link" href="@Url.Action(subMenu.Action, subMenu.Controller, new { area=subMenu.Area})" id="@subMenu.SubMenuName+1">
+                                                                @subMenu.SubMenuName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+        </nav>
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg">
+                <a class="sidebar-toggle">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+                <div class="d-none d-sm-inline-block">
+                    <div class="input-group input-group-navbar">
+
+                        <input class="form-control" id="EmailId" name="EmailId" autocomplete="off" placeholder="search contact " maxlength="45">
+
+                        <div class="input-group-append">
+
+                            <button class="btn" type="button" onclick="getcontact()">
+                                <i class="align-middle" data-feather="search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align">
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-toggle="dropdown">
+                                <div class="position-relative" data-toggle="tooltip" data-placement="top" data-original-title="Total Count">
+                                    <i class="align-middle" data-feather="bell"></i>
+                                    <span class="indicator" title="Total unread message" id="totalcount">0</span>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                <a class="dropdown-item" onclick="gotolist('/Admin/Admin/ClientSendenquery')">
+                                    Interview Request (<span id="Unreadcount">0</span>)
+                                </a>
+                                <a class="dropdown-item" onclick="gotolist('/Admin/Admin/generalmessages')">
+                                    General Messages (<span id="generalmessagecount">0</span>)
+                                </a>
+                                <a class="dropdown-item" onclick="gotolist('/Admin/Admin/messages')">
+                                    Interview Pipeline Messages (<span id="pipelinemessagecount">0</span>)
+                                </a>
+
+                                <a class="dropdown-item" onclick="gotolist('/Admin/Admin/submitedprofile')">
+                                    Submited Profile Messages (<span id="submitedprofilecount">0</span>)
+                                </a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" data-toggle="dropdown">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
+                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                                <span class="text-dark fs-15 username-1">
+
+                                    <span>
+                                        Welcome
+                                    </span>
+                                    <span>
+                                        @if (Session["Name"] != null)
+                                        {
+                                            <span>@Session["Name"].ToString()</span>
+                                        }
+                                    </span> 
+                                </span>
+                                <div class="avatar_2" style="background-image: url('@Session["Image"].ToString()');"></div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Admin/Admin/Profile"><i class="align-middle mr-1" data-feather="pie-chart"></i> My Profile</a>
+                                <a class="dropdown-item" href="/Admin/Admin/setting"><i class="align-middle mr-1" data-feather="settings"></i> Change password</a>
+                                <a class="dropdown-item" href="/Admin/Admin/Payment"><i class="align-middle mr-1" data-feather="pie-chart"></i> Client Payment History</a>
+                                <a class="dropdown-item" onclick="Logout()"><i class="align-middle mr-1" data-feather="power"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            @*here*@
+
+            @RenderBody()
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script> 
+    <script src="~/Areas/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Areas/Content/js/sb-admin-2.min.js"></script>
+    <script src="~/Client_Content/js/app.js"></script>
+    <link href="~/calendar/fullcalendar.css" rel="stylesheet" />
+    <script src="~/calendar/moment.min.js"></script>
+    <script src="~/calendar/fullcalendar.min.js"></script>
+    <script src="~/Content/datetimepicker/jquery.datetimepicker.full.min.js"></script> 
+    <script src="~/MvpTelent_js/toster/jquery.toaster.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/MvpTelent_js/Login.js"></script>
+
+</body>
+</html>
+<script>
+
+    $("#EmailId").keypress(function (e) {
+        if (e.which === 13) {
+            getcontact();
+        }
+    });
+
+    function getcontact() {
+        if ($("#EmailId").val().trim() == "") {
+            toastr.info("Please enter contact.");
+            return false;
+        }
+        var model = {
+            Email: $("#EmailId").val().trim()
+        };
+        $.get("/Admin/Admin/GetCompanyIdByEmail", model, function (data) {
+            if (data == 0) {
+                toastr.warning("No data found!.");
+            } else {
+                url = "/Admin/Admin/clientdetail?Ids=" + data;
+                window.open(url);
+            }
+        });
+    }
+</script>
+<script>
+    function gotolist(url) {
+        window.location.href = url;
+    }
+   
+</script>
+<script>
+    $.get("/Admin/Admin/AdminNotification", function (data) { 
+        $("#totalcount").html(data.totalcount);
+        $("#Unreadcount").html(data.Unreadcount);
+        $("#generalmessagecount").html(data.generalmessagecount);
+        $("#pipelinemessagecount").html(data.pipelinemessagecount);
+        $("#submitedprofilecount").html(data.submitedprofilecount);
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).contextmenu(function () {
+            return false;
+        });
+    });
+</script>
+@*<script>
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            return false;
+        }
+    }
+    document.onmousedown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            return false;
+        }
+    }
+    document.onkeydown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            return false;
+        }
+    }
+</script>*@

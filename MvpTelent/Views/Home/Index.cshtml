@@ -1,0 +1,357 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .limited-text {
+        white-space: nowrap;
+        width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<input type="hidden" name="accounttype" id="accounttype" value="@Model.accounttype" />
+<input type="hidden" name="clientId" id="clientId" value="@Model.Id" />
+<section class="home-banner">
+    <div>
+        <div class="hb-top">
+            <h1>
+                Confidential Talent Market
+            </h1>
+            <p>
+                A Game Changer for Job Search and Recruitment
+            </p>
+        </div>
+        <div class="hb-bot">
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <h2>
+                                Early Access To Top Candidates
+
+                            </h2>
+                            <p>
+                                Connect with qualified candidates before they “hit the open market”. Whether they are actively looking for a new job, eager for career advancement, or keeping their options open, you can find your next MVP here.
+                            </p>
+                            <div class="hb-btn">
+                                <a href="/Home/Candidatelist" class="btn search-btn button-secondry">Search Candidates</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <h2>
+                                Stress Free Confidential Job Search
+                            </h2>
+                            <p>
+                                Here you can let your skills tell the story. Don’t let the fear of a public job search hold you back from progressing your career and finding a job you love. By working with a dedicated Recruitment Success Manager, you will be able to explore new and exciting opportunities confidentially before you hit the active market.
+                            </p>
+                            <div class="hb-btn">
+                                <a href="/Home/Job" class="btn search-btn button-secondry">Search Jobs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*<section class="banner-section">
+        <div class="container-fluid">
+            <div class="banner-content">
+                <div class="row fadeInUp  animated mb-5 header-heading-1">
+                    <div class="col-sm-12 text-center ">
+                        <h1 class="mb-2 job_inner no-before">
+                            <span>
+                                Confidential Talent Market
+                            </span>
+                        </h1>
+                        <h6 class="mb-3 mt-2 f-s-15 clr-fff" style="font-weight: 300;">A Game Changer for Job Search and Recruitment</h6>
+                    </div>
+                </div>
+                <div class="row mt-2 index-btns">
+                    <div class="col-lg-6 col-md-6 job_inner mr-3 fadeInLeft  animated">
+                        <h2><span>Early Access To Top Candidates</span></h2>
+                        <p class="mt-3 mb-4">Connect with qualified candidates before they “hit the open market”. Whether they are actively looking for a new job, eager for career advancement, or keeping their options open, you can find your next MVP here.</p>
+                        <div class="index-btn-div">
+                            <a href="/Home/candidatelist" class="btn search-btn button-secondry">Search Candidates</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 job_inner mr-3 fadeInLeft  animated">
+                        <h2><span>Stress Free Confidential Job Search </span></h2>
+                        <p class="mt-3 mb-4">
+                            Here you can let your skills tell the story.  Don’t let the fear of a public job search hold you back from progressing your career and finding a job you love. By working with a dedicated Recruitment   Success Manager, you will be able to explore new and exciting opportunities confidentially before you hit the active market.
+                        </p>
+                        <div class="index-btn-div">
+                            <a href="/Home/Job" class="btn search-btn button-secondry">Search Jobs</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>*@
+<hr class="m-0">
+<section class="about-us gray-bg">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-10 offset-1">
+                <div class="text-center">
+                    <h2 class="section-heading">Why Use A Confidential Talent Market?</h2>
+                    <div class="reflection-text">
+                        <div>
+                            <i class="fas fa-search-location"></i>
+                            <span class="one"></span>
+                            <span class="two"></span>
+                        </div>
+                    </div>
+                    <p class="s-top-p">
+                        By blending concepts of Executive Search, Applicant Tracking Systems, and Job Boards in an easy to use platform, MVP Talent Market offers companies an innovative way to hire candidates that otherwise might be missed.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 align-items-center about-us-flip">
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInLeft">
+                <h3 class="head-home-tile">
+                    The Competitive Advantage
+                </h3>
+                <p class="mt-3">
+                    The period of time between when a candidate decides they need a new job and when they begin to post and share their resume can last weeks, months, and sometimes years. This is mainly because the fear and anxiety surrounding a job search holds them back. MVP Talent Market offers a way for our member companies to connect with candidates early in their job search in a safe and confidential way before the competition even knows they are looking.
+                </p>
+                <a class="btn search-btn button-secondry mt-3" href="#">Learn More</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInRight">
+                <img class="img-fluid" src="/New_Content/images/home-1.png" alt="">
+            </div>
+        </div>
+        <div class="row mt-5 align-items-center">
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInLeft">
+                <img class="img-fluid transform-flip" src="/New_Content/images/home-2.png" alt="">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInRight">
+                <h3 class="head-home-tile">Eliminate Bias <br /> Improve Diversity</h3>
+                <p class="mt-3">Foster a culture where diversity matters. Unfortunately, unconscious bias can exist even before a candidate has entered the hiring process. Eliminate assumptions based on a candidate's name that might act as a roadblock that keeps your company from what matters most, your next MVP.</p>
+                <a class="btn search-btn button-secondry mt-3" href="#">Learn More</a>
+            </div>
+        </div>
+        <div class="row mt-5 align-items-center about-us-flip">
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInLeft">
+                <h3 class="head-home-tile">Professional <br /> Recruitment Assistance</h3>
+                <p class="mt-3">Humans helping with Human Resources, crazy right? We don't think so. There is a reason so many professional recruitment firms exist. Combining our confidential network with our Recruitment Success Managers creates a smooth process from start to finish to find the “perfect match”.  Typical job search platforms can leave companies overwhelmed and candidates unsatisfied. As a member of MVP Talent Market, you will be assigned a dedicated Recruitment Success Manager who will assist in candidate sourcing, efficient communication, interview scheduling, follow-up and more. We provide the best aspects and results of professional recruitment services at a fraction of the cost. </p>
+                <a class="btn search-btn button-secondry mt-3" href="#">Learn More</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 animated fadeInRight">
+                <img class="img-fluid" src="/New_Content/images/home-3.png" alt="">
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</section>
+<hr class="m-0" />
+<section class="our-blog p-0 m-0 bg-silver">
+    <div class="container work-process  pb-5 pt-5">
+        <div class="row bounceIn animated">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h2 class="section-heading">How It Works</h2>
+                    <div class="reflection-text">
+                        <div>
+                            <i class="fas fa-search-location"></i>
+                            <span class="one"></span>
+                            <span class="two"></span>
+                        </div>
+                    </div>
+                    <p class="s-top-p">
+                        After an employer account is created a typical search process would look like this
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="process-box process-left" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="process-step">
+                                <p class="m-0 p-0">Step</p>
+                                <h2 class="m-0 p-0">01</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h5>Create The Job</h5>
+                            <p>
+                                Easily copy your job into the software and share with your Recruitment Success Manager.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process-line-l"></div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-5">
+                <div class="process-point-right"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="process-point-left"></div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-5">
+                <div class="process-box process-right" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="process-step">
+                                <p class="m-0 p-0">Step</p>
+                                <h2 class="m-0 p-0">02</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h5>Share & Connect </h5>
+                            <p>
+                                Post your job and invite candidates with matching profiles to apply.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process-line-r"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="process-box process-left" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="process-step">
+                                <p class="m-0 p-0">Step</p>
+                                <h2 class="m-0 p-0">03</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h5>
+                                Review
+                            </h5>
+                            <p>
+                                Review profiles presented by your RSM.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process-line-l"></div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-5">
+                <div class="process-point-right"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="process-point-left"></div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-5">
+                <div class="process-box process-right" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="process-step">
+                                <p class="m-0 p-0">Step</p>
+                                <h2 class="m-0 p-0">04</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h5>Manage The Interviews </h5>
+                            <p>
+                                Coordinate directly or with the assistance of your RSM. Utilize the ATS & messaging features.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process-line-r"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="process-box process-left" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="process-step">
+                                <p class="m-0 p-0">Step</p>
+                                <h2 class="m-0 p-0">05</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h5>Hire</h5>
+                            <p>
+                                Make the offer and begin the on-boarding process!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process-line-l"></div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-5">
+                <div class="process-point-right process-last"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center mt-5">
+                <a href="/Home/contact" class="btn search-btn button-secondry">Request A Demo</a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function candidateshortlist() {
+        if ($("#accounttype").val() > 0) {
+            if ($("#accounttype").val() != 2) {
+                toastr.info("you are not authorized.");
+                return false;
+            }
+        }
+        else {
+            toastr.info("Please login to continue.");
+            $("#Actionfilter").val(0);
+            return false;
+        }
+        var Ids = '';
+        $.each($("input[name='candidateId']:checked"), function () {
+            Ids += $(this).val() + ",";
+        });
+        if (Ids == '') {
+            toastr.info("Please select candidate .");
+            $("#Actionfilter").val(0);
+            return false;
+        }
+        if (Confirmation() === false) {
+            return false;
+        }
+        $.each($("input[name='candidateId']:checked"), function () {
+            model = {
+                Id: $(this).val(),
+                ClientId: $("#clientId").val(),
+                Status: 0
+            }
+            $.get("/Client/favoritecandidate", model, function (data) {
+            });
+        });
+        toastr.success("Candidate shortlist successfully.");
+    }
+    function getcandidatedetails(Id) {
+        var Url = "/Home/details?Id=" + Id;
+        window.open(Url, '_blank');
+    }
+</script>
+<script src="~/MvpTelent_js/jobalert.js"></script>
+<script>
+    var element = document.getElementById("home");
+    element.classList.add("active");
+</script>

@@ -1,0 +1,351 @@
+
+@media(max-width: 1366px) {
+    .usericon1._client {
+        right: 80px !important;
+        top: 104px !important;
+    }
+
+    .usericon1 {
+        top: 70px;
+        right: 25px;
+    }
+}
+
+
+@media(max-width: 1024px){
+	.text1 {
+    left: -28%;
+}
+    #header .navbar-light .navbar-nav .nav-link {
+        font-size: 14px;
+    }
+}
+
+@media(max-width: 768px){
+	.text1 h3 {
+    font-size: 18px;
+}
+.text1 p {
+    font-size: 12px;
+}
+i.fa.fa-compass.sec {
+    left: 35%;
+}
+  .txt1 {
+    margin-left: 0px;
+}
+.exp_sec {
+    padding-top: 3px;
+    padding-bottom: 15px;
+    flex-wrap: wrap;
+}
+.txt1 h6 {
+    font-size: 12px;
+}
+.txt1 p {
+    font-size: 12px;
+}
+ul.rank_sec li {
+    padding-left: 0px;
+    width: 100%;
+}
+.num_sec p {
+   font-size: 12px;}
+   .num_sec h4 {
+    font-size: 18px;
+}
+ul.logos_sec {
+    padding-top: 0px;
+}
+ul.logos_sec li a img {
+    width: 100%;
+    max-width: 100px;
+}
+    ul.about_sec {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+    header#header {
+        padding-top: 18px;
+    }
+    ul.navbar-nav.hasder {
+        align-items:end;
+        background: #918262;
+        padding-top: 20px;
+    }
+    section.banner_section {
+        height: 100vh;
+        background-position: 50%;
+    }
+    .about_contant {
+        margin-top: 20px;
+        padding: 20px;
+    }
+        .about_contant h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+    .browse-top h2:after {
+      display:none;
+    }
+    .how-to-sec.style2 ul li {
+        width: 100%;
+    }
+    .how-to-sec.style2 ul {
+        flex-wrap: wrap;
+    }
+        .how-to-sec.style2 ul li:before {
+        display:none;
+        }
+        .how-to-sec.style2 ul li:nth-child(n+2)::before {
+           display:none;
+        }
+    .find-jobs {
+        display: none;
+    }
+    .about_us {
+        height: 100%;
+    }
+    .find-jobs_img {
+        display: block;
+    }
+        .find-jobs_img img {
+            height: 415px;
+            object-fit: cover;
+            object-position: center;
+        }
+    .about_us .col-md-6 {
+        padding: 0px;
+    }
+
+}
+
+@media(max-width:767px){
+    ul.findjobSlot li {
+        width: 50%;
+        
+    }
+}
+
+@media(max-width: 414px){
+.text1 {
+    left: -5%;
+    width: 60%;
+}
+img.banner {
+    width: 100%;
+    height: 200px;
+}
+   
+.location_sec input.form-control {
+    margin-bottom: 20px;
+}
+.location_sec {
+    flex-wrap: wrap;
+}
+i.fa.fa-compass.sec {
+    left: 93%;
+}
+button.search_res {
+    width: 384px;
+    height: 52px;
+    margin-top: 38px;
+}
+.text2 {
+    padding-left: 0px;
+}
+.text2 h5 {
+    font-size: 14px;
+}
+.text2 p {
+   font-size: 12px;
+}
+a.acdd {
+    font-size: 12px;
+}
+button.shotlist {
+    font-size: 12px;
+    width: 110px;
+    height: 30px;
+    border-radius: 7px;
+}
+.member_sec h6 {
+    margin-top: 50px;
+}
+.txt1 {
+    margin-left: 15px;
+}
+.protfolio_sec {
+    margin-top: 15px;
+}
+ul.job_posted {
+    padding: 19px 0px 20px;
+    flex-wrap: wrap;
+}
+    ul.rank_sec li:before {
+     display:none;
+    }
+    ul.rank_sec li:after {
+        display: none;
+    }
+    .tabs_condidatedetails a.nav-item.nav-link.active {
+        width: 100%;
+    }
+    .tabs_condidatedetails a.nav-item.nav-link {
+        width: 100%;
+       
+    }
+    .change_profile:after {
+        display: none;
+    }
+    .contact {
+        width: 100%;
+        position: initial;
+        margin-top: 30px;
+    }
+    .get-in {
+        width: 100%;
+        padding: 20px;
+        box-shadow: none;
+    }
+    .get_touch {
+        width: 100%;
+        float: right;
+    }
+    .condidate-btn a {
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+    .condidate-content {
+        height: auto;
+    }
+    .user-form .btn-primary {
+        margin: 30px 0px 0px 0px;
+    }
+    #header .navbar-light .navbar-nav .nav-link {
+        padding: 15px 10px;
+    }
+    .banner_txt {
+        padding: 20px;
+        top: 50%;
+        left: 0px;
+        transform: translate(-0px, -50%);
+    }
+        .banner_txt h3 {
+            font-size: 20px;
+        }
+    button.dreamSlot{
+        width:100%;
+        margin-bottom:15px;
+    }
+    #testimonial .carousel {
+        margin: 20px auto;
+        padding: 0;
+    }
+    #testimonial .carousel .carousel-control {
+    right: 15%;
+}
+    #testimonial .carousel-control-prev {
+    left: 15%;
+}
+    .footer .newsletter .form-control {
+    width: 265px !important;
+}
+    .btnSlot button.dreamSlot {
+    width: 100% !important;
+}
+    .btnSlot {
+    margin-top: 15px !important;
+  
+}
+    .line-brack {
+        width: 90%;
+        margin: 10px auto 15px;
+    }
+    .about_contant h3 {
+        font-size: 20px;
+    }
+    .browse_box h3 {
+        font-size: 13px;
+    }
+    .about_banner{
+        background-position:50%;
+    }
+}
+@media(max-width: 375px){
+    ul.about_sec {
+    max-width: 100%;
+    flex-wrap: wrap;padding-bottom:20px;
+}
+ul.about_sec li a {
+    font-size: 12px;
+}
+.contact_sec h3 {
+    font-size: 14px;
+    padding: 25px 20px 0px;
+}
+.contact_sec {
+    margin-top: 0px;
+}
+    .jane_evans {
+        flex-wrap: wrap !important;
+    }
+    .text2 h5 a {
+        font-size: 13px;
+    }
+    button.shotlist {
+      
+        margin-top: 20px;
+    }
+    .text1.dashboard {
+        left: -15% !important;
+        top: 71% !important;
+    }
+    ul.facebook_icon {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    li.download {
+        margin: 20px 0px;
+    }
+    .upload_file {
+        margin-left: 0px;
+       padding-bottom:20px
+    }
+    .tabs_condidatedetails a.nav-item.nav-link.active {
+        width: 100%;
+    }
+
+    .tabs_condidatedetails a.nav-item.nav-link {
+        width: 100%;
+    }
+    .usericon1 {
+        right: 132px;
+    }
+    .condidate-btn {
+        float: none;
+        bottom: 0;
+        position: relative;
+    }
+    .Serch_form {
+        width: 100%;
+        padding: 15px;
+        margin-top: 35px;
+        box-shadow: none;
+    }
+        .Serch_form .form-control {
+            width: 100%;
+        }
+        .Serch_form .submit_btn {
+            width: 100%;
+            margin: 20px 0px 0px;
+        }
+   
+   }
+
+
+@media(max-width: 320px) {
+    ul.findjobSlot li {
+        padding: 0px 0px 0px 9px;
+    }
+}

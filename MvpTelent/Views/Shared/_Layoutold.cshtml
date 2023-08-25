@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @RenderSection("metatags", false)
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MVP Talent Market</title>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='-1'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <link rel="stylesheet" href="~/Scripts/assets/css/bootstrap.min.css">
+    <link href="~/Scripts/assets/js/css2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Scripts/assets/css/animate.css">
+    <link rel="stylesheet" href="~/Scripts/assets/css/style.css">
+    <link rel="stylesheet" href="~/Scripts/assets/css/responsive.css">
+    <link rel="icon" href="~/Scripts/assets/img/favicon.png" type="image/gif">
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link href="~/Scripts/assets/css/hover.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="header-section" id="header">
+        <div class="_header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <a class="navbar-brand" href="/Home/Index"> <img src="~/Scripts/assets/img/mvp_logo.png" class="_mvp_logo" alt="logo" /></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav hasder">
+                            <li class="nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/candidatelist">Search candidates </a>
+                            </li>
+                            <li class="active nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/Job">Search Jobs </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/about">Who We Are</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/contact">Contact Us	 </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/Plan">Plan </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link hvr-underline-from-center" href="/Home/partnership">
+                                    Partnership
+                                </a>
+                            </li>
+                            @if (Session["UsertypeId"] != null)
+                            {
+                                if (Session["UsertypeId"].ToString() == "1")
+                                {
+                                    <li class="nav-item dropdown section">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="@Session["Image"].ToString()" class="img_profile" alt="">
+                                        </a>
+                                        <div class="dropdown-menu section" aria-labelledby="navbarDropdown">
+                                            <div class="name_sec">
+                                                <h3>@Session["Name"].ToString()</h3>
+                                            </div>
+                                            <div class="nav flex-column nav-pills my-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                <a class="nav-link _navlinkSlot" href="/Admin/Admin/Index" role="tab">
+                                                    <i class="fa fa-tachometer profile" aria-hidden="true"></i>
+                                                    Back To Admin
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" role="tab" style="cursor:pointer" onclick="Logout()">
+                                                    <i class="fa fa-sign-out profile" aria-hidden="true"></i>
+                                                    Sign out
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                else if (Session["UsertypeId"].ToString() == "2")
+                                {
+                                    <li class="nav-item dropdown section">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="@Session["Image"].ToString()" class="img_profile" alt="">
+                                        </a>
+                                        <div class="dropdown-menu section" aria-labelledby="navbarDropdown">
+                                            <div class="name_sec">
+                                                <h3>@Session["Name"].ToString()</h3>
+                                            </div>
+                                            <div class="nav flex-column nav-pills my-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                <a class="nav-link _navlinkSlot" href="~/Client/Index" role="tab">
+                                                    <i class="fa fa-tachometer profile" aria-hidden="true"></i>
+                                                    Dashboard
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="~/Client/CompanyProfile" role="tab">
+                                                    <i class="fa fa-tachometer profile" aria-hidden="true"></i>
+                                                    My Profile
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="~/Client/ChangePassword" aria-selected="false">
+                                                    <i class="fa fa-file profile"></i>
+                                                    Setting
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" role="tab" style="cursor:pointer" onclick="Logout()">
+                                                    <i class="fa fa-sign-out profile" aria-hidden="true"></i>
+                                                    Sign out
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item dropdown section">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="@Session["Image"].ToString()" class="img_profile" alt="">
+                                        </a>
+                                        <div class="dropdown-menu section" aria-labelledby="navbarDropdown">
+                                            <div class="name_sec">
+                                                <h3>@Session["Name"].ToString()</h3>
+                                            </div>
+                                            <div class="nav flex-column nav-pills my-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                <a class="nav-link _navlinkSlot" href="/Candidates/Dashboard" role="tab">
+                                                    <i class="fa fa-user profile" aria-hidden="true"></i>
+                                                    Dashboard
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="/Candidates/myProfile" role="tab">
+                                                    <i class="fa fa-suitcase profile" aria-hidden="true"></i>
+                                                    My Profile
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="/Candidates/Setting" aria-selected="false">
+                                                    <i class="fa fa-file profile"></i>
+                                                    Setting
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="/Candidates/Dashboard" role="tab">
+                                                    <i class="fa fa-heart profile" aria-hidden="true"></i>
+                                                    Shortlisted jobs
+                                                </a>
+                                                <a class="nav-link _navlinkSlot" href="/Candidates/Dashboard" role="tab">
+                                                    <i class="fa fa-envelope profile" aria-hidden="true"></i>
+                                                    Cover Letter
+                                                </a>
+                                                <a class="nav-link _navlinkSlot " role="tab" style="cursor:pointer" onclick="Logout()">
+                                                    <i class="fa fa-sign-out profile" aria-hidden="true"></i>
+                                                    Sign out
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link hvr-underline-from-center" href="/Home/Login">Login</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    @RenderBody()
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-sm-12">
+                    <div class="footer-primary">
+                        <ul class="footerSlot">
+                            <li class="newsletterSlot">
+                                <div class="footer-info">
+                                    <h3>NEWSLETTER</h3>
+                                    <p>
+                                        Subscribe to   newsletter to get the latest jobs posted, candidates , <br />
+                                        and other latest news stay updated.
+                                    </p>
+                                </div>
+                                <div class="newsletter mt-3">
+                                    <form class="form-inline" id="newletterform">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Your Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="email" placeholder="Enter Your Email Address" id="email">
+                                        </div>
+                                    </form>
+                                    <div class="form-group">
+                                        <div class="btnSlot">
+                                            <button class="dreamSlot" name="login" id="login" onclick="NewletterCreate()">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="newsletterSlot1">
+                                <div class="footer-primary">
+                                    <h3 style="padding-left:10px;">FREQUENTLY ASKED QUESTIONS </h3>
+                                    <ul>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Privacy & Security</a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Communications</a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Lending Licenses </a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Support </a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>For Employers </a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Contact Us</a></li>
+                                    </ul>
+                                    <ul class="" style="padding:0px;">
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Terms of Service</a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Communications</a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>Disclaimers </a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>How It Works </a></li>
+                                        <li><a href="#"><span><i class="fa fa-angle-right" aria-hidden="true"></i></span>For Employers </a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="footer-primary footer-address">
+                        <h3>CONTACT US</h3>
+                        <p>3 Division Street, Suite 210,East Greenwich, RI 02818</p>
+                        <p>+1 401-354-7251</p>
+                        <p>info@mvptalentmarket.com</p>
+                        <div class="footer-social-media">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="footer_logo">
+                        <img src="~/Scripts/assets/img/mvp_talent.png" class="img-fluid" alt="">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="all_right">
+                        <p>© 2020 - 2021  All rights reserved.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="gotop">
+                        <a href="javascript:void(0);">Back to top<i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/assets/js/bootstrap.min.js"></script>
+    <script src="~/MvpTelent_js/Login.js"></script>
+    <script src="~/MvpTelent_js/Client/PostJob.js"></script>
+    <script src="~/Scripts/js/jquery.validate.min.js"></script>
+    <script src="~/MvpTelent_js/toster/jquery.toaster.js"></script>
+    <script>
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('header.header-section').addClass('fixed');
+            } else {
+                $('header.header-section').removeClass('fixed');
+            }
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('li.nav-item a.nav-link').addClass('fixed');
+            } else {
+                $('li.nav-item a.nav-link').removeClass('fixed');
+            }
+        });
+    </script>
+</body>
+</html>
+
+ 

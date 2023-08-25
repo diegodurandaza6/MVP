@@ -1,0 +1,136 @@
+﻿@model Web.Model.Admin.CampaignModel
+@{
+    ViewBag.Title = "campaignhistory";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Campaign History</h3> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @Html.DropDownListFor(m => m.CampaignId, new SelectList(Model.campaigncollection, "Id", "Name"), "Please select campaign", new { @class = "form-control", @Id = "CampaignId", @Name = "CampaignId" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="getcampainById()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="Resetcontact()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1"> 
+                        <h5 class="card-title mb-0">
+                            Old Campaign List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    @if (Model.campaigntypeid == 2)
+                                    {
+                                        <th>Comapny name</th>
+                                    }
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th class="w-100px text-center">
+                                        View Count
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.Campaigncontactcollection != null)
+                                {
+                                    foreach (var item in Model.Campaigncontactcollection)
+                                    {
+                                        <tr>
+                                            <td class="text-left width-46px">
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            @if (Model.campaigntypeid == 2)
+                                            {
+                                                <td>
+                                                    @item.ComapnyName
+                                                </td>
+                                            }
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Email
+                                            </td>
+                                            <td>
+                                                @item.count
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.CampaignId == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="5">
+                                                <span class="no-data-found">
+                                                    Please select a campaign...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="~/Areas/Admin/Admin/Campaign.js"></script>
+<script src="~/Areas/Admin/Admin/Campaign.js"></script>
+<script>
+    var element = document.getElementById("Email_Campaigns").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Email_Campaigns");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Email_Campaigns");
+    element.classList.add("show");
+    var element = document.getElementById("Campaign History+1");
+    element.classList.add("active");
+</script>

@@ -1,0 +1,49 @@
+﻿@model Web.Model.Paypal.PaymentViewModel
+@{
+    ViewBag.Title = "error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+<section class="banner-inner" style="background-image: url('../../New_Content/images/about-banner.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <h1>Payment</h1> 
+            </div>
+        </div>
+    </div>
+</section>
+<section class="payment-section price-section">
+    <div class="container">
+        <section class="payment-top-details bread-crumb header-golden-bg m-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="m-0 clr-fff"> 
+                        Something went wrong
+                    </h5>
+                  
+                </div>
+            </div>
+        </section>
+        <div class="row mt-5">
+            <div class="col-lg-2 col-sm-12"></div>
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body py-5" style="text-align:center">
+                        <div class="text-center mb-4">
+                            <img src="~/Scripts/assets/img/payment_failed.png" class="img-fluid" style="width:150px;" />
+                        </div>
+                        <h4 class="payment_success">Payment Failed .</h4>
+                        <h4 class="payment_success">Something went wrong.</h4> 
+                        <a class="btn-new-1 mt-4" href="/Home/Plan">Try Again</a> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-12"></div>
+        </div>
+    </div>
+</section>
+ 
+ 
+<script src="~/MvpTelent_js/payment/payment.js"></script>

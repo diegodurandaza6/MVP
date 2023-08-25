@@ -1,0 +1,100 @@
+﻿@model Web.Model.Client.ClientModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="">Interview Details </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-0">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Email Subject : </label>
+                        </td>
+                        <td>
+                            <span>@Model.Title</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 170px;">
+                            <label class="p-0 m-0">Interviewer Name : </label>
+                        </td>
+                        <td>
+                            <span>@Model.ClientName</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">Interviewer Email : </label>
+                        </td>
+                        <td>
+                            <span>@Model.ClientEmail</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0"> Candidate Name :  </label>
+                        </td>
+                        <td>
+                            <span>@Model.CandidateName</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Candidate Email :  </label>
+                        </td>
+                        <td>
+                            <span> @Model.Email</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Interview Date : </label>
+                        </td>
+                        <td>
+                            <span>@Model.InterviewDate</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Interview Location :   </label>
+                        </td>
+                        <td>
+                            <span>@Model.Location </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Bcc Email :   </label>
+                        </td>
+                        <td>
+                            <span>@Model.InterviewBcc</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0">  Cc Email :   </label>
+                        </td>
+                        <td>
+                            <span>@Model.InterviewCc</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="p-0 m-0"> Email Body : </label>
+                        </td>
+                        <td>
+                            <span>@Model.Description</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

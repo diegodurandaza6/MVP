@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="about_banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="candidates_banner_text">
+                    <h3> Payment</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="payment_section">
+    <div class="container my-4">
+        <section class="bread-crumb mb-3" style="background:#ecedf1;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>Payment successful.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <div class="row">
+            <div class="col-lg-2 col-sm-12"></div>
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body py-5" style="text-align:center">
+                        <div class="text-center">
+                            <img src="~/Scripts/assets/img/payment_success.png" class="img-fluid" style="width:150px;" />
+                        </div>
+                        <h4 class="payment_success">Thank You!</h4>
+                        <h4 class="payment_success">Your payment is successful done.</h4>
+                        <button style="width:40%" class="update_section mt-3" type="button" onclick="gotopayment(@Model.UserAccountType)">Payment History</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-12"></div>
+        </div>
+    </div>
+</section>
+<script src="~/MvpTelent_js/payment/payment.js"></script>

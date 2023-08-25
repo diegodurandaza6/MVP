@@ -1,0 +1,191 @@
+.construction-section {
+    position: relative;
+    background-image: url('../images/banner_bg1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.construction-section:after {
+    content: "";
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+.construction-section .banner-content {
+    z-index: 9999;
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    right: 0;
+    transform: translate(-50%, -40%);
+    bottom: 0;
+}
+.construction-section .banner-content h1 {
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0px 2px 4px rgb(0 0 0 / 60%);
+    margin: 10px 0;
+	font-size: 50px;
+}
+
+.construction-section .banner-content p {
+    color: #fff;
+    text-align: center;
+    margin:10px 0;
+    font-size: 24px;
+    text-shadow: 0 2px 4px rgb(0 0 0 / 50%);
+}
+.construction-section .banner-content figure img {
+    width: 200px;
+}
+.construction-section .banner-content figure.logo-mvp-fig p {
+    font-weight: 600;
+    font-size: 50px;
+    color: #333131;
+    margin: 0;
+    text-shadow: 0 2px 12px rgb(255 255 255 / 50%);
+}
+
+.construction-section .card{
+    height: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+	padding: 20px;
+    border-radius: 0;
+	min-width: 500px;
+    background-color: #fff;
+    box-shadow: 0 5px 4px rgb(0 0 0 / 50%);
+}
+
+.construction-section .social_icon span{
+    font-size: 40px;
+    margin-left: 10px;
+    color: #918262;
+}
+.construction-section .input-group-text {
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+}
+
+.construction-section .social_icon span:hover{
+    color: #918262;
+    cursor: pointer;
+}
+
+.construction-section .card-header {
+    padding: 15px 0 0;
+    background: transparent;
+    border: none;
+}
+
+.construction-section .card-header h3{
+    color: #000;
+    font-size: 22px;
+}
+
+.construction-section .input-group-prepend {
+	margin: 0;
+}
+.construction-section .input-group-prepend span{
+    width: 50px;
+    background-color: #918262;
+    color: #fff;
+    border:0 !important;
+    border-radius: 0;
+}
+.construction-section .input-group .form-control {
+    border-radius: 0;
+	padding: 22px 11px;
+}
+
+.construction-section input:focus{
+    outline: 0 0 0 0  !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+.construction-section .remember{
+    color: #525255;
+    font-size: 14px;
+}
+
+.construction-section .remember input{
+    width: 15px;
+    height: 15px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.construction-section .login_btn{
+    color: #fff;
+    background-color: #918262;
+    padding: 5px 20px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+
+.construction-section .login_btn:hover{
+    color: black;
+    background-color: #918262;
+}
+
+.construction-section .links{
+    color: #fff;
+}
+.construction-section a {
+    color: #525252;
+}
+
+.construction-section .links a{
+    margin-left: 4px;
+}
+/* responsive */
+
+@media only screen and ( max-width:1023px ){
+	.construction-section .banner-content h1 {
+		font-size: 34px;
+	}
+	.construction-section .banner-content p {
+		font-size: 18px;
+	}
+	.construction-section .banner-content figure.logo-mvp-fig p {
+		font-size: 30px;
+	}
+	.construction-section .card {
+		min-width: 400px;
+	}
+	.construction-section .banner-content {
+		top: 37%;
+		transform: translate(-50%, -40%);
+	}
+}
+@media only screen and ( max-width:767px ){
+	.construction-section .banner-content h1 {
+		font-size: 27px;
+	}
+	.construction-section .banner-content p {
+		font-size: 16px;
+	}
+}
+@media only screen and ( max-width:580px ){
+	.construction-section .banner-content h1 {
+		font-size: 24px;
+	}
+	.construction-section .banner-content p {
+		font-size: 14px;
+	}
+	.construction-section .card {
+		min-width: 300px;
+		padding: 10px;
+	}
+}

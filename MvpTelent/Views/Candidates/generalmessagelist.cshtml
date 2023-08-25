@@ -1,0 +1,142 @@
+﻿@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "generalmessagelist";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Messages from Admin </h3>
+            </div>
+            <div class="breadcum-2">
+                <a class="btn-new-1" onclick="Candidate_GeneralMessage()">
+                    New Message
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            General Message List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>From Name</th>
+                                    <th>Subject </th>
+                                    <th>Date</th>
+                                    <th class="w-150px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = 0;}
+                                @if (Model.generalmessagelistcollection != null)
+                                {
+                                    foreach (var item in Model.generalmessagelistcollection)
+                                    {
+                                        <tr>
+                                            <td> @{RowNo++;}@RowNo</td>
+                                            <td>@item.Fromname</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.createddate</td>
+                                            <td class="table-action text-center">
+                                                <a class="msz-noti" data-toggle="tooltip" data-placement="top" data-original-title="Unread Message" onclick="Getgeneralmessagesdetail('@item.Ids')">
+                                                    <i class="mr-2 far fa-fw fa-envelope"></i>
+                                                    <span>@item.Unreadcount</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.generalmessagelistcollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td class="p-3" colspan="5">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.TotalRowCount > Model.maxRows)
+                        {
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-lg justify-content-center">
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                    @if (Model.CurrentPageIndex > 1)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                    }
+                                    @if (Model.indexlegth > 20)
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                            if (i > (Model.CurrentPageIndex + 19))
+                                            {
+                                                <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                        {
+                                            if (i != Model.CurrentPageIndex)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                            }
+                                        }
+                                    }
+                                    @if (Model.CurrentPageIndex < Model.PageCount)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                    }
+                                    <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                </ul>
+                            </nav>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="dv_CandidateSendGeneralMessagesPopup" class="modal fade" role="dialog"></div>
+
+<script src="~/MvpTelent_js/Client/clientdashboard.js"></script>
+<script>
+    var element = document.getElementById("generalmessages");
+    element.classList.add("active");
+</script>

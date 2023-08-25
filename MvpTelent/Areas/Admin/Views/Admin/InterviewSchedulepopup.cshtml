@@ -1,0 +1,104 @@
+﻿@model Web.Model.Client.ClientModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            @if (Model.Id == 0)
+            {
+            <h5 class="modal-title" id="#">Interview Details</h5>
+            }
+            else
+            {
+        <h5 class="modal-title" id="#">Interview Details</h5>
+            }
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="Interviewsecduleform">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Applicant Name</label>
+                            <input id="ApplicantName" maxlength="30" class="form-control" value="@Model.CandidateName" placeholder="Please enter name" readonly name="ApplicantName" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Applicant Email</label>
+                            <input id="ApplicantEmail" maxlength="50" class="form-control" autocomplete="off" value="@Model.Email" readonly="readonly" placeholder="Please enter email" name="ApplicantEmail" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Interviewer Name</label>
+                            <input id="InterviwerName" maxlength="25" class="form-control" autocomplete="off" value="@Model.ClientName" placeholder="Please enter interviewer name" name="InterviwerName" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Interviewer Email</label>
+                            <input id="InterviwerEmail" maxlength="50" autocomplete="off" class="form-control" value="@Model.ClientEmail" placeholder="Please enter interviewer email" name="InterviwerEmail" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Bcc ( , seperated)</label>
+                            <input id="InterviewBcc" maxlength="50" autocomplete="off" class="form-control" placeholder="Please enter bcc" value="@Model.InterviewBcc" name="InterviewBcc" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Cc ( , seperated)</label>
+                            <input id="InterviewCc" maxlength="50" autocomplete="off" class="form-control" placeholder="Please enter cc" value="@Model.InterviewCc" name="InterviewCc" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label">Interview Date</label>
+                            <input id="InterviewDate" maxlength="30" autocomplete="off" class="form-control" placeholder="Please enter interview date" name="InterviewDate" value="@Model.InterviewDate" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label">Interview Location</label>
+                            <input id="Location" maxlength="75" autocomplete="off" class="form-control" placeholder="Please enter interview location" name="Location" value="@Model.Location" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label"> Email Subject</label>
+                            <input id="titleName" maxlength="75" autocomplete="off" class="form-control" placeholder="Please enter email subject" name="titleName" value="@Model.Title" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="form-label">Email Body</label>
+                            <textarea id="description" autocomplete="off" maxlength="1000" class="form-control" placeholder="Please enter email body" name="description" type="text" rows="3" style="height: 80px;">@Model.Description</textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            @if (Model.Id == 0)
+            {
+                <input type="button" name="InterviewBtn" id="InterviewBtn" class="btn btn-primary _interview" onclick="UpdateInterviewschedule(@Model.Id,@Model.ClientId,@Model.CandidateId,@Model.JobId)" value="Schedule Interview">
+            }
+            else
+            {
+                <input type="button" name="InterviewBtn" id="InterviewBtn" class="btn btn-primary _interview" onclick="UpdateInterviewschedule(@Model.Id,@Model.ClientId,@Model.CandidateId,@Model.JobId)" value="Reschedule Interview">
+            }
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#InterviewDate').datetimepicker({
+        useCurrent: false,
+        format: 'm-d-Y h:i A',
+        formatTime: "h:i A",
+        minDate: 0,
+        step: 30,
+    });
+</script>

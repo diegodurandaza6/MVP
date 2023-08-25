@@ -1,0 +1,38 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Image Gallery</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="CandidateProfilePopup" name="form-validation" method="POST">
+                <div class="candidatedefaultimage">
+                    <ul>
+                        @if (Model.CandidatedefaultimageCollection != null)
+                        {
+                            foreach (var item in Model.CandidatedefaultimageCollection)
+                            {
+                                <li>
+                                    <div>
+                                        <img src="@item.FileUpload">
+                                        <div>
+                                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="@item.FileName">
+                                            <span  for="gridRadios1">Select</span>
+                                        </div>
+                                    </div> 
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="login" id="login" class="btn btn-primary" onclick="CandidateProfileImageUpload(@Model.Id)" value="Update">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,86 @@
+﻿@model Web.Model.Candidate.PlanModel
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Plan </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="addplanform">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label">Plan Type</label>
+                            @Html.DropDownListFor(m => m.PlanTypeId, new SelectList(Model.PlanTypeCollection, "Id", "Name"), "Please select type", new { tabindex = "1", @class = "form-control", @Id = "PlanTypeId", @Name = "PlanTypeId" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Plan Name</label>
+                            <input id="username" maxlength="25" class="form-control" value="@Model.Name" tabindex="2" placeholder="Please enter plan name" name="username" type="text">
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Plan Price </label>
+                            <input id="Price" maxlength="15" autocomplete="off" class="form-control" tabindex="3" value="@Model.Price" placeholder="Please enter plan price" name="Price" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label >Subscription plan </label> 
+                            <select name="Subscription" id="Subscription" class="form-control">
+                                <option value="">Select subscription</option>
+                                <option value="30">Monthly</option>
+                                <option value="7">Weekly</option>
+                                <option value="1">Daily</option>
+                                <option value="365">Yearly</option>
+                            </select> 
+                            @if (Model.Subscription > 0)
+                            {
+                                <script>
+                                    document.getElementById("Subscription").value = @Model.Subscription;
+                                </script>
+                            } 
+                        </div>
+                    </div>
+
+
+                  
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">Number of Jobs Allowed</label>
+                            <input id="noofjob" maxlength="10" autocomplete="off" class="form-control" tabindex="4" value="@Model.noofjob" placeholder="Please enter number of jobs allowed" name="noofjob" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label"> Number of Interviews Allowed</label>
+                            <input id="noofinterview" maxlength="10" autocomplete="off" class="form-control" tabindex="5" value="@Model.noofinterview" placeholder="Please enter number of interviews allowed" name="noofinterview" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label"> Plan Details</label>
+                            <textarea rows="2" cols="100" id="Description" name="Description" class="form-control" tabindex="6" placeholder="Please enter description" maxlength="5000" onkeyup="countChar(this)">@Model.Description </textarea><i class="form-control-feedback" style="display: none;"></i>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Plan status</label>
+                            @Html.DropDownListFor(m => m.PlanStatusId, new SelectList(Model.PlanCollection, "Id", "Name"), "Please select plan status", new { @tabindex = "7", @class = "form-control", @Id = "PlanStatusId", @Name = "PlanStatusId" })
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+            <div class="modal-footer">
+                <input type="button" name="Planbtn" id="Planbtn" class="btn btn-primary" onclick="CreatePlan(@Model.Id)" value="Save">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+      
+    </div>
+</div>
+<script src="~/MvpTelent_js/Candidate/Plan.js"></script>

@@ -1,0 +1,195 @@
+﻿
+
+@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "submitedprofile";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4 position-relative">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>My Submited Profiles  </h3>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input class="form-control" autocomplete="off" value="@Model.Name" type="text" id="name" placeholder="Search by client name" name="name" maxlength="50" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="searchbyname()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="closegm()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            My Submited Profile List
+                        </h5>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Client Name</th>
+                                    <th>Job Title</th>
+                                    <th>Candidate Name</th>
+
+                                    <th>Date</th>
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = Convert.ToInt32(Model.OffsetId);}
+
+
+                                @if (Model.submitedprofileCollection != null)
+                                {
+                                    foreach (var item in Model.submitedprofileCollection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+
+                                            <td> <a style="cursor:pointer" title="Client Detail" onclick="GetclientdetailbyId('@EncryptDecrypt.encrypt(Convert.ToString(@item.ClientId))')">@item.ClientName</a></td>
+
+
+                                            <td> <a style="cursor:pointer" title="Job Detail" onclick="GetadminJobDetailbyId('@EncryptDecrypt.encrypt(Convert.ToString(@item.JobId))')">@item.JobTitle</a></td>
+
+
+
+                                            <td> <a style="cursor:pointer" title="Candidate Detail" onclick="detailedprofile('@EncryptDecrypt.encrypt(Convert.ToString(@item.CandidateId))')">@item.CandidateName</a></td>
+
+                                            <td>@item.createddate</td>
+                                            <td class="table-action text-center">
+                                                <a style="cursor:pointer" class="msz-noti" data-toggle="tooltip" data-placement="top" title="Read Message" onclick="submitedprofiledetail('@EncryptDecrypt.encrypt(Convert.ToString(@item.Id))')">
+                                                    <i class="mr-2 far fa-fw fa-envelope"></i>
+                                                    <span>@item.UnReadCount</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (Model.submitedprofileCollection.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                            @if (Model.TotalRowCount > Model.maxRows)
+                            {
+                                <div class="pagination-bar pagination-section my-4">
+                                    <nav aria-label="Page navigation " class="d-inline-b">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(1);">&laquo;</a></li>
+                                            @if (Model.CurrentPageIndex > 1)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex - 1);"><</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:void(0);"><</a></li>
+                                            }
+                                            @if (Model.indexlegth > 20)
+                                            {
+                                                for (int i = Convert.ToInt32(Model.CurrentPageIndex); i <= Model.PageCount; i++)
+                                                {
+                                                    if (i != Model.CurrentPageIndex)
+                                                    {
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                    }
+                                                    if (i > (Model.CurrentPageIndex + 19))
+                                                    {
+                                                        <li><a class="page-link" href="javascript:void(0)">..</a></li>
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">@Model.PageCount</a></li>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int i = Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) > 0 ? Convert.ToInt32(Model.CurrentPageIndex) - (20 - Model.indexlegth) : 1; i <= Model.PageCount; i++)
+                                                {
+                                                    if (i != Model.CurrentPageIndex)
+                                                    {
+                                                        <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="active page-item"><a class="page-link" href="#">@i</a></li>
+                                                    }
+                                                }
+                                            }
+                                            @if (Model.CurrentPageIndex < Model.PageCount)
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.CurrentPageIndex + 1);">></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="javascript:void(0);">></a></li>
+                                            }
+                                            <li class="page-item"><a class="page-link" href="javascript:PagerClick(@Model.PageCount);">&raquo;</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/Areas/Admin/Admin/submitedprofile_admin.js"></script>
+
+<script>
+    var element = document.getElementById("Candidates").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Candidates");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Candidates");
+    element.classList.add("show");
+    var element = document.getElementById("Submited Profile+1");
+    element.classList.add("active");
+</script>
+

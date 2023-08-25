@@ -1,0 +1,140 @@
+﻿@model Web.Model.Candidate.PlanModel
+<style>
+    h4.text-left.right_icon {
+        letter-spacing: 0px;
+    }
+
+    span.plandetail_1 {
+        padding-left: 70px;
+    }
+
+    span.plandetail_2 {
+        padding-left: 66px;
+    }
+
+    span.plandetail_3 {
+        padding-left: 33px;
+    }
+
+    span.plandetail_7 {
+        padding-left: 6px;
+    }
+</style>
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Plan Information </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body p-0">
+            <form class="card-body p-0" id="addplanform">
+                <div class="row pricing-box-padding">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="pricing-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="border : 1px solid #dee6ed;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b4>Plan :</b4>
+                                                <span class="plandetail_1"> @Model.Name</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b4>Price :&nbsp;</b4>
+                                                <span class="plandetail_2"> $  @Model.Price</span>
+                                            </td>
+                                        </tr>
+                                        @if (Session["UsertypeId"].ToString() == "2")
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <b4>No. of Jobs Allowed :&nbsp;</b4>
+                                                    <span class="plandetail_3"> @Model.noofjob Jobs</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b4>No. of Interviews Allowed  :&nbsp;</b4>
+                                                    <span class="plandetail_4"> @Model.noofinterview Interview </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td>
+                                                <b4>Plan Start Date  :&nbsp;</b4>
+                                                <span class="plandetail_5">  @Model.CreatedDate </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b4>Plan Expiry Date  :&nbsp;</b4>
+                                                <span class="plandetail_6"> @Model.validdate </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b4> Transaction No. :&nbsp;</b4>
+                                                <span class="plandetail_7">  @Model.transactionno </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="pricing-box">
+                            <div class="pricing-box-inner">
+                                <div class="pricing-box-top">
+                                    <h3>@Model.Name <golden>$ @Model.Price</golden> </h3>
+                                    <p>
+                                        Start With full <golden>free</golden>
+                                    </p>
+                                </div>
+                                <div class="pricing-text">
+                                    <ul>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Free Jobs Posting
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Free Jobs Marketing
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Featured Jobs
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Urgent Jobs
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Display Jobs
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Online Interview
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-fw fa-check"></i>
+                                            Apply 20 Jobs
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div> 

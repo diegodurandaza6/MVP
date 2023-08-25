@@ -1,0 +1,38 @@
+﻿@model Web.Model.Client.JobsModel
+<div class="modal-dialog plan-login-popup modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Email Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="formsavejobalertvalidation">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label">Candidate Email </label>
+                            <input id="email" name="email" autocomplete="off" class="form-control" tabindex="1" value="@Model.Email" readonly="readonly" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Subject</label>
+                            <input id="Subject" maxlength="50" autocomplete="off" class="form-control" tabindex="2" placeholder="Please enter email subject" name="Subject" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Content</label>
+                            <textarea id="Desctiption" name="Desctiption" rows="4" class="form-control" cols="50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input type="button" name="emailsend" id="emailsend" class="btn btn-primary" onclick="sendemail( )" value="Send">
+            <button type="button" class="btn btn-light button-primary" data-dismiss="modal">Close</button>
+
+        </div>
+
+    </div>
+</div>

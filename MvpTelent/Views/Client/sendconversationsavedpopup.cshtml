@@ -1,0 +1,22 @@
+﻿@model Web.Model.Client.ClientModel
+<div class="text2">
+    <h2>Chat Messages</h2>
+    @if (Model.ClienConversationcollection != null)
+    {
+        foreach (var item in Model.ClienConversationcollection)
+        {
+            <div class="container">
+                <img src="@item.clientLogo" alt="Avatar" style="width:50px;height:50px;">
+                <p>@item.ClientName</p>
+                @*<p>@item.fromId</p>
+                    <p>@item.ToId</p>*@
+                <p>@item.Description</p>
+                @if (item.FileName != "")
+                {
+                    <a target="_blank" style="cursor: pointer;font:bold;font-weight: 700;text-decoration: underline" href="@item.FilePath.Trim()" download> &nbsp; @item.FileName</a>
+                }
+                <span class="time-right">@item.CreatedDate</span>
+            </div>
+        }
+    }
+</div>

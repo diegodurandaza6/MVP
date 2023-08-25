@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "interviewsrequestbycandidates";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout .cshtml";
+}
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>Interview Requests By Candidates</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body filter-box">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input class="form-control" autocomplete="off" type="text" value="@Model.Email" id="Email" placeholder="Search by email" name="Email" maxlength="45">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100 border-0" onclick="interviewsrequestbycandidates()">Search</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-fade w-100 border-0" onclick="ResetSearch()">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header hr-b-1">
+                        <h5 class="card-title mb-0">
+                            Interview Request List
+                        </h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped my-0 tr-golden">
+                            <thead>
+                                <tr>
+                                    <th class="w-60px">
+                                        S.No
+                                    </th>
+                                    <th>Candidate Name</th>
+                                    <th>Candidate Email</th>
+                                    <th>Candidate Phone No</th>
+                                    <th>Request Date</th>
+                                   
+                                    <th class="w-100px text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int RowNo = Convert.ToInt32(Model.OffsetId);}
+                                @if (Model.clientsendenuerycollection != null)
+                                {
+                                    foreach (var item in Model.clientsendenuerycollection)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{RowNo++;}@RowNo
+                                            </td>
+                                            <td>@item.Name @item.LastName </td>
+                                            <td>@item.Email </td>
+                                            <td>
+                                                @if (item.Phone1 == "")
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                                else
+                                                {
+                                                    @item.Phone1
+                                                } 
+                                            </td>
+                                            <td>@item.CreatedDate</td>
+                                            
+                                            <td class="table-action text-center">
+
+                                                @if (item.requestmoreinfo == 1)
+                                                {
+                                                    <a data-toggle="tooltip" data-placement="top" data-original-title="Request More Info" onclick="interviewsrequestbycandidatesdetail('@item.Ids')">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </a>
+                                                }
+
+
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Details" onclick="interviewsrequestbycandidatesdetail('@item.Ids')">
+                                                    <i class="far fa-fw fa-eye"></i>
+                                                </a>
+
+
+
+                                                <a data-toggle="tooltip" data-placement="top" data-original-title="Remove" onclick="ClientsendqueryDelete(@item.Id)">
+                                                    <i class="far fa-fw fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                    if (@RowNo < 1)
+                                    {
+                                        <tr>
+                                            <td colspan="7">
+                                                <span class="no-data-found">
+                                                    No Data found...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                 
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function ClientsendqueryDelete(Id) {
+        if (ClientsendqueryDeletevalidation() == false) {
+            return false;
+        }
+        model = {
+            Id: Id
+        }
+        $.get("/Home/ClientsendqueryDelete", model, function (data) {
+            toastr.success("Record deleted successfully.");
+            setTimeout(function () { location.reload() }, 600);
+        })
+    }
+    function ClientsendqueryDeletevalidation() {
+        return confirm(" Do you really want to deleted this send enquires?");
+    }
+
+
+    function interviewsrequestbycandidatesdetail(Id) {
+        var url = "/Admin/Admin/interviewsrequestbycandidatesdetail?Ids=" + Id;
+        window.location.href = url
+    }
+
+    function ResetSearch() {
+        var url = "/Admin/Admin/interviewsrequestbycandidates";
+        window.location.href = url
+    }
+    function interviewsrequestbycandidates() {
+        var Email = $("#Email").val();
+        var url = "/Admin/Admin/interviewsrequestbycandidates?Email=" + Email;
+        window.location.href = url
+    }
+
+</script>
+<script>
+    var element = document.getElementById("Messages").setAttribute("aria-expanded", "true");
+    var element = document.getElementById("Messages");
+    element.classList.remove("collapsed");
+    var element = document.getElementById("Messages");
+    element.classList.add("show");
+    var element = document.getElementById("Interview Requests+1");
+    element.classList.add("active");
+</script>

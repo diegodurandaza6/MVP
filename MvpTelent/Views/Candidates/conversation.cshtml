@@ -1,0 +1,167 @@
+﻿@model Web.Model.Common.Candidateconversationmodel
+@{
+    ViewBag.Title = "conversation";
+    Layout = "~/Views/Shared/_Candidatelayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style type="text/css">
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: fixed;
+        background-color: rgba(0,0,0,0.65);
+        z-index: 999;
+        /*opacity:0.5*/
+    }
+
+    div#loader_gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="row mb-2 mb-xl-4">
+            <div class="col-auto d-none d-sm-block breadcrumb-1">
+                <h3>
+                    Interview Messages Conversation
+                </h3>
+                <span>
+                    Messages Conversation
+                </span>
+            </div>
+        </div>
+
+        <div class="row res-msg">
+            <div class="col-md-4 col-xl-3">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="card-header header-golden-bg">
+                        <h5 class="card-title mb-0">Job Details</h5>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1 website-li-jobdetails"><i class="far fa-fw fa-user-circle clr-golden"></i> @Model.JobTitle </li>
+                            <li class="mb-1 website-li-jobdetails"><i class="me-2 far fa-fw fa-file-alt clr-golden"></i> @Model.jobcategory</li>
+                            <li class="mb-1 website-li-jobdetails"><i class="fas fa-fw fa-map-marker-alt clr-golden"></i> @Model.location</li>
+                            <li class="mb-1 website-li-jobdetails"><i class="fas fa-fw fa-map-pin clr-golden "></i> @Model.zipcode</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xl-9">
+                <div class="card mb-3 hr-t hr-l hr-r hr-b no-shadow">
+                    <div class="col-12 col-lg-12 col-xl-12 p-0">
+                        <div class="card-header header-golden-bg">
+                            <h5 class="card-title mb-0">Conversation with Employee</h5>
+                        </div>
+                        <div class="flex-grow-0 py-3 px-3 border-top">
+                            <input type="hidden" name="messageid" id="messageid" value="@Model.Id" />
+                            <input type="hidden" name="messageIds" id="messageIds" value="@Model.Ids" />
+                            <form class="input-group input-group-3" id="msgchatform">
+                                <textarea rows="4" id="candidatemassege" onkeypress="return msgsent(event)" autocomplete="off" name="candidatemassege" class="form-control" placeholder="Please type your message..."></textarea>
+                            </form>
+                            <div class="col-md-12 p-0 mt-3 text-right">
+                                <button class="btn btn-primary border-0" onclick="sendmessage(@Model.ClientId,@Model.JobId)">Send</button>
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="position-relative">
+                            <div class="chat-messages card-body pb-0">
+                                @if (Model.candidateconversationcollection != null)
+                                {
+                                    foreach (var item in Model.candidateconversationcollection)
+                                    {
+                                        if (@Model.UserId == item.ClientCandidateId || @item.ClientCandidateId == 0)
+                                        {
+                                            <div class="chat-message-left pb-4">
+                                                <div class="flex-shrink-1 msg">
+                                                    <div class="font-weight-bold mb-1">
+                                                        <span>
+                                                            <span class="font-weight-500 fs-14">
+                                                                @item.Name
+                                                                @if (@item.RoleName != "")
+                                                                {
+                                                                    <a>(@item.RoleName)</a>
+                                                                }
+                                                            </span>
+                                                            <span class="date-msz"> (@item.Date)</span>
+                                                        </span>
+                                                    </div>
+                                                    @Html.Raw(item.Description)
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+    });
+</script>
+<script>
+    function sendmessage(ClientId, JobId) {
+        sendmessagevalidation();
+        if ($('#msgchatform').valid()) {
+            model = {
+                CId: ClientId,
+                jId: JobId,
+                Description: $("#candidatemassege").val(),
+                Id: $("#messageid").val()
+            }
+            $.post("/Candidates/Candidateconversationsaved", model, function () {
+              //  var url = "/Candidates/conversation?Ids=" + $("#messageIds").val() + "&JIds=" + JIds;
+                setTimeout(function () { location.reload(true) }, 1800);
+                toastr.success("Message sent successfully.");
+            });
+        }
+    }
+    function sendmessagevalidation() {
+        $("#msgchatform").validate({
+            rules: {
+                candidatemassege: {
+                    required: true
+                },
+            }
+        });
+    }
+</script>
+<script>
+    function msgsent(event) { 
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+            sendmessage(@Model.ClientId,@Model.jId)
+        }
+    }
+</script>
+<script>
+    var element = document.getElementById("pipelinerequest");
+    element.classList.add("active");
+</script>

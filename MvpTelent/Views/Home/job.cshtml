@@ -1,0 +1,588 @@
+﻿@model Web.Model.Client.JobsModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .autocomplete-items {
+        overflow: scroll !important;
+        min-height: 400px !important;
+    }
+</style>
+<div id="jobalert_PopUp" class="modal fade" role="dialog"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="@Model.locationKey"></script>
+<section class="banner-inner" style="background-image: url('../../New_Content/images/job-banner.jpg');">
+    <div class="container">
+        <h1>Search Jobs </h1>
+        <p>Ready for something better? Let's find it together!</p>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="registration-inner job-list-reg-form bg-light shadow">
+                    <form class="registration-form">
+                        <div class="row">
+
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <i class="fas fa-user-md"></i>
+                                    <select id="select-country" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options">
+                                            <input type="select-one" autocomplete="off" tabindex="" id="JobTitle" name="JobTitle" placeholder="Job Title">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <input type="hidden" name="jobIdsBytags" id="jobIdsBytags" />
+                                    <i class="fa fa-briefcase"></i>
+                                    <input type="text" id="Tags" name="Tags" class="form-control rounded registration-input-box" placeholder="Keywords...">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <i class="fa fa-location-arrow"></i>
+                                    <select id="select-category" class="demo-default selectized" tabindex="-1" style="display: none;">
+                                        <option value="" selected="selected"></option>
+                                    </select>
+                                    <div class="selectize-control demo-default single">
+                                        <div class="selectize-input items not-full has-options">
+                                            <input type="select-one" autocomplete="off" tabindex="" id="autocomplete_search" placeholder="Enter City, State or Zip" name="autocomplete_search">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="registration-form-box">
+                                    <input type="button" onclick="GetSearchJob(1,1)" id="submit" name="send" class="submitBnt btn btn-primary btn-block" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<input type="hidden" id="postal_code" name="postal_code" value="" />
+<input type="hidden" id="pagenumber" name="pagenumber" />
+<input type="hidden" id="salertchangeId" name="salertchangeId" value="0" />
+
+<div id="filterlistsection" style="display:none">
+    <section class="jobs-list-section bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <div class="card mb-3 accordioncandidatelist" id="accordioncandidatelist">
+
+                        <div id="milessection">
+                            <div class="card-body p-b-0 mb-3">
+                                <h5 class="h6" id="filterOne">
+                                    <button class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Select Miles
+                                    </button>
+                                </h5>
+                                <ul class="list-unstyled" id="miles" name="miles">
+                                    <li id="collapseOne" class="mb-1 collapse show" aria-labelledby="filterOne" data-parent="#accordioncandidatelist">
+
+                                        @foreach (var item in Model.Milescollection)
+                                        {
+                                            <div class="custom-control custom-checkbox">
+                                                <input onchange="GetresentSearchJob(1, null, null)" @(Model.mile == item.Id ? "checked" : string.Empty) type="radio" class="form-check-input" name="miles" value="@item.Id" id="miles" onclick="GetSearchJob()">
+                                                <label class="form-check-label ml-1" for="@item.Name">@item.Name</label>
+                                            </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="h6 card-title mb-3">
+                                Date Posted
+                            </h5>
+                            <form>
+                                @Html.DropDownListFor(m => m.Id, new SelectList(Model.JobSearchdaysCollection, "Id", "Name"), "Select Any One", new { @class = "form-control", @Id = "Days", @Name = "Days", @onchange = "GetSearchJob()" })
+                            </form>
+                        </div>
+                        <hr class="my-0">
+
+
+                        
+
+
+
+                        <hr class="my-0">
+                        <div class="card-body p-b-0 mb-3">
+                            <h5 class="h6" id="filterTwo">
+                                <button class="collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Job Type
+                                </button>
+                            </h5>
+                            <ul class="list-unstyled mb-0 collapse" id="collapseTwo" aria-labelledby="filterTwo" data-parent="#accordioncandidatelist">
+                                @foreach (var item in Model.JobTypeCollection)
+                                {
+                                    <li class="mb-1">
+                                        <div class=" custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="JobtypeId_@item.Id" name="JobtypeId" onclick="GetSearchJob()" value="@item.Id">
+                                            <label class="custom-control-label" for="JobtypeId_@item.Id">@item.Name</label>
+                                        </div>
+                                    </li>
+
+                                }
+                            </ul>
+                        </div>
+                        <hr class="my-0">
+                        <div class="card-body p-b-0 mb-3">
+                            <h5 class="h6" id="filterTwoIndustry">
+                                <button class="collapsed" type="button" data-toggle="collapse" data-target="#collapseTwoIndustry" aria-expanded="false" aria-controls="collapseTwoIndustry">
+                                    Industry
+                                </button>
+                            </h5>
+                            <ul class="list-unstyled mb-0 collapse" id="collapseTwoIndustry" aria-labelledby="filterTwoIndustry" data-parent="#accordioncandidatelist">
+                                @foreach (var item in Model.JobCategoryCollection)
+                                {
+                                    <li class="mb-1">
+                                        <div class=" custom-switch">
+
+                                            <input type="radio" class="form-check-input" name="JobCatagoryId" value="@item.Id" id="JobCatagoryId" onclick="GetSearchJob()">
+                                            <label class="form-check-label ml-1" for="@item.Id">@item.Name</label>
+
+
+                                        </div>
+                                    </li>
+
+                                }
+                            </ul>
+                        </div>
+
+                        @*<div class="card-body p-b-0 mb-3">
+                                <h5 class="h6 card-title-head">
+                                    Industry
+                                </h5>
+                                <form>
+                                    @Html.DropDownListFor(m => m.Id, new SelectList(Model.JobCategoryCollection, "Id", "Name"), "Select Industry", new { @class = "form-control", @Id = "JobCatagoryId", @Name = "JobCatagoryId", @onchange = "GetSearchJob()" })
+                                </form>
+                            </div>*@
+                        <hr class="my-0">
+                        <div class="card-body">
+                            <h5 class="h6 card-title-head mb-6">
+                                Salary
+                            </h5>
+                            <div class="salary-counter">
+                                <div id="amount"></div>
+                                <div id="slider-range" style="background: #e9e9e9;">
+                                    <div class="tooltip-arrow"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body p-b-0">
+                            <h5 class="h6 card-title">
+                                Search Results
+                            </h5>
+                            @*<ul class="list-unstyled mb-0">
+                                    <li class="mb-1">
+                                        <div class="card-actions float-right">
+                                            Sort by: &nbsp;
+                                            <span class="select-new">
+                                                <select class="form-control" onchange="GetSearchJob()" tabindex="-98" id="Relevance" name="Relevance">
+                                                    <option value="0">Relevance</option>
+                                                    <option value="2"> Newest</option>
+                                                    <option value="1">Oldest</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                        <div class=" custom-switch">
+                                            <input onclick="jobalertpopup()" type="checkbox" class="custom-control-input" id="customSwitch6" name="customSwitch6">
+                                            <label class="custom-control-label" for="customSwitch6">Turn on email alerts for this search</label>
+                                        </div>
+                                    </li>
+                                </ul>*@
+                        </div>
+                        <div class="candidatelist-main-body-outer" id="JobListPartialView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div id="beforesearchsection">
+    <section class="recent-search pt-5">
+        <div class="container pt-5">
+            <div class="card">
+                <div class="card-body header-golden-bg">
+                    <h5 class="h6 card-title m-0">
+                        Featured Jobs
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row m-0--10">
+                        <div class="search-best-jobs-tiles-inner-2">
+                            <ul id="joblist" class="row">
+                                @if (Model.SearchCollection != null)
+                                {
+                                    foreach (var item in Model.SearchCollection)
+                                    {
+                                        <li onclick="jobdetailbbyid('@EncryptDecrypt.encrypt(Convert.ToString(item.Id))')" class="cursor-pointer">
+
+                                            <div class="new">
+                                                <div class="search-best-jobs-tiles-inner-body">
+                                                    <a class="jobs-img">
+                                                        @if (item.ClientId > 0)
+                                                        {
+                                                            <img src="@item.FileName_Company" alt="image">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@item.Image" alt="image">
+                                                        }
+
+                                                    </a><div class="jobs-body">
+                                                        <div>
+                                                            @if (item.JobCategoryName == "")
+                                                            {
+                                                                <p class="head">
+                                                                    N/A<i class="fas fa-check-circle"></i>
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="head">
+                                                                    @item.JobCategoryName<i class="fas fa-check-circle"></i>
+                                                                </p>
+                                                            }
+                                                            <a> @item.jobtitle</a>@*<p class="text">@item.Designation</p>*@
+                                                            @if (item.PositionLevelName.Length > 0)
+                                                            {
+                                                                <p class="text">@item.PositionLevelName</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="text">N/A</p>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="jobs-star"><i class="fas fa-star"></i></div>
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        @if (item.location.Length > 0)
+                                                        {
+                                                            <span><i class="fas fa-map-marker-alt"></i> @item.location</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span><i class="fas fa-map-marker-alt"></i> N/A</span>
+                                                        }
+
+                                                    </li>
+                                                    <li><span><i class="fas fa-briefcase"></i> @item.Jobtype </span></li>
+                                                    <li><span><i class="fas fa-wallet"></i> $@item.MinSalary  - $@item.MaxSalary</span></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="no-data-section text-center">
+                                        <figure class="no-data-img">
+                                            <img src="/New_Content/images/404-img.png" class="img-fluid" />
+                                        </figure>
+                                        <p> Featured Job Not Found</p>
+                                    </div>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+<script>
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                var pos = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                if (pos > -1) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = arr[i].substr(0, pos);
+                    b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(pos + val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    var strArray = [];
+    $.ajax({
+        type: "Post",
+        url: "/Home/jobtitleautocomplate",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.each(data.candidatetagvaluecollection, function () {
+                var tmpStr = "";
+                for (var i = 0; i < this.Name.length; i++) {
+                    if (this.Name.charAt(i) == ',') {
+                        strArray.push(tmpStr);
+                        tmpStr = "";
+                        continue;
+                    }
+                    tmpStr += this.Name.charAt(i);
+                }
+                strArray.push(tmpStr);
+            });
+            autocomplete(document.getElementById("JobTitle"), strArray);
+        },
+        error: function () {
+            alert("There is an error uploading files!");
+        }
+    });
+</script>
+
+<script>
+    function jobdetailbbyid(id) {
+        var url = "/Home/jobdetail?Id=" + id;
+        window.open(url, "_blank");
+    }
+    $(function () {
+        var minPriceInRupees = 0;
+        var maxPriceInRupees = 500;
+        var currentMinValue = 33;
+        var currentMaxValue = 333;
+        $("#slider-range").slider({
+            range: true,
+            min: minPriceInRupees,
+            max: maxPriceInRupees,
+            values: [currentMinValue, currentMaxValue],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                currentMinValue = ui.values[0];
+                currentMaxValue = ui.values[1];
+            },
+            stop: function (event, ui) {
+                currentMinValue = ui.values[0];
+                currentMaxValue = ui.values[1];
+                $("#salertchangeId").val(1);
+                GetSearchJob();
+
+            }
+        });
+    });
+</script>
+<script>
+    var autocomplete;
+    var autocompleteListener;
+    function disableGoogleAutocomplete() {
+        if (autocomplete !== undefined) {
+            google.maps.event.removeListener(autocompleteListener);
+            google.maps.event.clearInstanceListeners(autocomplete);
+            $(".pac-container").remove();
+        }
+    }
+    function enableGoogleAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete_search'));
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+        autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+        console.log('set autocomplete to GOOGLE');
+    }
+    $('#autocomplete_search').keypress(function (e) {
+        var input = document.getElementById('autocomplete_search');
+        if (input.value.length > 1) {
+            if (!parseInt(input.value)) {
+                enableGoogleAutocomplete();
+            }
+        }
+        else {
+            disableGoogleAutocomplete();
+        }
+    })
+</script>
+
+<script src="~/MvpTelent_js/jobsearch.js"></script>
+<script src="~/MvpTelent_js/jobalert.js"></script>
+<script>
+    var element = document.getElementById("job");
+    element.classList.add("active");
+
+    function jobdetailbbyid_home(id) {
+
+        if (parseInt($("#autocomplete_search").val())) {
+            var url = "/Home/jobdetail?Ids=" + id + "&zip=" + $("#autocomplete_search").val() + "&mile=" + $("input[name='miles']:checked").val()
+            window.open(url, "_blank");
+        }
+        else {
+            var url = "/Home/jobdetail?Ids=" + id;
+            window.open(url, "_blank");
+        }
+
+
+    }
+</script>
+
+
+<style>
+    #button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 30px;
+        background-color: #eee;
+        border: solid #ccc 1px;
+        cursor: pointer;
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+    }
+
+    .is-hide {
+        display: none;
+    }
+</style>
+
+
+<div id="overlay">
+    <div class="cv-spinner">
+        <span class="spinner"></span>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+        $(document).ajaxSend(function () {
+            $("#overlay").fadeIn(300);
+        });
+
+        $('input[name="miles"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="Days"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="JobtypeId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+        $('input[name="JobCatagoryId"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+
+
+        $('#submit').click(function () {
+            $.ajax({
+                type: 'GET',
+                success: function (data) {
+                }
+            });
+        });
+    });
+</script>

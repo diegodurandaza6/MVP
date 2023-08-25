@@ -1,0 +1,41 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1"> Vedio information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+           
+                    <form id="videoForm" name="videoForm">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Title</label>
+                                    <input id="Title" maxlength="100" autocomplete="off" class="form-control" value="@Model.Title" placeholder="Please enter title" name="Title" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Embed Code (Video Url)</label>
+                                    <input id="VideoUrl" maxlength="5000" autocomplete="off" class="form-control" value="@Model.VideoUrl" placeholder="Please enter embed code url" name="VideoUrl" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">description</label>
+                                    <textarea rows="5" cols="65" maxlength="500" name="description" id="description" class="form-control" placeholder="Please enter video description">@Model.description</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Visible</label>
+                                    @Html.DropDownListFor(m => m.visibleid, new SelectList(Model.visibleidCollection, "Id", "Name"), "Select", new { @class = "form-control", @id = "visibleid", @Name = "visibleid" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+          
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="text-right send" onclick="UploadVideo(@Model.Id)" value="Save">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

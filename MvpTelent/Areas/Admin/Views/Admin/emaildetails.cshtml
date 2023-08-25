@@ -1,0 +1,90 @@
+﻿@model Web.Model.Admin.EmailTempleteViewModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                Email Details
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="new_table new_table-pop mb-4">
+                <table class="table table-striped my-0 table-bordered">
+                    <tbody>
+                        <tr>
+                            <td style="width: 160px;"><b>Subject </b> :</td>
+                            <td>@Model.Subject</td>
+                        </tr>
+                        <tr>
+                            <td><b>Follow-up 1 Date</b> :</td>
+                            <td>@Model.FirstFollowDate </td>
+                        </tr>
+                        <tr>
+                            <td><b>Follow-up 2 Date</b> :</td>
+                            <td>@Model.secondFollowDate </td>
+                        </tr>
+                        <tr>
+                            <td><b>Follow-up 3 Date</b> :</td>
+                            <td>@Model.thirdfollowdate</td>
+                        </tr>
+                        <tr>
+                            <td class="vertical-align-top"><b>Main Email </b> :</td>
+                            <td>
+                                @Html.Raw(Model.Description)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vertical-align-top"><b>Follow-up 1 Email</b> :</td>
+                            <td>
+
+                                @if (Model.Description1 == "")
+                                {
+                                    <span>N/A</span>
+                                }
+                                else
+                                {
+                                    @Html.Raw(Model.Description1)
+                                }
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vertical-align-top"><b>Follow-up 2 Email</b> :</td>
+                            <td>
+                                @if (Model.Description2 == "")
+                                {
+                                    <span>N/A</span>
+                                }
+                                else
+                                {
+                                    @Html.Raw(Model.Description2)
+                                }
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vertical-align-top"><b>Follow-up 3 Email</b> :</td>
+                            <td>
+                                @if (Model.Description3 == "")
+                                {
+                                    <span>N/A</span>
+                                }
+                                else
+                                {
+                                    @Html.Raw(Model.Description3)
+                                }
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

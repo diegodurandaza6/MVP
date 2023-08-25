@@ -1,0 +1,13 @@
+﻿@model Web.Model.Client.JobsModel
+
+@if (Model.SkillCollection != null)
+{
+    foreach (var item in Model.SkillCollection)
+    {
+
+        <li><button type="button" class="save"> @item.Name <i onclick="deleteJobskill(@item.Id,@Model.Ids,@Model.SId)" class="fa fa-times" aria-hidden="true"></i></button></li>
+
+
+         
+    }
+}

@@ -1,0 +1,45 @@
+﻿@model Web.Model.Candidate.CandidateModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Candidates</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <form id="Candidateform" class="login100-form ">
+            <span class="login100-form-title">
+                Candidate
+            </span>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="30" id="username" value="@Model.Name" name="username" autocomplete="off" placeholder="Enter Name" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="100" id="Address" name="Address" value="@Model.Address" autocomplete="off" placeholder="Enter Address" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="15" id="Phone" name="Phone" value="@Model.Phone" autocomplete="off" placeholder="Enter phone" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="10" id="Education" name="Education" value="@Model.Education" autocomplete="off" placeholder="Enter Education" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="text" maxlength="50" id="Email" name="Email" value="@Model.Email" autocomplete="off" placeholder="Enter Email" class="form-control">
+            </div>
+            <div class="wrap-input100 ">
+                <input type="file" id="ResumeName" name="ResumeName" class="form-control">
+            </div>
+            <label id="lbl_FileName" type="text"></label>
+            <div class="container-login100-form-btn">
+                <input type="button" name="login" id="login" class="login100-form-btn" onclick="CreateCandidate(@Model.Id)" value="Login">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+<script src="~/MvpTelent_js/Candidate/CandidateJs.js"></script>
+<script src="~/MvpTelent_js/toster/jquery.toaster.js"></script>
