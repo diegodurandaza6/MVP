@@ -238,7 +238,7 @@ namespace EmailService
             MailMessage mailMsg1 = new MailMessage();
             mailMsg1.IsBodyHtml = true;
             mailMsg1.From = new MailAddress(FromEmail, "MVP Talent matket");
-            mailMsg1.To.Add("mailtosinghnagendra@gmail.com");
+            mailMsg1.To.Add("diego@cloudavengers.io");
             mailMsg1.Subject = subject;
             mailMsg1.Body = emailbody;
             mailMsg1.Sender = new MailAddress(FromEmail);
@@ -250,7 +250,7 @@ namespace EmailService
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.Credentials = new NetworkCredential(FromEmail, FromEmailPassword);
             smtp.Send(mailMsg1);
-            Console.WriteLine("Sent on mailtosinghnagendra ");
+            Console.WriteLine("Sent on diego ");
         }
         static DataSet getfollowuprecord()
         {

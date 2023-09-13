@@ -294,7 +294,7 @@ namespace JobAlertService
                 MailMessage mailMsg1 = new MailMessage();
                 mailMsg1.IsBodyHtml = true;
                 mailMsg1.From = new MailAddress(FromEmail, "MVP Talent matket");
-                mailMsg1.To.Add("mailtosinghnagendra@gmail.com");
+                mailMsg1.To.Add("diego@cloudavengers.io");
                 mailMsg1.Subject = subject;
                 mailMsg1.Body = emailbody;
                 mailMsg1.Sender = new MailAddress(FromEmail);
